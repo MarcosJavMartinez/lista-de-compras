@@ -253,6 +253,7 @@ const summaryPendingEl = document.getElementById("summary-pending");
 const summaryPurchasedEl = document.getElementById("summary-purchased");
 const summaryCountEl = document.getElementById("summary-count");
 const summaryTotalEl = document.getElementById("summary-total");
+const summarySpentEl = document.getElementById("summary-spent");
 
 const filterButtons = document.querySelectorAll(".filter-btn");
 
@@ -485,9 +486,16 @@ function calculateTotals() {
   const pending = products.filter((p) => !p.purchased).length;
   const purchased = products.filter((p) => p.purchased).length;
   const count = products.length;
-  const total = products.reduce((sum, p) => sum + p.quantity * p.price, 0);
+  const pendingTotal = products.reduce(
+    (sum, p) => sum + (p.purchased ? 0 : p.quantity * p.price),
+    0
+  );
+  const purchasedTotal = products.reduce(
+    (sum, p) => sum + (p.purchased ? p.quantity * p.price : 0),
+    0
+  );
 
-  return { pending, purchased, count, total };
+  return { pending, purchased, count, pendingTotal, purchasedTotal };
 }
 
 /* ==========================================================================
@@ -495,12 +503,13 @@ function calculateTotals() {
    ========================================================================== */
 
 function renderSummary() {
-  const { pending, purchased, count, total } = calculateTotals();
+  const { pending, purchased, count, pendingTotal, purchasedTotal } = calculateTotals();
 
   summaryPendingEl.textContent = pending;
   summaryPurchasedEl.textContent = purchased;
   summaryCountEl.textContent = count;
-  summaryTotalEl.textContent = formatCurrency(total);
+  summaryTotalEl.textContent = formatCurrency(pendingTotal);
+  summarySpentEl.textContent = `Ya compraste ${formatCurrency(purchasedTotal)}`;
 }
 
 function createProductElement(product) {

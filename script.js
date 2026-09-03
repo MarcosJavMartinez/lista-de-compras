@@ -28,6 +28,8 @@ const CATEGORY_COLORS = {
 const PRODUCT_RULES = [
   { keywords: ["huevo"], icon: "🥚", category: "Almacén" },
   { keywords: ["afeitar", "gillette", "rasuradora", "maquinita"], icon: "🪒", category: "Farmacia y Perfumería" },
+  { keywords: ["crema de afeitar"], icon: "🪒", category: "Farmacia y Perfumería" },
+  { keywords: ["jabon para ropa", "jabón para ropa"], icon: "🧺", category: "Limpieza" },
   { keywords: ["jabon", "jabón"], icon: "🧼", category: "Farmacia y Perfumería" },
   { keywords: ["aceite"], icon: "🫒", category: "Almacén" },
   { keywords: ["leche"], icon: "🥛", category: "Almacén" },
@@ -51,16 +53,29 @@ const PRODUCT_RULES = [
   { keywords: ["pollo"], icon: "🍗", category: "Carnicería" },
   { keywords: ["carne", "milanesa", "asado", "bife"], icon: "🥩", category: "Carnicería" },
   { keywords: ["lavandina", "cloro"], icon: "🧴", category: "Limpieza" },
-  { keywords: ["detergente", "limpiador", "desinfectante", "lysoform", "pino luz"], icon: "🧴", category: "Limpieza" },
+  { keywords: ["detergente", "limpiador", "desinfectante", "lysoform", "pino luz", "pinolux"], icon: "🧴", category: "Limpieza" },
   { keywords: ["suavizante"], icon: "🧴", category: "Limpieza" },
   { keywords: ["esponja"], icon: "🧽", category: "Limpieza" },
+  { keywords: ["birulana"], icon: "🧽", category: "Limpieza" },
+  { keywords: ["mopa"], icon: "🧹", category: "Limpieza" },
+  { keywords: ["trapo de piso"], icon: "🧹", category: "Limpieza" },
+  { keywords: ["plumero"], icon: "🪶", category: "Limpieza" },
+  { keywords: ["pañuelos descartables"], icon: "🤧", category: "Limpieza" },
+  { keywords: ["perfume para ropa"], icon: "🌸", category: "Limpieza" },
+  { keywords: ["ala para lavar ropa"], icon: "🧺", category: "Limpieza" },
   { keywords: ["shampoo", "champú", "champu", "acondicionador"], icon: "🧴", category: "Farmacia y Perfumería" },
   { keywords: ["desodorante"], icon: "🧴", category: "Farmacia y Perfumería" },
+  { keywords: ["talco"], icon: "🧴", category: "Farmacia y Perfumería" },
+  { keywords: ["preservativos"], icon: "🛡️", category: "Farmacia y Perfumería" },
+  { keywords: ["vitamina"], icon: "💊", category: "Farmacia y Perfumería" },
+  { keywords: ["enjuague dental", "hilo dental"], icon: "🪥", category: "Farmacia y Perfumería" },
   { keywords: ["crema", "pomada", "alergia"], icon: "💊", category: "Farmacia y Perfumería" },
   { keywords: ["cebolla"], icon: "🧅", category: "Verdulería" },
   { keywords: ["ajo"], icon: "🧄", category: "Verdulería" },
   { keywords: ["morron", "morrón", "pimiento"], icon: "🫑", category: "Verdulería" },
   { keywords: ["aji molido", "ají molido", "pimenton", "pimentón", "picante"], icon: "🌶️", category: "Almacén" },
+  { keywords: ["jengibre"], icon: "🫚", category: "Verdulería" },
+  { keywords: ["bolson de verduras", "bolsón de verduras"], icon: "🥦", category: "Verdulería" },
   { keywords: ["papa", "patata"], icon: "🥔", category: "Verdulería" },
   { keywords: ["zanahoria"], icon: "🥕", category: "Verdulería" },
   { keywords: ["manzana"], icon: "🍎", category: "Verdulería" },
@@ -69,6 +84,8 @@ const PRODUCT_RULES = [
   { keywords: ["limon", "limón"], icon: "🍋", category: "Verdulería" },
   { keywords: ["palta", "aguacate"], icon: "🥑", category: "Verdulería" },
   { keywords: ["lechuga"], icon: "🥬", category: "Verdulería" },
+  { keywords: ["manzanilla"], icon: "🌼", category: "Almacén" },
+  { keywords: ["hierbas digestivas"], icon: "🌿", category: "Almacén" },
   { keywords: ["yerba"], icon: "🧉", category: "Almacén" },
   { keywords: ["agua"], icon: "💧", category: "Almacén" },
   { keywords: ["gaseosa", "cola", "sprite", "fanta"], icon: "🥤", category: "Almacén" },
@@ -76,6 +93,19 @@ const PRODUCT_RULES = [
   { keywords: ["vino"], icon: "🍷", category: "Almacén" },
   { keywords: ["chocolate"], icon: "🍫", category: "Almacén" },
   { keywords: ["galletita", "galleta"], icon: "🍪", category: "Almacén" },
+  { keywords: ["pure instantaneo", "puré instantáneo"], icon: "🥔", category: "Almacén" },
+  { keywords: ["mister musculo", "mister músculo"], icon: "🧴", category: "Limpieza" },
+  { keywords: ["mayo de ajo"], icon: "🧄", category: "Almacén" },
+  { keywords: ["mayoliva"], icon: "🫒", category: "Almacén" },
+  { keywords: ["bicarbonato"], icon: "🧂", category: "Almacén" },
+  { keywords: ["vinagre"], icon: "🍶", category: "Almacén" },
+  { keywords: ["miel"], icon: "🍯", category: "Almacén" },
+  { keywords: ["sal fina", "sal gruesa"], icon: "🧂", category: "Almacén" },
+  { keywords: ["capuchino"], icon: "☕", category: "Almacén" },
+  { keywords: ["escarbadientes"], icon: "🥢", category: "Almacén" },
+  { keywords: ["salchicha"], icon: "🌭", category: "Carnicería" },
+  { keywords: ["cinta adhesiva"], icon: "🧷", category: "Otros" },
+  { keywords: ["boxer", "bóxer"], icon: "👖", category: "Otros" },
 ];
 
 const DIACRITICS_REGEX = new RegExp("[̀-ͯ]", "g");
@@ -122,9 +152,53 @@ const DEFAULT_PRODUCTS = [
   { name: "2 cabezas de ajo", quantity: 1, price: 0 },
   { name: "1 morrón", quantity: 1, price: 0 },
   { name: "Ají molido", quantity: 1, price: 0 },
-  { name: "Pino Luz", quantity: 1, price: 0 },
+  { name: "Pinolux", quantity: 1, price: 0 },
   { name: "Queso para untar", quantity: 1, price: 0 },
   { name: "Crema para alergia", quantity: 1, price: 0 },
+  { name: "Arroz", quantity: 1, price: 0 },
+  { name: "Fideos x3", quantity: 1, price: 0 },
+  { name: "Puré instantáneo", quantity: 1, price: 0 },
+  { name: "Mister Músculo baño", quantity: 1, price: 0 },
+  { name: "Mister Músculo cocina", quantity: 1, price: 0 },
+  { name: "Té de hierbas digestivas", quantity: 1, price: 0 },
+  { name: "Pan sin TACC", quantity: 1, price: 0 },
+  { name: "Bolsón de verduras", quantity: 1, price: 0 },
+  { name: "Jabón para ropa", quantity: 1, price: 0 },
+  { name: "Mayo de ajo", quantity: 1, price: 0 },
+  { name: "Queso untable Roquefort", quantity: 1, price: 0 },
+  { name: "Bicarbonato", quantity: 1, price: 0 },
+  { name: "Vinagre de alcohol", quantity: 1, price: 0 },
+  { name: "Cabezal de mopa", quantity: 1, price: 0 },
+  { name: "Preservativos", quantity: 1, price: 0 },
+  { name: "Miel sólida", quantity: 1, price: 0 },
+  { name: "Cinta adhesiva papel/clásica", quantity: 1, price: 0 },
+  { name: "Bóxer", quantity: 1, price: 0 },
+  { name: "Salchichas", quantity: 1, price: 0 },
+  { name: "Mayoliva", quantity: 1, price: 0 },
+  { name: "Aceite de oliva", quantity: 1, price: 0 },
+  { name: "Jengibre", quantity: 1, price: 0 },
+  { name: "Talco", quantity: 1, price: 0 },
+  { name: "Detergente", quantity: 1, price: 0 },
+  { name: "Trapo de piso", quantity: 1, price: 0 },
+  { name: "Pañuelos descartables", quantity: 1, price: 0 },
+  { name: "Sal fina", quantity: 1, price: 0 },
+  { name: "Birulana", quantity: 1, price: 0 },
+  { name: "Capuchino", quantity: 1, price: 0 },
+  { name: "Blen original", quantity: 1, price: 0 },
+  { name: "Vitamina C", quantity: 3, price: 0 },
+  { name: "Escarbadientes", quantity: 1, price: 0 },
+  { name: "Crema de afeitar", quantity: 1, price: 0 },
+  { name: "Esponja", quantity: 1, price: 0 },
+  { name: "Desodorante spray", quantity: 1, price: 0 },
+  { name: "Ala para lavar ropa", quantity: 1, price: 0 },
+  { name: "Miel líquida", quantity: 1, price: 0 },
+  { name: "Cepillo para zapatos", quantity: 1, price: 0 },
+  { name: "Enjuague dental", quantity: 1, price: 0 },
+  { name: "Hilo dental", quantity: 1, price: 0 },
+  { name: "Limón", quantity: 1, price: 0 },
+  { name: "Té de manzanilla", quantity: 1, price: 0 },
+  { name: "Plumero", quantity: 1, price: 0 },
+  { name: "Perfume para ropa", quantity: 1, price: 0 },
 ].map((item) => ({
   id: generateId(),
   name: item.name,
@@ -134,6 +208,9 @@ const DEFAULT_PRODUCTS = [
   category: getProductCategory(item.name),
   priority: false,
 }));
+
+const CATALOG_VERSION = 2;
+const CATALOG_VERSION_KEY = "listaCompras.catalogVersion";
 
 let products = [];
 let currentFilter = "all";
@@ -194,12 +271,38 @@ function saveToLocalStorage() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
 }
 
+function saveCatalogVersion() {
+  localStorage.setItem(CATALOG_VERSION_KEY, String(CATALOG_VERSION));
+}
+
+// Suma al catálogo guardado los productos nuevos que se hayan agregado al
+// catálogo base (por nombre), sin tocar ni duplicar lo que el usuario ya tiene.
+// Corre una sola vez por versión de catálogo, así un producto borrado a
+// propósito no vuelve a aparecer solo porque falta en la lista guardada.
+function mergeNewCatalogProducts() {
+  const storedVersion = Number(localStorage.getItem(CATALOG_VERSION_KEY)) || 0;
+  if (storedVersion >= CATALOG_VERSION) return;
+
+  const existingNames = new Set(products.map((p) => normalizeText(p.name)));
+  const newProducts = DEFAULT_PRODUCTS.filter(
+    (item) => !existingNames.has(normalizeText(item.name))
+  );
+
+  if (newProducts.length > 0) {
+    products = products.concat(newProducts);
+    saveToLocalStorage();
+  }
+
+  saveCatalogVersion();
+}
+
 function loadFromLocalStorage() {
   const raw = localStorage.getItem(STORAGE_KEY);
 
   if (raw === null) {
     products = DEFAULT_PRODUCTS;
     saveToLocalStorage();
+    saveCatalogVersion();
     return;
   }
 
@@ -210,6 +313,8 @@ function loadFromLocalStorage() {
     console.error("No se pudo leer la lista guardada, se reinicia.", error);
     products = [];
   }
+
+  mergeNewCatalogProducts();
 }
 
 /* ==========================================================================

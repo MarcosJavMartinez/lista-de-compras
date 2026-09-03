@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mi Lista de Compras</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="app-header">
+  <h1>🛒 Mi Lista de Compras</h1>
+</header>
+
+<main class="container">
+
+  <!-- Formulario para agregar productos -->
+  <section class="card form-card">
+    <form id="add-form" autocomplete="off">
+      <div class="form-row form-row-name">
+        <span id="input-icon-preview" class="input-icon-preview" aria-hidden="true">🛒</span>
+        <input type="text" id="input-name" placeholder="Nombre del producto" required />
+      </div>
+      <div class="form-row form-row-split">
+        <input type="number" id="input-quantity" placeholder="Cantidad" min="1" step="1" value="1" required />
+        <input type="number" id="input-price" placeholder="Precio unitario" min="0" step="0.01" />
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">+ Agregar producto</button>
+    </form>
+  </section>
+
+  <!-- Resumen -->
+  <section class="card summary-card">
+    <div class="summary-grid">
+      <div class="summary-item">
+        <span class="summary-label">Pendientes</span>
+        <span class="summary-value" id="summary-pending">0</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">Comprados</span>
+        <span class="summary-value" id="summary-purchased">0</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">Total productos</span>
+        <span class="summary-value" id="summary-count">0</span>
+      </div>
+    </div>
+    <div class="summary-total">
+      <span class="summary-total-label">Total estimado</span>
+      <span class="summary-total-value" id="summary-total">$0,00</span>
+    </div>
+  </section>
+
+  <!-- Filtros -->
+  <section class="filters">
+    <button class="filter-btn active" data-filter="all">Todos</button>
+    <button class="filter-btn" data-filter="pending">Pendientes</button>
+    <button class="filter-btn" data-filter="purchased">Comprados</button>
+  </section>
+
+  <!-- Lista de productos -->
+  <section class="card list-card">
+    <div class="search-row">
+      <input type="search" id="search-input" placeholder="🔍 Buscar producto..." aria-label="Buscar producto" />
+    </div>
+    <div id="pending-group" class="list-group" hidden>
+      <ul id="pending-list" class="product-list"></ul>
+    </div>
+    <div id="purchased-group" class="list-group" hidden>
+      <h2 id="purchased-title" class="list-group-title" hidden></h2>
+      <ul id="purchased-list" class="product-list"></ul>
+    </div>
+    <p id="empty-message" class="empty-message" hidden>No hay productos para mostrar.</p>
+  </section>
+
+  <!-- Acciones generales -->
+  <section class="actions">
+    <button id="btn-clear-purchased" class="btn btn-secondary">Eliminar comprados</button>
+    <button id="btn-uncheck-all" class="btn btn-secondary">Desmarcar todos</button>
+    <button id="btn-clear-all" class="btn btn-danger">Vaciar lista</button>
+  </section>
+
+</main>
+
+<!-- Plantilla de item de producto -->
+<template id="product-item-template">
+  <li class="product-item" data-id="">
+    <div class="product-view">
+      <label class="checkbox-wrap">
+        <input type="checkbox" class="chk-purchased" />
+        <span class="checkbox-visual"></span>
+      </label>
+
+      <span class="product-icon" aria-hidden="true"></span>
+
+      <div class="product-main">
+        <div class="product-row-top">
+          <p class="product-name"></p>
+          <span class="product-total"></span>
+          <button type="button" class="icon-btn btn-priority" aria-label="Marcar como prioritario">☆</button>
+          <button type="button" class="icon-btn btn-edit" aria-label="Editar">✏️</button>
+        </div>
+        <div class="product-row-bottom">
+          <span class="category-chip"></span>
+          <div class="qty-control">
+            <button type="button" class="qty-btn qty-minus" aria-label="Restar cantidad">−</button>
+            <span class="qty-value"></span>
+            <button type="button" class="qty-btn qty-plus" aria-label="Sumar cantidad">+</button>
+          </div>
+          <button type="button" class="unit-price-btn" aria-label="Editar precio unitario"></button>
+        </div>
+      </div>
+    </div>
+
+    <form class="product-edit" hidden>
+      <input type="text" class="edit-name" required />
+      <div class="form-row-split">
+        <input type="number" class="edit-quantity" min="1" step="1" required />
+        <input type="number" class="edit-price" min="0" step="0.01" />
+      </div>
+      <div class="form-row-split">
+        <select class="edit-category">
+          <option value="Verdulería">🥬 Verdulería</option>
+          <option value="Carnicería">🥩 Carnicería</option>
+          <option value="Panadería">🍞 Panadería</option>
+          <option value="Almacén">🛒 Almacén</option>
+          <option value="Limpieza">🧴 Limpieza</option>
+          <option value="Farmacia y Perfumería">💊 Farmacia y Perfumería</option>
+          <option value="Otros">📦 Otros</option>
+        </select>
+        <label class="edit-priority-label">
+          <input type="checkbox" class="edit-priority" />
+          <span>⭐ Prioritario</span>
+        </label>
+      </div>
+      <div class="edit-buttons">
+        <button type="submit" class="btn btn-primary btn-small">Guardar</button>
+        <button type="button" class="btn btn-danger btn-small btn-delete">Eliminar</button>
+        <button type="button" class="btn btn-secondary btn-small btn-cancel-edit">Cancelar</button>
+      </div>
+    </form>
+  </li>
+</template>
+
+<script src="script.js"></script>
+</body>
+</html>

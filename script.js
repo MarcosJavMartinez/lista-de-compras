@@ -554,11 +554,18 @@ function calculateTotals() {
 
 function renderSummary() {
   const { pending, purchased, count, pendingTotal, purchasedTotal } = calculateTotals();
+  const newTotalText = formatCurrency(pendingTotal);
+
+  if (summaryTotalEl.textContent && summaryTotalEl.textContent !== newTotalText) {
+    summaryTotalEl.classList.remove("pulse");
+    void summaryTotalEl.offsetWidth; // reinicia la animación si ya estaba corriendo
+    summaryTotalEl.classList.add("pulse");
+  }
 
   summaryPendingEl.textContent = pending;
   summaryPurchasedEl.textContent = purchased;
   summaryCountEl.textContent = count;
-  summaryTotalEl.textContent = formatCurrency(pendingTotal);
+  summaryTotalEl.textContent = newTotalText;
   summarySpentEl.textContent = `Ya compraste ${formatCurrency(purchasedTotal)}`;
 }
 

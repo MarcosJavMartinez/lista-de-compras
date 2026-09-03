@@ -1,19 +1,60 @@
 :root {
-  --color-bg: #f4f6f8;
+  --color-bg: #f5f3ee;
   --color-card: #ffffff;
   --color-primary: #2f9e44;
-  --color-primary-dark: #237a34;
+  --color-primary-dark: #1f7a34;
+  --color-primary-soft: #e8f4ea;
   --color-danger: #e03131;
   --color-danger-dark: #c92a2a;
-  --color-text: #212529;
-  --color-text-muted: #6c757d;
-  --color-border: #e9ecef;
-  --color-purchased-bg: #f1f3f5;
-  --shadow-soft: 0 2px 10px rgba(0, 0, 0, 0.06);
-  --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.08);
-  --radius-lg: 16px;
+  --color-danger-soft: #fbe9e7;
+  --color-warning: #f0b429;
+  --color-warning-dark: #c9992e;
+  --color-warning-soft: #fef3d6;
+  --color-info: #339af0;
+  --color-info-dark: #1c7ed6;
+  --color-info-soft: #e7f4fe;
+  --color-text: #21261f;
+  --color-text-muted: #6f7d73;
+  --color-border: #e6e2d5;
+  --color-purchased-bg: #eef1e9;
+  --color-input-bg: #fbfaf6;
+  --shadow-xs: 0 1px 2px rgba(31, 41, 28, 0.05);
+  --shadow-soft: 0 1px 2px rgba(31, 41, 28, 0.04), 0 6px 16px rgba(31, 41, 28, 0.07);
+  --shadow-medium: 0 2px 4px rgba(31, 41, 28, 0.05), 0 12px 28px rgba(31, 41, 28, 0.10);
+  --shadow-lg: 0 8px 12px rgba(31, 41, 28, 0.08), 0 24px 48px rgba(31, 41, 28, 0.16);
+  --radius-lg: 18px;
   --radius-md: 12px;
-  --radius-sm: 8px;
+  --radius-sm: 9px;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #10140e;
+    --color-card: #1a2018;
+    --color-primary: #52c374;
+    --color-primary-dark: #3a9c58;
+    --color-primary-soft: #1e2b20;
+    --color-danger: #ef7168;
+    --color-danger-dark: #d95a50;
+    --color-danger-soft: #33201d;
+    --color-warning: #f0c94a;
+    --color-warning-dark: #c9a730;
+    --color-warning-soft: #332a11;
+    --color-info: #5aa9f5;
+    --color-info-dark: #3d8fe0;
+    --color-info-soft: #16232e;
+    --color-text: #edf1ea;
+    --color-text-muted: #93a190;
+    --color-border: #2b3229;
+    --color-purchased-bg: #1d2419;
+    --color-input-bg: #171d15;
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.3), 0 6px 16px rgba(0, 0, 0, 0.35);
+    --shadow-medium: 0 2px 4px rgba(0, 0, 0, 0.3), 0 12px 28px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 12px rgba(0, 0, 0, 0.35), 0 24px 48px rgba(0, 0, 0, 0.5);
+    color-scheme: dark;
+  }
 }
 
 * {
@@ -22,10 +63,76 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   background: var(--color-bg);
   color: var(--color-text);
   padding-bottom: 40px;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2,
+.summary-value,
+.summary-total-value,
+.product-total,
+.btn,
+.filter-btn,
+.filter-toggle-btn,
+.sort-price-btn {
+  font-family: "Outfit", "Inter", sans-serif;
+}
+
+.summary-value,
+.summary-total-value,
+.product-total,
+.product-qty-display,
+.qty-control .edit-quantity {
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes fade-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes total-pulse {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.08);
+    color: #eaffef;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 .app-header {
@@ -41,8 +148,10 @@ body {
 .app-header h1 {
   margin: 0;
   font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
   text-align: center;
-  font-weight: 700;
+  text-wrap: balance;
 }
 
 .container {
@@ -56,9 +165,11 @@ body {
 
 .card {
   background: var(--color-card);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: 16px;
   box-shadow: var(--shadow-soft);
+  transition: box-shadow 0.2s ease;
 }
 
 /* Formulario */
@@ -85,12 +196,17 @@ body {
   font-size: 1.4rem;
   cursor: pointer;
   padding: 0;
-  transition: border-color 0.15s ease;
+  transition: border-color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
 }
 
 .input-icon-preview:hover,
 .input-icon-preview[aria-expanded="true"] {
   border-color: var(--color-primary);
+  box-shadow: var(--shadow-xs);
+}
+
+.input-icon-preview:active {
+  transform: scale(0.93);
 }
 
 .icon-picker {
@@ -103,6 +219,7 @@ body {
   border-radius: var(--radius-md);
   max-height: 168px;
   overflow-y: auto;
+  animation: pop-in 160ms ease;
 }
 
 .icon-option {
@@ -111,17 +228,17 @@ body {
   flex-shrink: 0;
   border: none;
   border-radius: 8px;
-  background: #fff;
+  background: var(--color-card);
   font-size: 1.25rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.15s ease, transform 0.06s ease;
+  transition: background 0.15s ease, transform 0.08s ease;
 }
 
 .icon-option:hover {
-  background: #e7f5ec;
+  background: var(--color-primary-soft);
 }
 
 .icon-option.selected {
@@ -129,7 +246,7 @@ body {
 }
 
 .icon-option:active {
-  transform: scale(0.9);
+  transform: scale(0.88);
 }
 
 .form-row-name input[type="text"] {
@@ -145,6 +262,7 @@ body {
 
 input[type="text"],
 input[type="number"],
+input[type="search"],
 select {
   width: 100%;
   padding: 12px 14px;
@@ -152,17 +270,19 @@ select {
   border-radius: var(--radius-md);
   font-size: 1rem;
   font-family: inherit;
-  background: #fafbfc;
+  background: var(--color-input-bg);
   color: var(--color-text);
-  transition: border-color 0.15s ease;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
 }
 
 input[type="text"]:focus,
 input[type="number"]:focus,
+input[type="search"]:focus,
 select:focus {
   outline: none;
   border-color: var(--color-primary);
-  background: #fff;
+  background: var(--color-card);
+  box-shadow: 0 0 0 3px var(--color-primary-soft);
 }
 
 .btn {
@@ -170,13 +290,22 @@ select:focus {
   border-radius: var(--radius-md);
   padding: 13px 18px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: transform 0.06s ease, filter 0.15s ease;
+  transition: transform 0.06s ease, filter 0.15s ease, box-shadow 0.15s ease;
 }
 
 .btn:active {
   transform: scale(0.97);
+}
+
+.btn:focus-visible,
+input:focus-visible,
+select:focus-visible,
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
 .btn-block {
@@ -191,14 +320,16 @@ select:focus {
 .btn-primary {
   background: var(--color-primary);
   color: white;
+  box-shadow: 0 4px 14px rgba(47, 158, 68, 0.28);
 }
 
 .btn-primary:hover {
   filter: brightness(1.05);
+  box-shadow: 0 6px 18px rgba(47, 158, 68, 0.34);
 }
 
 .btn-secondary {
-  background: #e9ecef;
+  background: var(--color-purchased-bg);
   color: var(--color-text);
 }
 
@@ -216,7 +347,7 @@ select:focus {
 }
 
 .btn-info {
-  background: #339af0;
+  background: var(--color-info);
   color: white;
 }
 
@@ -225,7 +356,7 @@ select:focus {
 }
 
 .btn-warning {
-  background: #f5c451;
+  background: var(--color-warning);
   color: #4a3800;
 }
 
@@ -235,7 +366,7 @@ select:focus {
 
 /* Resumen */
 .summary-card {
-  background: linear-gradient(135deg, #ffffff, #f8f9fa);
+  background: linear-gradient(160deg, var(--color-card), var(--color-primary-soft) 220%);
 }
 
 .summary-grid {
@@ -253,13 +384,14 @@ select:focus {
   padding: 10px 4px;
   background: var(--color-bg);
   border-radius: var(--radius-sm);
+  transition: background 0.2s ease;
 }
 
 .summary-label {
   font-size: 0.72rem;
   color: var(--color-text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
   text-align: center;
 }
 
@@ -276,6 +408,7 @@ select:focus {
   color: white;
   border-radius: var(--radius-md);
   padding: 14px 18px;
+  box-shadow: 0 6px 18px rgba(47, 158, 68, 0.22);
 }
 
 .summary-total-label {
@@ -287,6 +420,11 @@ select:focus {
 .summary-total-value {
   font-size: 1.5rem;
   font-weight: 800;
+  display: inline-block;
+}
+
+.summary-total-value.pulse {
+  animation: total-pulse 320ms ease;
 }
 
 .summary-spent {
@@ -305,19 +443,20 @@ select:focus {
 .filter-btn {
   flex: 1;
   padding: 10px 8px;
-  border: none;
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-card);
   color: var(--color-text-muted);
   font-weight: 600;
   font-size: 0.9rem;
   cursor: pointer;
-  box-shadow: var(--shadow-soft);
-  transition: background 0.15s ease, color 0.15s ease;
+  box-shadow: var(--shadow-xs);
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
 .filter-btn.active {
   background: var(--color-primary);
+  border-color: var(--color-primary);
   color: white;
 }
 
@@ -346,7 +485,8 @@ select:focus {
 #search-input:focus {
   outline: none;
   border-color: var(--color-primary);
-  background: #fff;
+  background: var(--color-card);
+  box-shadow: 0 0 0 3px var(--color-primary-soft);
 }
 
 .filter-toggle-btn {
@@ -380,6 +520,7 @@ select:focus {
   padding: 4px 4px 16px;
   margin-bottom: 4px;
   border-bottom: 1px dashed var(--color-border);
+  animation: fade-slide-in 180ms ease;
 }
 
 .filters-panel-row select,
@@ -460,12 +601,6 @@ select:focus {
   animation: product-enter 200ms ease;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .product-item {
-    animation: none;
-  }
-}
-
 .empty-message {
   text-align: center;
   color: var(--color-text-muted);
@@ -476,16 +611,23 @@ select:focus {
 .product-item {
   border-radius: var(--radius-md);
   padding: 10px;
-  background: #fff;
+  background: var(--color-card);
   border: 1px solid var(--color-border);
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+@media (hover: hover) {
+  .product-item:hover {
+    border-color: color-mix(in srgb, var(--color-primary) 35%, var(--color-border));
+    box-shadow: var(--shadow-soft);
+  }
 }
 
 .add-item-card {
   margin-bottom: 8px;
   border-radius: var(--radius-md);
   padding: 10px;
-  background: #fff;
+  background: var(--color-card);
   border: 1px solid var(--color-border);
 }
 
@@ -519,12 +661,16 @@ select:focus {
   width: 26px;
   height: 26px;
   border-radius: 8px;
-  border: 2px solid #ced4da;
+  border: 2px solid var(--color-border);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.15s ease;
-  background: #fff;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.12s ease;
+  background: var(--color-card);
+}
+
+.checkbox-wrap:active .checkbox-visual {
+  transform: scale(0.85);
 }
 
 .checkbox-wrap input:checked + .checkbox-visual {
@@ -599,8 +745,8 @@ select:focus {
   height: 28px;
   border: none;
   border-radius: 6px;
-  background: #fff;
-  box-shadow: var(--shadow-soft);
+  background: var(--color-card);
+  box-shadow: var(--shadow-xs);
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--color-primary-dark);
@@ -608,10 +754,11 @@ select:focus {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.08s ease, box-shadow 0.15s ease;
 }
 
 .qty-btn:active {
-  transform: scale(0.92);
+  transform: scale(0.9);
 }
 
 .qty-control .edit-quantity {
@@ -627,8 +774,9 @@ select:focus {
 
 .qty-control .edit-quantity:focus {
   outline: none;
-  background: #fff;
+  background: var(--color-card);
   border-radius: 4px;
+  box-shadow: none;
 }
 
 .edit-priority-label {
@@ -658,6 +806,7 @@ select:focus {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  animation: fade-slide-in 180ms ease;
 }
 
 .product-edit input,
@@ -705,15 +854,16 @@ select:focus {
   gap: 14px;
   margin-top: 4px;
   text-align: left;
+  animation: fade-slide-in 180ms ease;
 }
 
 .more-options-warning {
   margin: 0;
   padding: 10px 12px;
   border-radius: var(--radius-sm);
-  background: #fff3cd;
-  border: 1px solid #ffe69c;
-  color: #7a5c00;
+  background: var(--color-warning-soft);
+  border: 1px solid var(--color-warning);
+  color: var(--color-text);
   font-size: 0.85rem;
   font-weight: 600;
 }

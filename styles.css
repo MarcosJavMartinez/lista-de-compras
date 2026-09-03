@@ -78,10 +78,62 @@ body {
   height: 44px;
   border-radius: var(--radius-md);
   background: var(--color-bg);
+  border: 1.5px dashed var(--color-border);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.4rem;
+  cursor: pointer;
+  padding: 0;
+  transition: border-color 0.15s ease;
+}
+
+.input-icon-preview:hover,
+.input-icon-preview[aria-expanded="true"] {
+  border-color: var(--color-primary);
+}
+
+.icon-picker[hidden] {
+  display: none;
+}
+
+.icon-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px;
+  margin: -2px 0 10px;
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  max-height: 168px;
+  overflow-y: auto;
+}
+
+.icon-option {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 1.25rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, transform 0.06s ease;
+}
+
+.icon-option:hover {
+  background: #e7f5ec;
+}
+
+.icon-option.selected {
+  background: var(--color-primary);
+}
+
+.icon-option:active {
+  transform: scale(0.9);
 }
 
 .form-row-name input[type="text"] {

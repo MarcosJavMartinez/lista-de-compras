@@ -108,6 +108,8 @@ const PRODUCT_RULES = [
   { keywords: ["boxer", "bóxer"], icon: "👖", category: "Otros" },
 ];
 
+const ALL_ICONS = Array.from(new Set([DEFAULT_ICON, ...PRODUCT_RULES.map((rule) => rule.icon)]));
+
 const DIACRITICS_REGEX = new RegExp("[̀-ͯ]", "g");
 
 function normalizeText(str) {
@@ -218,6 +220,7 @@ let searchQuery = "";
 let filterCategory = "";
 let filterPriorityOnly = false;
 let sortPriceOrder = null; // null | "desc" | "asc"
+let manualIcon = null;
 
 /* ==========================================================================
    Referencias del DOM
@@ -228,6 +231,7 @@ const inputName = document.getElementById("input-name");
 const inputQuantity = document.getElementById("input-quantity");
 const inputPrice = document.getElementById("input-price");
 const inputIconPreview = document.getElementById("input-icon-preview");
+const iconPickerEl = document.getElementById("icon-picker");
 const btnShowAddForm = document.getElementById("btn-show-add-form");
 const btnCancelAdd = document.getElementById("btn-cancel-add");
 
@@ -275,6 +279,34 @@ function formatCurrency(value) {
 
 function findProduct(id) {
   return products.find((p) => p.id === id);
+}
+
+function renderIconPicker() {
+  const fragment = document.createDocumentFragment();
+  ALL_ICONS.forEach((icon) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "icon-option";
+    btn.textContent = icon;
+    btn.setAttribute("aria-label", `Usar ícono ${icon}`);
+    btn.addEventListener("click", () => {
+      manualIcon = icon;
+      inputIconPreview.textContent = icon;
+      closeIconPicker();
+    });
+    fragment.appendChild(btn);
+  });
+  iconPickerEl.appendChild(fragment);
+}
+
+function openIconPicker() {
+  iconPickerEl.hidden = false;
+  inputIconPreview.setAttribute("aria-expanded", "true");
+}
+
+function closeIconPicker() {
+  iconPickerEl.hidden = true;
+  inputIconPreview.setAttribute("aria-expanded", "false");
 }
 
 /* ==========================================================================
@@ -355,7 +387,7 @@ function loadFromLocalStorage() {
    Operaciones sobre productos
    ========================================================================== */
 
-function addProduct(name, quantity, price) {
+function addProduct(name, quantity, price, icon) {
   const trimmedName = name.trim();
   if (!trimmedName) return;
 
@@ -370,6 +402,7 @@ function addProduct(name, quantity, price) {
     purchased: false,
     category: getProductCategory(trimmedName),
     priority: false,
+    icon: icon || getProductIcon(trimmedName),
   });
 
   saveToLocalStorage();
@@ -535,7 +568,7 @@ function createProductElement(product) {
   const checkbox = li.querySelector(".chk-purchased");
   checkbox.checked = product.purchased;
 
-  li.querySelector(".product-icon").textContent = getProductIcon(product.name);
+  li.querySelector(".product-icon").textContent = product.icon || getProductIcon(product.name);
   li.querySelector(".priority-badge").textContent = product.priority ? "⭐" : "";
   li.querySelector(".product-name").textContent = product.name;
   li.querySelector(".qty-value").textContent = product.quantity;
@@ -655,22 +688,35 @@ btnCancelAdd.addEventListener("click", () => {
   btnShowAddForm.hidden = false;
   addForm.reset();
   inputQuantity.value = 1;
+  manualIcon = null;
   inputIconPreview.textContent = DEFAULT_ICON;
+  closeIconPicker();
 });
 
 addForm.addEventListener("submit", (event) => {
   event.preventDefault();
-  addProduct(inputName.value, inputQuantity.value, inputPrice.value);
+  addProduct(inputName.value, inputQuantity.value, inputPrice.value, manualIcon);
   addForm.reset();
   inputQuantity.value = 1;
+  manualIcon = null;
   inputIconPreview.textContent = DEFAULT_ICON;
+  closeIconPicker();
   inputName.focus();
 });
 
 inputName.addEventListener("input", () => {
+  if (manualIcon) return;
   inputIconPreview.textContent = inputName.value.trim()
     ? getProductIcon(inputName.value)
     : DEFAULT_ICON;
+});
+
+inputIconPreview.addEventListener("click", () => {
+  if (iconPickerEl.hidden) {
+    openIconPicker();
+  } else {
+    closeIconPicker();
+  }
 });
 
 searchInput.addEventListener("input", () => {
@@ -764,6 +810,7 @@ btnToggleMoreOptions.addEventListener("click", () => {
    ========================================================================== */
 
 function init() {
+  renderIconPicker();
   loadFromLocalStorage();
   renderProducts();
 }

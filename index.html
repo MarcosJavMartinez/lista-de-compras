@@ -86,9 +86,10 @@
 
       <form id="add-form" class="product-edit" hidden autocomplete="off">
         <div class="form-row-name">
-          <span id="input-icon-preview" class="input-icon-preview" aria-hidden="true">🛒</span>
+          <button type="button" id="input-icon-preview" class="input-icon-preview" aria-label="Elegir ícono del producto" aria-expanded="false" aria-controls="icon-picker">🛒</button>
           <input type="text" id="input-name" placeholder="Nombre del producto" required />
         </div>
+        <div id="icon-picker" class="icon-picker" hidden></div>
         <div class="form-row-split">
           <input type="number" id="input-quantity" placeholder="Cantidad" min="1" step="1" value="1" required />
           <input type="number" id="input-price" placeholder="Precio unitario" min="0" step="0.01" />

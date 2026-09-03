@@ -672,7 +672,7 @@ a:focus-visible {
   border-radius: var(--radius-md);
   padding: 10px;
   background: var(--color-card);
-  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-xs);
   transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
@@ -689,7 +689,7 @@ a:focus-visible {
   border-radius: var(--radius-md);
   padding: 10px;
   background: var(--color-card);
-  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-xs);
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 

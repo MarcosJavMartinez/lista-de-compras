@@ -132,73 +132,73 @@ function getProductCategory(name) {
 }
 
 const DEFAULT_PRODUCTS = [
-  { name: "Maple de huevos", quantity: 1, price: 0 },
+  { name: "Maple de huevos", quantity: 1, price: 6500 },
   { name: "Máquina de afeitar Gillette x3", quantity: 1, price: 5895 },
-  { name: "Jabón Dove", quantity: 1, price: 2595 },
+  { name: "Jabón Dove", quantity: 1, price: 2350 },
   { name: "Aceite Cañuelas 900 ml", quantity: 1, price: 4115 },
-  { name: "Leche Tregar 1 L", quantity: 1, price: 2550 },
-  { name: "Café La Virginia 100 g", quantity: 1, price: 5499 },
-  { name: "Azúcar 1 kg", quantity: 1, price: 1475 },
+  { name: "Leche Tregar 1 L", quantity: 1, price: 2150 },
+  { name: "Café La Virginia 100 g", quantity: 1, price: 3500 },
+  { name: "Azúcar 1 kg", quantity: 1, price: 2200 },
   { name: "Manteca 200 g", quantity: 1, price: 3484.15 },
   { name: "Caldo de verduras x12", quantity: 1, price: 1879 },
   { name: "Rollos de cocina x3", quantity: 1, price: 2343.2 },
   { name: "Papel higiénico x4", quantity: 1, price: 3231.2 },
-  { name: "Pasta dental Colgate", quantity: 1, price: 2493 },
+  { name: "Pasta dental Colgate", quantity: 1, price: 3900 },
   { name: "Pan lactal Bimbo integral", quantity: 1, price: 4293 },
   { name: "Puré de tomate", quantity: 1, price: 1110 },
   { name: "Atún", quantity: 2, price: 1750 },
-  { name: "Lavandina", quantity: 1, price: 1279 },
-  { name: "1 kg de cebolla", quantity: 1, price: 0 },
-  { name: "2 cabezas de ajo", quantity: 1, price: 0 },
-  { name: "1 morrón", quantity: 1, price: 0 },
-  { name: "Ají molido", quantity: 1, price: 0 },
-  { name: "Pinolux", quantity: 1, price: 0 },
-  { name: "Queso para untar", quantity: 1, price: 0 },
-  { name: "Crema para alergia", quantity: 1, price: 0 },
-  { name: "Arroz", quantity: 1, price: 0 },
-  { name: "Fideos x3", quantity: 1, price: 0 },
-  { name: "Puré instantáneo", quantity: 1, price: 0 },
-  { name: "Mister Músculo baño", quantity: 1, price: 0 },
-  { name: "Mister Músculo cocina", quantity: 1, price: 0 },
-  { name: "Té de hierbas digestivas", quantity: 1, price: 0 },
-  { name: "Pan sin TACC", quantity: 1, price: 0 },
-  { name: "Bolsón de verduras", quantity: 1, price: 0 },
-  { name: "Jabón para ropa", quantity: 1, price: 0 },
-  { name: "Mayo de ajo", quantity: 1, price: 0 },
-  { name: "Queso untable Roquefort", quantity: 1, price: 0 },
-  { name: "Bicarbonato", quantity: 1, price: 0 },
-  { name: "Vinagre de alcohol", quantity: 1, price: 0 },
-  { name: "Cabezal de mopa", quantity: 1, price: 0 },
-  { name: "Preservativos", quantity: 1, price: 0 },
-  { name: "Miel sólida", quantity: 1, price: 0 },
-  { name: "Cinta adhesiva papel/clásica", quantity: 1, price: 0 },
-  { name: "Bóxer", quantity: 1, price: 0 },
-  { name: "Salchichas", quantity: 1, price: 0 },
-  { name: "Mayoliva", quantity: 1, price: 0 },
-  { name: "Aceite de oliva", quantity: 1, price: 0 },
-  { name: "Jengibre", quantity: 1, price: 0 },
-  { name: "Talco", quantity: 1, price: 0 },
-  { name: "Detergente", quantity: 1, price: 0 },
-  { name: "Trapo de piso", quantity: 1, price: 0 },
-  { name: "Pañuelos descartables", quantity: 1, price: 0 },
-  { name: "Sal fina", quantity: 1, price: 0 },
-  { name: "Birulana", quantity: 1, price: 0 },
-  { name: "Capuchino", quantity: 1, price: 0 },
-  { name: "Blen original", quantity: 1, price: 0 },
-  { name: "Vitamina C", quantity: 3, price: 0 },
-  { name: "Escarbadientes", quantity: 1, price: 0 },
-  { name: "Crema de afeitar", quantity: 1, price: 0 },
-  { name: "Esponja", quantity: 1, price: 0 },
-  { name: "Desodorante spray", quantity: 1, price: 0 },
-  { name: "Ala para lavar ropa", quantity: 1, price: 0 },
-  { name: "Miel líquida", quantity: 1, price: 0 },
-  { name: "Cepillo para zapatos", quantity: 1, price: 0 },
-  { name: "Enjuague dental", quantity: 1, price: 0 },
-  { name: "Hilo dental", quantity: 1, price: 0 },
-  { name: "Limón", quantity: 1, price: 0 },
-  { name: "Té de manzanilla", quantity: 1, price: 0 },
-  { name: "Plumero", quantity: 1, price: 0 },
-  { name: "Perfume para ropa", quantity: 1, price: 0 },
+  { name: "Lavandina", quantity: 1, price: 1850 },
+  { name: "1 kg de cebolla", quantity: 1, price: 2000 },
+  { name: "2 cabezas de ajo", quantity: 1, price: 900 },
+  { name: "1 morrón", quantity: 1, price: 1200 },
+  { name: "Ají molido", quantity: 1, price: 2200 },
+  { name: "Pinolux", quantity: 1, price: 2800 },
+  { name: "Queso para untar", quantity: 1, price: 3200 },
+  { name: "Crema para alergia", quantity: 1, price: 4500 },
+  { name: "Arroz", quantity: 1, price: 4580 },
+  { name: "Fideos x3", quantity: 1, price: 3600 },
+  { name: "Puré instantáneo", quantity: 1, price: 2800 },
+  { name: "Mister Músculo baño", quantity: 1, price: 4200 },
+  { name: "Mister Músculo cocina", quantity: 1, price: 4200 },
+  { name: "Té de hierbas digestivas", quantity: 1, price: 2600 },
+  { name: "Pan sin TACC", quantity: 1, price: 6500 },
+  { name: "Bolsón de verduras", quantity: 1, price: 8000 },
+  { name: "Jabón para ropa", quantity: 1, price: 1800 },
+  { name: "Mayo de ajo", quantity: 1, price: 2400 },
+  { name: "Queso untable Roquefort", quantity: 1, price: 4800 },
+  { name: "Bicarbonato", quantity: 1, price: 1500 },
+  { name: "Vinagre de alcohol", quantity: 1, price: 1400 },
+  { name: "Cabezal de mopa", quantity: 1, price: 5500 },
+  { name: "Preservativos", quantity: 1, price: 4200 },
+  { name: "Miel sólida", quantity: 1, price: 3800 },
+  { name: "Cinta adhesiva papel/clásica", quantity: 1, price: 2100 },
+  { name: "Bóxer", quantity: 1, price: 6500 },
+  { name: "Salchichas", quantity: 1, price: 2900 },
+  { name: "Mayoliva", quantity: 1, price: 2600 },
+  { name: "Aceite de oliva", quantity: 1, price: 7500 },
+  { name: "Jengibre", quantity: 1, price: 1800 },
+  { name: "Talco", quantity: 1, price: 2400 },
+  { name: "Detergente", quantity: 1, price: 3000 },
+  { name: "Trapo de piso", quantity: 1, price: 2200 },
+  { name: "Pañuelos descartables", quantity: 1, price: 2100 },
+  { name: "Sal fina", quantity: 1, price: 1200 },
+  { name: "Birulana", quantity: 1, price: 1900 },
+  { name: "Capuchino", quantity: 1, price: 3500 },
+  { name: "Blen original", quantity: 1, price: 4500 },
+  { name: "Vitamina C", quantity: 3, price: 2800 },
+  { name: "Escarbadientes", quantity: 1, price: 900 },
+  { name: "Crema de afeitar", quantity: 1, price: 3600 },
+  { name: "Esponja", quantity: 1, price: 1300 },
+  { name: "Desodorante spray", quantity: 1, price: 4200 },
+  { name: "Ala para lavar ropa", quantity: 1, price: 5200 },
+  { name: "Miel líquida", quantity: 1, price: 3600 },
+  { name: "Cepillo para zapatos", quantity: 1, price: 2800 },
+  { name: "Enjuague dental", quantity: 1, price: 4200 },
+  { name: "Hilo dental", quantity: 1, price: 2300 },
+  { name: "Limón", quantity: 1, price: 1800 },
+  { name: "Té de manzanilla", quantity: 1, price: 2400 },
+  { name: "Plumero", quantity: 1, price: 3800 },
+  { name: "Perfume para ropa", quantity: 1, price: 5500 },
 ].map((item) => ({
   id: generateId(),
   name: item.name,
@@ -209,7 +209,7 @@ const DEFAULT_PRODUCTS = [
   priority: false,
 }));
 
-const CATALOG_VERSION = 2;
+const CATALOG_VERSION = 3;
 const CATALOG_VERSION_KEY = "listaCompras.catalogVersion";
 
 let products = [];
@@ -290,20 +290,40 @@ function saveCatalogVersion() {
 }
 
 // Suma al catálogo guardado los productos nuevos que se hayan agregado al
-// catálogo base (por nombre), sin tocar ni duplicar lo que el usuario ya tiene.
-// Corre una sola vez por versión de catálogo, así un producto borrado a
-// propósito no vuelve a aparecer solo porque falta en la lista guardada.
+// catálogo base (por nombre) y completa el precio de los que todavía están
+// en $0, sin tocar productos que el usuario ya haya editado o priceado a
+// mano. Corre una sola vez por versión de catálogo, así un producto borrado
+// a propósito no vuelve a aparecer solo porque falta en la lista guardada.
 function mergeNewCatalogProducts() {
   const storedVersion = Number(localStorage.getItem(CATALOG_VERSION_KEY)) || 0;
   if (storedVersion >= CATALOG_VERSION) return;
+
+  const defaultsByName = new Map(
+    DEFAULT_PRODUCTS.map((item) => [normalizeText(item.name), item])
+  );
 
   const existingNames = new Set(products.map((p) => normalizeText(p.name)));
   const newProducts = DEFAULT_PRODUCTS.filter(
     (item) => !existingNames.has(normalizeText(item.name))
   );
 
+  let changed = false;
+
   if (newProducts.length > 0) {
     products = products.concat(newProducts);
+    changed = true;
+  }
+
+  products.forEach((product) => {
+    if (product.price > 0) return;
+    const match = defaultsByName.get(normalizeText(product.name));
+    if (match && match.price > 0) {
+      product.price = match.price;
+      changed = true;
+    }
+  });
+
+  if (changed) {
     saveToLocalStorage();
   }
 

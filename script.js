@@ -43,6 +43,7 @@ const PRODUCT_RULES = [
   { keywords: ["papel higienico", "papel higiénico"], icon: "🧻", category: "Limpieza" },
   { keywords: ["pasta dental", "dentifrico", "dentífrico"], icon: "🪥", category: "Farmacia y Perfumería" },
   { keywords: ["cepillo de dientes"], icon: "🪥", category: "Farmacia y Perfumería" },
+  { keywords: ["pañuelos descartables"], icon: "🤧", category: "Limpieza" },
   { keywords: ["pan lactal", "pan"], icon: "🍞", category: "Panadería" },
   { keywords: ["fideos", "tallarin", "tallarín", "ravioles", "ñoquis"], icon: "🍝", category: "Almacén" },
   { keywords: ["arroz"], icon: "🍚", category: "Almacén" },
@@ -60,7 +61,6 @@ const PRODUCT_RULES = [
   { keywords: ["mopa"], icon: "🧹", category: "Limpieza" },
   { keywords: ["trapo de piso"], icon: "🧹", category: "Limpieza" },
   { keywords: ["plumero"], icon: "🪶", category: "Limpieza" },
-  { keywords: ["pañuelos descartables"], icon: "🤧", category: "Limpieza" },
   { keywords: ["perfume para ropa"], icon: "🌸", category: "Limpieza" },
   { keywords: ["ala para lavar ropa"], icon: "🧺", category: "Limpieza" },
   { keywords: ["shampoo", "champú", "champu", "acondicionador"], icon: "🧴", category: "Farmacia y Perfumería" },
@@ -71,6 +71,7 @@ const PRODUCT_RULES = [
   { keywords: ["enjuague dental", "hilo dental"], icon: "🪥", category: "Farmacia y Perfumería" },
   { keywords: ["crema", "pomada", "alergia"], icon: "💊", category: "Farmacia y Perfumería" },
   { keywords: ["cebolla"], icon: "🧅", category: "Verdulería" },
+  { keywords: ["mayo de ajo"], icon: "🧄", category: "Almacén" },
   { keywords: ["ajo"], icon: "🧄", category: "Verdulería" },
   { keywords: ["morron", "morrón", "pimiento"], icon: "🫑", category: "Verdulería" },
   { keywords: ["aji molido", "ají molido", "pimenton", "pimentón", "picante"], icon: "🌶️", category: "Almacén" },
@@ -95,7 +96,6 @@ const PRODUCT_RULES = [
   { keywords: ["galletita", "galleta"], icon: "🍪", category: "Almacén" },
   { keywords: ["pure instantaneo", "puré instantáneo"], icon: "🥔", category: "Almacén" },
   { keywords: ["mister musculo", "mister músculo"], icon: "🧴", category: "Limpieza" },
-  { keywords: ["mayo de ajo"], icon: "🧄", category: "Almacén" },
   { keywords: ["mayoliva"], icon: "🫒", category: "Almacén" },
   { keywords: ["bicarbonato"], icon: "🧂", category: "Almacén" },
   { keywords: ["vinagre"], icon: "🍶", category: "Almacén" },
@@ -215,6 +215,10 @@ const CATALOG_VERSION_KEY = "listaCompras.catalogVersion";
 let products = [];
 let currentFilter = "all";
 let searchQuery = "";
+let filterCategory = "";
+let filterPriorityOnly = false;
+let filterPriceMin = null;
+let filterPriceMax = null;
 
 /* ==========================================================================
    Referencias del DOM
@@ -227,6 +231,13 @@ const inputPrice = document.getElementById("input-price");
 const inputIconPreview = document.getElementById("input-icon-preview");
 
 const searchInput = document.getElementById("search-input");
+const btnToggleFilters = document.getElementById("btn-toggle-filters");
+const filtersPanel = document.getElementById("filters-panel");
+const filterCategorySelect = document.getElementById("filter-category");
+const filterPriorityCheckbox = document.getElementById("filter-priority");
+const filterPriceMinInput = document.getElementById("filter-price-min");
+const filterPriceMaxInput = document.getElementById("filter-price-max");
+const btnClearFilters = document.getElementById("btn-clear-filters");
 
 const pendingGroupEl = document.getElementById("pending-group");
 const pendingListEl = document.getElementById("pending-list");
@@ -437,6 +448,35 @@ function sortByPriority(list) {
   return [...list].sort((a, b) => Number(b.priority) - Number(a.priority));
 }
 
+function filterByCategory(list, category) {
+  if (!category) return list;
+  return list.filter((p) => p.category === category);
+}
+
+function filterByPriorityOnly(list, onlyPriority) {
+  if (!onlyPriority) return list;
+  return list.filter((p) => p.priority);
+}
+
+function filterByPriceRange(list, min, max) {
+  if (min === null && max === null) return list;
+  return list.filter((p) => {
+    if (min !== null && p.price < min) return false;
+    if (max !== null && p.price > max) return false;
+    return true;
+  });
+}
+
+function hasActiveExtraFilters() {
+  return (
+    Boolean(searchQuery.trim()) ||
+    Boolean(filterCategory) ||
+    filterPriorityOnly ||
+    filterPriceMin !== null ||
+    filterPriceMax !== null
+  );
+}
+
 function calculateTotals() {
   const pending = products.filter((p) => !p.purchased).length;
   const purchased = products.filter((p) => p.purchased).length;
@@ -532,15 +572,23 @@ function renderList(listEl, list) {
   listEl.appendChild(fragment);
 }
 
+function applyListFilters(list) {
+  let result = searchProducts(list, searchQuery);
+  result = filterByCategory(result, filterCategory);
+  result = filterByPriorityOnly(result, filterPriorityOnly);
+  result = filterByPriceRange(result, filterPriceMin, filterPriceMax);
+  return sortByPriority(result);
+}
+
 function renderProducts() {
   const showPending = currentFilter !== "purchased";
   const showPurchased = true;
 
   const pendingItems = showPending
-    ? sortByPriority(searchProducts(filterProducts(products, "pending"), searchQuery))
+    ? applyListFilters(filterProducts(products, "pending"))
     : [];
   const purchasedItems = showPurchased
-    ? sortByPriority(searchProducts(filterProducts(products, "purchased"), searchQuery))
+    ? applyListFilters(filterProducts(products, "purchased"))
     : [];
 
   renderList(pendingListEl, pendingItems);
@@ -555,9 +603,14 @@ function renderProducts() {
 
   const visibleCount = pendingItems.length + purchasedItems.length;
   emptyMessageEl.hidden = visibleCount > 0;
-  emptyMessageEl.textContent = searchQuery.trim()
-    ? `No se encontraron productos para "${searchQuery.trim()}".`
+  emptyMessageEl.textContent = hasActiveExtraFilters()
+    ? "No se encontraron productos con esos filtros."
     : "No hay productos para mostrar.";
+
+  btnToggleFilters.classList.toggle(
+    "active",
+    Boolean(filterCategory) || filterPriorityOnly || filterPriceMin !== null || filterPriceMax !== null
+  );
 
   renderSummary();
 }
@@ -583,6 +636,44 @@ inputName.addEventListener("input", () => {
 
 searchInput.addEventListener("input", () => {
   searchQuery = searchInput.value;
+  renderProducts();
+});
+
+btnToggleFilters.addEventListener("click", () => {
+  const isOpen = !filtersPanel.hidden;
+  filtersPanel.hidden = isOpen;
+  btnToggleFilters.setAttribute("aria-expanded", String(!isOpen));
+});
+
+filterCategorySelect.addEventListener("change", () => {
+  filterCategory = filterCategorySelect.value;
+  renderProducts();
+});
+
+filterPriorityCheckbox.addEventListener("change", () => {
+  filterPriorityOnly = filterPriorityCheckbox.checked;
+  renderProducts();
+});
+
+filterPriceMinInput.addEventListener("input", () => {
+  filterPriceMin = filterPriceMinInput.value === "" ? null : Number(filterPriceMinInput.value);
+  renderProducts();
+});
+
+filterPriceMaxInput.addEventListener("input", () => {
+  filterPriceMax = filterPriceMaxInput.value === "" ? null : Number(filterPriceMaxInput.value);
+  renderProducts();
+});
+
+btnClearFilters.addEventListener("click", () => {
+  filterCategory = "";
+  filterPriorityOnly = false;
+  filterPriceMin = null;
+  filterPriceMax = null;
+  filterCategorySelect.value = "";
+  filterPriorityCheckbox.checked = false;
+  filterPriceMinInput.value = "";
+  filterPriceMaxInput.value = "";
   renderProducts();
 });
 

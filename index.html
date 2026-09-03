@@ -61,7 +61,37 @@
   <section class="card list-card">
     <div class="search-row">
       <input type="search" id="search-input" placeholder="🔍 Buscar producto..." aria-label="Buscar producto" />
+      <button type="button" id="btn-toggle-filters" class="filter-toggle-btn" aria-expanded="false" aria-controls="filters-panel">
+        Filtros
+      </button>
     </div>
+
+    <div id="filters-panel" class="filters-panel" hidden>
+      <div class="filters-panel-row">
+        <select id="filter-category" aria-label="Filtrar por categoría">
+          <option value="">Todas las categorías</option>
+          <option value="Verdulería">🥬 Verdulería</option>
+          <option value="Carnicería">🥩 Carnicería</option>
+          <option value="Panadería">🍞 Panadería</option>
+          <option value="Almacén">🛒 Almacén</option>
+          <option value="Limpieza">🧴 Limpieza</option>
+          <option value="Farmacia y Perfumería">💊 Farmacia y Perfumería</option>
+          <option value="Otros">📦 Otros</option>
+        </select>
+      </div>
+      <div class="filters-panel-row">
+        <label class="filter-priority-toggle">
+          <input type="checkbox" id="filter-priority" />
+          <span>⭐ Solo prioritarios</span>
+        </label>
+      </div>
+      <div class="filters-panel-row form-row-split">
+        <input type="number" id="filter-price-min" placeholder="Desde $" min="0" step="0.01" aria-label="Precio desde" />
+        <input type="number" id="filter-price-max" placeholder="Hasta $" min="0" step="0.01" aria-label="Precio hasta" />
+      </div>
+      <button type="button" id="btn-clear-filters" class="btn btn-secondary btn-small">Limpiar filtros</button>
+    </div>
+
     <div id="pending-group" class="list-group" hidden>
       <ul id="pending-list" class="product-list"></ul>
     </div>

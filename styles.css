@@ -255,10 +255,13 @@ select:focus {
 
 .search-row {
   padding: 4px 4px 12px;
+  display: flex;
+  gap: 8px;
 }
 
 #search-input {
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   padding: 11px 14px;
   border: 1.5px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -271,6 +274,58 @@ select:focus {
   outline: none;
   border-color: var(--color-primary);
   background: #fff;
+}
+
+.filter-toggle-btn {
+  flex-shrink: 0;
+  padding: 0 16px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-card);
+  color: var(--color-text-muted);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.filter-toggle-btn[aria-expanded="true"],
+.filter-toggle-btn.active {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.filters-panel[hidden] {
+  display: none;
+}
+
+.filters-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 4px 4px 16px;
+  margin-bottom: 4px;
+  border-bottom: 1px dashed var(--color-border);
+}
+
+.filters-panel-row select,
+.filters-panel-row input[type="number"] {
+  margin-bottom: 0;
+}
+
+.filter-priority-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.filter-priority-toggle input {
+  width: 18px;
+  height: 18px;
 }
 
 .list-group + .list-group {

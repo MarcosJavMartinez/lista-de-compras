@@ -217,8 +217,7 @@ let currentFilter = "all";
 let searchQuery = "";
 let filterCategory = "";
 let filterPriorityOnly = false;
-let filterPriceMin = null;
-let filterPriceMax = null;
+let sortPriceOrder = null; // null | "desc" | "asc"
 
 /* ==========================================================================
    Referencias del DOM
@@ -237,8 +236,7 @@ const btnToggleFilters = document.getElementById("btn-toggle-filters");
 const filtersPanel = document.getElementById("filters-panel");
 const filterCategorySelect = document.getElementById("filter-category");
 const filterPriorityCheckbox = document.getElementById("filter-priority");
-const filterPriceMinInput = document.getElementById("filter-price-min");
-const filterPriceMaxInput = document.getElementById("filter-price-max");
+const btnSortPrice = document.getElementById("btn-sort-price");
 const btnClearFilters = document.getElementById("btn-clear-filters");
 
 const pendingGroupEl = document.getElementById("pending-group");
@@ -463,13 +461,9 @@ function filterByPriorityOnly(list, onlyPriority) {
   return list.filter((p) => p.priority);
 }
 
-function filterByPriceRange(list, min, max) {
-  if (min === null && max === null) return list;
-  return list.filter((p) => {
-    if (min !== null && p.price < min) return false;
-    if (max !== null && p.price > max) return false;
-    return true;
-  });
+function sortByPrice(list, order) {
+  if (!order) return list;
+  return [...list].sort((a, b) => (order === "desc" ? b.price - a.price : a.price - b.price));
 }
 
 function hasActiveExtraFilters() {
@@ -477,8 +471,7 @@ function hasActiveExtraFilters() {
     Boolean(searchQuery.trim()) ||
     Boolean(filterCategory) ||
     filterPriorityOnly ||
-    filterPriceMin !== null ||
-    filterPriceMax !== null
+    sortPriceOrder !== null
   );
 }
 
@@ -589,8 +582,7 @@ function applyListFilters(list) {
   let result = searchProducts(list, searchQuery);
   result = filterByCategory(result, filterCategory);
   result = filterByPriorityOnly(result, filterPriorityOnly);
-  result = filterByPriceRange(result, filterPriceMin, filterPriceMax);
-  return sortByPriority(result);
+  return sortPriceOrder ? sortByPrice(result, sortPriceOrder) : sortByPriority(result);
 }
 
 function renderProducts() {
@@ -622,7 +614,7 @@ function renderProducts() {
 
   btnToggleFilters.classList.toggle(
     "active",
-    Boolean(filterCategory) || filterPriorityOnly || filterPriceMin !== null || filterPriceMax !== null
+    Boolean(filterCategory) || filterPriorityOnly || sortPriceOrder !== null
   );
 
   renderSummary();
@@ -682,25 +674,31 @@ filterPriorityCheckbox.addEventListener("change", () => {
   renderProducts();
 });
 
-filterPriceMinInput.addEventListener("input", () => {
-  filterPriceMin = filterPriceMinInput.value === "" ? null : Number(filterPriceMinInput.value);
-  renderProducts();
-});
+function updateSortPriceButton() {
+  btnSortPrice.dataset.sort = sortPriceOrder || "none";
+  btnSortPrice.classList.toggle("active", Boolean(sortPriceOrder));
+  if (sortPriceOrder === "desc") {
+    btnSortPrice.textContent = "Precio: mayor a menor ↓";
+  } else if (sortPriceOrder === "asc") {
+    btnSortPrice.textContent = "Precio: menor a mayor ↑";
+  } else {
+    btnSortPrice.textContent = "Ordenar por precio";
+  }
+}
 
-filterPriceMaxInput.addEventListener("input", () => {
-  filterPriceMax = filterPriceMaxInput.value === "" ? null : Number(filterPriceMaxInput.value);
+btnSortPrice.addEventListener("click", () => {
+  sortPriceOrder = sortPriceOrder === null ? "desc" : sortPriceOrder === "desc" ? "asc" : null;
+  updateSortPriceButton();
   renderProducts();
 });
 
 btnClearFilters.addEventListener("click", () => {
   filterCategory = "";
   filterPriorityOnly = false;
-  filterPriceMin = null;
-  filterPriceMax = null;
+  sortPriceOrder = null;
   filterCategorySelect.value = "";
   filterPriorityCheckbox.checked = false;
-  filterPriceMinInput.value = "";
-  filterPriceMaxInput.value = "";
+  updateSortPriceButton();
   renderProducts();
 });
 

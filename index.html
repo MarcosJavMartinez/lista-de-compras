@@ -71,9 +71,10 @@
           <span>⭐ Solo prioritarios</span>
         </label>
       </div>
-      <div class="filters-panel-row form-row-split">
-        <input type="number" id="filter-price-min" placeholder="Desde $" min="0" step="0.01" aria-label="Precio desde" />
-        <input type="number" id="filter-price-max" placeholder="Hasta $" min="0" step="0.01" aria-label="Precio hasta" />
+      <div class="filters-panel-row">
+        <button type="button" id="btn-sort-price" class="sort-price-btn" data-sort="none">
+          Ordenar por precio
+        </button>
       </div>
       <button type="button" id="btn-clear-filters" class="btn btn-secondary btn-small">Limpiar filtros</button>
     </div>

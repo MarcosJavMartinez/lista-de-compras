@@ -337,6 +337,10 @@ select:focus {
   background: var(--color-purchased-bg);
 }
 
+.product-view[hidden] {
+  display: none;
+}
+
 .product-view {
   display: flex;
   align-items: center;
@@ -474,6 +478,10 @@ select:focus {
 }
 
 /* Edición inline */
+.product-edit[hidden] {
+  display: none;
+}
+
 .product-edit {
   margin-top: 10px;
   padding-top: 10px;

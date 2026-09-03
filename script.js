@@ -231,7 +231,7 @@ const inputName = document.getElementById("input-name");
 const inputQuantity = document.getElementById("input-quantity");
 const inputPrice = document.getElementById("input-price");
 const inputIconPreview = document.getElementById("input-icon-preview");
-const iconPickerEl = document.getElementById("icon-picker");
+const addIconPickerSlot = document.getElementById("add-icon-picker-slot");
 const btnShowAddForm = document.getElementById("btn-show-add-form");
 const btnCancelAdd = document.getElementById("btn-cancel-add");
 
@@ -281,8 +281,20 @@ function findProduct(id) {
   return products.find((p) => p.id === id);
 }
 
-function renderIconPicker() {
-  const fragment = document.createDocumentFragment();
+// Abre/cierra un selector de íconos dentro de `slotEl`, creándolo al vuelo.
+// `triggerBtn` es el botón que lo abrió (para el estado aria-expanded) y
+// `onSelect` recibe el ícono elegido cuando el usuario toca una opción.
+function toggleIconPicker(triggerBtn, slotEl, onSelect) {
+  const existing = slotEl.querySelector(".icon-picker");
+  if (existing) {
+    existing.remove();
+    triggerBtn.setAttribute("aria-expanded", "false");
+    return;
+  }
+
+  const picker = document.createElement("div");
+  picker.className = "icon-picker";
+
   ALL_ICONS.forEach((icon) => {
     const btn = document.createElement("button");
     btn.type = "button";
@@ -290,23 +302,21 @@ function renderIconPicker() {
     btn.textContent = icon;
     btn.setAttribute("aria-label", `Usar ícono ${icon}`);
     btn.addEventListener("click", () => {
-      manualIcon = icon;
-      inputIconPreview.textContent = icon;
-      closeIconPicker();
+      onSelect(icon);
+      picker.remove();
+      triggerBtn.setAttribute("aria-expanded", "false");
     });
-    fragment.appendChild(btn);
+    picker.appendChild(btn);
   });
-  iconPickerEl.appendChild(fragment);
+
+  slotEl.appendChild(picker);
+  triggerBtn.setAttribute("aria-expanded", "true");
 }
 
-function openIconPicker() {
-  iconPickerEl.hidden = false;
-  inputIconPreview.setAttribute("aria-expanded", "true");
-}
-
-function closeIconPicker() {
-  iconPickerEl.hidden = true;
-  inputIconPreview.setAttribute("aria-expanded", "false");
+function closeIconPicker(slotEl, triggerBtn) {
+  const existing = slotEl.querySelector(".icon-picker");
+  if (existing) existing.remove();
+  triggerBtn.setAttribute("aria-expanded", "false");
 }
 
 /* ==========================================================================
@@ -427,6 +437,9 @@ function editProduct(id, changes) {
   }
   if (typeof changes.priority === "boolean") {
     product.priority = changes.priority;
+  }
+  if (typeof changes.icon === "string" && changes.icon) {
+    product.icon = changes.icon;
   }
 
   saveToLocalStorage();
@@ -580,6 +593,18 @@ function createProductElement(product) {
   li.querySelector(".edit-category").value = product.category;
   li.querySelector(".edit-priority").checked = product.priority;
 
+  const editIconPreview = li.querySelector(".edit-icon-preview");
+  const editIconPickerSlot = li.querySelector(".edit-icon-picker-slot");
+  let editIcon = product.icon || getProductIcon(product.name);
+  editIconPreview.textContent = editIcon;
+
+  editIconPreview.addEventListener("click", () => {
+    toggleIconPicker(editIconPreview, editIconPickerSlot, (icon) => {
+      editIcon = icon;
+      editIconPreview.textContent = icon;
+    });
+  });
+
   // Eventos
   checkbox.addEventListener("change", () => togglePurchased(product.id));
 
@@ -594,12 +619,15 @@ function createProductElement(product) {
     const view = li.querySelector(".product-view");
     view.hidden = true;
     editForm.hidden = false;
+    editIcon = product.icon || getProductIcon(product.name);
+    editIconPreview.textContent = editIcon;
     li.querySelector(".edit-name").focus();
   });
 
   li.querySelector(".btn-cancel-edit").addEventListener("click", () => {
     editForm.hidden = true;
     li.querySelector(".product-view").hidden = false;
+    closeIconPicker(editIconPickerSlot, editIconPreview);
   });
 
   li.querySelector(".btn-delete").addEventListener("click", () => {
@@ -616,6 +644,7 @@ function createProductElement(product) {
       price: li.querySelector(".edit-price").value,
       category: li.querySelector(".edit-category").value,
       priority: li.querySelector(".edit-priority").checked,
+      icon: editIcon,
     });
   });
 
@@ -690,7 +719,7 @@ btnCancelAdd.addEventListener("click", () => {
   inputQuantity.value = 1;
   manualIcon = null;
   inputIconPreview.textContent = DEFAULT_ICON;
-  closeIconPicker();
+  closeIconPicker(addIconPickerSlot, inputIconPreview);
 });
 
 addForm.addEventListener("submit", (event) => {
@@ -700,7 +729,7 @@ addForm.addEventListener("submit", (event) => {
   inputQuantity.value = 1;
   manualIcon = null;
   inputIconPreview.textContent = DEFAULT_ICON;
-  closeIconPicker();
+  closeIconPicker(addIconPickerSlot, inputIconPreview);
   inputName.focus();
 });
 
@@ -712,11 +741,10 @@ inputName.addEventListener("input", () => {
 });
 
 inputIconPreview.addEventListener("click", () => {
-  if (iconPickerEl.hidden) {
-    openIconPicker();
-  } else {
-    closeIconPicker();
-  }
+  toggleIconPicker(inputIconPreview, addIconPickerSlot, (icon) => {
+    manualIcon = icon;
+    inputIconPreview.textContent = icon;
+  });
 });
 
 searchInput.addEventListener("input", () => {
@@ -810,7 +838,6 @@ btnToggleMoreOptions.addEventListener("click", () => {
    ========================================================================== */
 
 function init() {
-  renderIconPicker();
   loadFromLocalStorage();
   renderProducts();
 }

@@ -93,10 +93,6 @@ body {
   border-color: var(--color-primary);
 }
 
-.icon-picker[hidden] {
-  display: none;
-}
-
 .icon-picker {
   display: flex;
   flex-wrap: wrap;

@@ -388,6 +388,12 @@ select:focus {
   line-height: 1;
 }
 
+.priority-badge {
+  flex-shrink: 0;
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
 .product-name {
   flex: 1;
   min-width: 0;

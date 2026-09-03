@@ -470,6 +470,7 @@ function createProductElement(product) {
   checkbox.checked = product.purchased;
 
   li.querySelector(".product-icon").textContent = getProductIcon(product.name);
+  li.querySelector(".priority-badge").textContent = product.priority ? "⭐" : "";
   li.querySelector(".product-name").textContent = product.name;
   li.querySelector(".qty-value").textContent = product.quantity;
 

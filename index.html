@@ -11,11 +11,24 @@
   href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap"
 />
 <link rel="stylesheet" href="styles.css" />
+<script>
+  (function () {
+    try {
+      var saved = localStorage.getItem("listaCompras.theme");
+      if (saved === "light" || saved === "dark") {
+        document.documentElement.setAttribute("data-theme", saved);
+      }
+    } catch (error) {
+      /* localStorage no disponible, seguimos con el tema del sistema */
+    }
+  })();
+</script>
 </head>
 <body>
 
 <header class="app-header">
   <h1>🛒 Mi Lista de Compras</h1>
+  <button type="button" id="btn-theme-toggle" class="theme-toggle" aria-label="Cambiar a modo noche">🌙</button>
 </header>
 
 <main class="container">

@@ -29,7 +29,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --color-bg: #10140e;
     --color-card: #1a2018;
     --color-primary: #52c374;
@@ -55,6 +55,33 @@
     --shadow-lg: 0 8px 12px rgba(0, 0, 0, 0.35), 0 24px 48px rgba(0, 0, 0, 0.5);
     color-scheme: dark;
   }
+}
+
+:root[data-theme="dark"] {
+  --color-bg: #10140e;
+  --color-card: #1a2018;
+  --color-primary: #52c374;
+  --color-primary-dark: #3a9c58;
+  --color-primary-soft: #1e2b20;
+  --color-danger: #ef7168;
+  --color-danger-dark: #d95a50;
+  --color-danger-soft: #33201d;
+  --color-warning: #f0c94a;
+  --color-warning-dark: #c9a730;
+  --color-warning-soft: #332a11;
+  --color-info: #5aa9f5;
+  --color-info-dark: #3d8fe0;
+  --color-info-soft: #16232e;
+  --color-text: #edf1ea;
+  --color-text-muted: #93a190;
+  --color-border: #2b3229;
+  --color-purchased-bg: #1d2419;
+  --color-input-bg: #171d15;
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.3), 0 6px 16px rgba(0, 0, 0, 0.35);
+  --shadow-medium: 0 2px 4px rgba(0, 0, 0, 0.3), 0 12px 28px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 12px rgba(0, 0, 0, 0.35), 0 24px 48px rgba(0, 0, 0, 0.5);
+  color-scheme: dark;
 }
 
 * {
@@ -143,6 +170,10 @@ h1, h2,
   top: 0;
   z-index: 10;
   box-shadow: var(--shadow-medium);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
 .app-header h1 {
@@ -152,6 +183,32 @@ h1, h2,
   letter-spacing: -0.01em;
   text-align: center;
   text-wrap: balance;
+}
+
+.theme-toggle {
+  position: absolute;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  color: white;
+  font-size: 1.15rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.26);
+}
+
+.theme-toggle:active {
+  transform: scale(0.9);
 }
 
 .container {

@@ -5,6 +5,7 @@
    ========================================================================== */
 
 const STORAGE_KEY = "listaCompras.productos";
+const THEME_KEY = "listaCompras.theme";
 const currencyFormatter = new Intl.NumberFormat("es-AR", {
   style: "currency",
   currency: "ARS",
@@ -226,6 +227,8 @@ let manualIcon = null;
    Referencias del DOM
    ========================================================================== */
 
+const btnThemeToggle = document.getElementById("btn-theme-toggle");
+
 const addForm = document.getElementById("add-form");
 const inputName = document.getElementById("input-name");
 const inputQuantity = document.getElementById("input-quantity");
@@ -279,6 +282,30 @@ function formatCurrency(value) {
 
 function findProduct(id) {
   return products.find((p) => p.id === id);
+}
+
+function getEffectiveTheme() {
+  const explicit = document.documentElement.getAttribute("data-theme");
+  if (explicit === "light" || explicit === "dark") return explicit;
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
+function updateThemeToggleButton() {
+  const effective = getEffectiveTheme();
+  btnThemeToggle.textContent = effective === "dark" ? "☀️" : "🌙";
+  btnThemeToggle.setAttribute(
+    "aria-label",
+    effective === "dark" ? "Cambiar a modo día" : "Cambiar a modo noche"
+  );
+}
+
+function applyTheme(theme) {
+  if (theme === "light" || theme === "dark") {
+    document.documentElement.setAttribute("data-theme", theme);
+  } else {
+    document.documentElement.removeAttribute("data-theme");
+  }
+  updateThemeToggleButton();
 }
 
 // Abre/cierra un selector de íconos dentro de `slotEl`, creándolo al vuelo.
@@ -760,6 +787,16 @@ searchInput.addEventListener("input", () => {
   renderProducts();
 });
 
+btnThemeToggle.addEventListener("click", () => {
+  const next = getEffectiveTheme() === "dark" ? "light" : "dark";
+  try {
+    localStorage.setItem(THEME_KEY, next);
+  } catch (error) {
+    console.error("No se pudo guardar la preferencia de tema.", error);
+  }
+  applyTheme(next);
+});
+
 btnToggleFilters.addEventListener("click", () => {
   const isOpen = !filtersPanel.hidden;
   filtersPanel.hidden = isOpen;
@@ -846,6 +883,13 @@ btnToggleMoreOptions.addEventListener("click", () => {
    ========================================================================== */
 
 function init() {
+  updateThemeToggleButton();
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+    if (!document.documentElement.getAttribute("data-theme")) {
+      updateThemeToggleButton();
+    }
+  });
+
   loadFromLocalStorage();
   renderProducts();
 }

@@ -339,7 +339,7 @@ select:focus {
 
 .product-view {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 10px;
 }
 
@@ -347,7 +347,6 @@ select:focus {
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  padding-top: 4px;
   cursor: pointer;
 }
 
@@ -383,21 +382,6 @@ select:focus {
   flex-shrink: 0;
   font-size: 1.5rem;
   line-height: 1;
-  padding-top: 2px;
-}
-
-.product-main {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.product-row-top {
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
 .product-name {
@@ -414,21 +398,6 @@ select:focus {
   color: var(--color-text-muted);
 }
 
-.product-total {
-  font-weight: 700;
-  font-size: 0.95rem;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.product-row-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
 .qty-control {
   display: flex;
   align-items: center;
@@ -436,6 +405,7 @@ select:focus {
   background: var(--color-bg);
   border-radius: var(--radius-sm);
   padding: 2px;
+  flex-shrink: 0;
 }
 
 .qty-btn {
@@ -465,23 +435,6 @@ select:focus {
   font-size: 0.9rem;
 }
 
-.category-chip {
-  font-size: 0.72rem;
-  font-weight: 700;
-  padding: 4px 9px;
-  border-radius: 999px;
-  white-space: nowrap;
-}
-
-.btn-priority {
-  font-size: 1.1rem;
-  color: #ced4da;
-}
-
-.btn-priority.active {
-  color: #f59f00;
-}
-
 .edit-priority-label {
   display: flex;
   align-items: center;
@@ -495,42 +448,6 @@ select:focus {
 .edit-priority-label input {
   width: 18px;
   height: 18px;
-}
-
-.unit-price-btn,
-.unit-price-input {
-  font-size: 0.82rem;
-  font-family: inherit;
-  border-radius: var(--radius-sm);
-}
-
-.unit-price-btn {
-  border: 1px dashed var(--color-border);
-  background: var(--color-bg);
-  color: var(--color-text-muted);
-  font-weight: 600;
-  padding: 5px 10px;
-  cursor: pointer;
-  transition: border-color 0.15s ease, color 0.15s ease;
-}
-
-.unit-price-btn:hover,
-.unit-price-btn:focus-visible {
-  border-color: var(--color-primary);
-  color: var(--color-primary-dark);
-  outline: none;
-}
-
-.unit-price-input {
-  width: 100px;
-  border: 1.5px solid var(--color-primary);
-  padding: 4px 8px;
-  background: #fff;
-  color: var(--color-text);
-}
-
-.unit-price-input:focus {
-  outline: none;
 }
 
 .icon-btn {

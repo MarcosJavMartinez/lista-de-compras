@@ -354,46 +354,6 @@ function renderSummary() {
   summaryTotalEl.textContent = formatCurrency(total);
 }
 
-function startInlinePriceEdit(product, priceBtn) {
-  const input = document.createElement("input");
-  input.type = "number";
-  input.className = "unit-price-input";
-  input.min = "0";
-  input.step = "0.01";
-  input.value = product.price || "";
-  input.setAttribute("aria-label", "Precio unitario");
-
-  priceBtn.replaceWith(input);
-  input.focus();
-  input.select();
-
-  let settled = false;
-
-  const commit = () => {
-    if (settled) return;
-    settled = true;
-    editProduct(product.id, { price: input.value });
-  };
-
-  const cancel = () => {
-    if (settled) return;
-    settled = true;
-    renderProducts();
-  };
-
-  input.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      commit();
-    } else if (event.key === "Escape") {
-      event.preventDefault();
-      cancel();
-    }
-  });
-
-  input.addEventListener("blur", commit);
-}
-
 function createProductElement(product) {
   const fragment = itemTemplate.content.cloneNode(true);
   const li = fragment.querySelector(".product-item");
@@ -407,26 +367,6 @@ function createProductElement(product) {
   li.querySelector(".product-icon").textContent = getProductIcon(product.name);
   li.querySelector(".product-name").textContent = product.name;
   li.querySelector(".qty-value").textContent = product.quantity;
-  li.querySelector(".product-total").textContent = formatCurrency(
-    product.quantity * product.price
-  );
-
-  const categoryChip = li.querySelector(".category-chip");
-  categoryChip.textContent = product.category;
-  const colors = CATEGORY_COLORS[product.category] || CATEGORY_COLORS[DEFAULT_CATEGORY];
-  categoryChip.style.background = colors.bg;
-  categoryChip.style.color = colors.fg;
-
-  const priorityBtn = li.querySelector(".btn-priority");
-  priorityBtn.textContent = product.priority ? "⭐" : "☆";
-  priorityBtn.classList.toggle("active", product.priority);
-  priorityBtn.addEventListener("click", () => {
-    editProduct(product.id, { priority: !product.priority });
-  });
-
-  const priceBtn = li.querySelector(".unit-price-btn");
-  priceBtn.textContent = `${formatCurrency(product.price)} c/u`;
-  priceBtn.addEventListener("click", () => startInlinePriceEdit(product, priceBtn));
 
   const editForm = li.querySelector(".product-edit");
   li.querySelector(".edit-name").value = product.name;

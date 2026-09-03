@@ -602,9 +602,39 @@ select:focus {
 .more-options-panel {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 14px;
   margin-top: 4px;
   text-align: left;
+}
+
+.more-options-warning {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: #fff3cd;
+  border: 1px solid #ffe69c;
+  color: #7a5c00;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.danger-actions-row {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.danger-action {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.danger-action-desc {
+  margin: 0;
+  padding: 0 2px;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
 }
 
 /* Escritorio */
@@ -629,11 +659,11 @@ select:focus {
     flex: 1;
   }
 
-  .more-options-panel {
+  .danger-actions-row {
     flex-direction: row;
   }
 
-  .more-options-panel .btn {
+  .danger-action {
     flex: 1;
   }
 

@@ -119,8 +119,19 @@
       Más opciones ▾
     </button>
     <div id="more-options-panel" class="more-options-panel" hidden>
-      <button id="btn-clear-purchased" class="btn btn-secondary">Eliminar comprados</button>
-      <button id="btn-clear-all" class="btn btn-danger">Vaciar lista</button>
+      <p class="more-options-warning">⚠️ Estas dos acciones son permanentes: no hay forma de deshacerlas ni de recuperar lo borrado.</p>
+
+      <div class="danger-actions-row">
+        <div class="danger-action">
+          <button id="btn-clear-purchased" class="btn btn-secondary">Eliminar comprados</button>
+          <p class="danger-action-desc">Borra para siempre los productos marcados como comprados. Si lo que querés es reutilizarlos la próxima vez que los necesites, usá "Desmarcar todos" en vez de esto.</p>
+        </div>
+
+        <div class="danger-action">
+          <button id="btn-clear-all" class="btn btn-danger">Vaciar lista</button>
+          <p class="danger-action-desc">Borra absolutamente todos los productos de tu lista (pendientes y comprados). Vas a tener que volver a cargarlos a mano, uno por uno.</p>
+        </div>
+      </div>
     </div>
   </section>
 

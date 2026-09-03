@@ -110,9 +110,18 @@
 
   <!-- Acciones generales -->
   <section class="actions">
-    <button id="btn-clear-purchased" class="btn btn-secondary">Eliminar comprados</button>
     <button id="btn-uncheck-all" class="btn btn-secondary">Desmarcar todos</button>
-    <button id="btn-clear-all" class="btn btn-danger">Vaciar lista</button>
+  </section>
+
+  <!-- Acciones destructivas, escondidas a propósito -->
+  <section class="more-options">
+    <button type="button" id="btn-toggle-more-options" class="more-options-toggle" aria-expanded="false" aria-controls="more-options-panel">
+      Más opciones ▾
+    </button>
+    <div id="more-options-panel" class="more-options-panel" hidden>
+      <button id="btn-clear-purchased" class="btn btn-secondary">Eliminar comprados</button>
+      <button id="btn-clear-all" class="btn btn-danger">Vaciar lista</button>
+    </div>
   </section>
 
 </main>

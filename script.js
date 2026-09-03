@@ -259,6 +259,8 @@ const filterButtons = document.querySelectorAll(".filter-btn");
 const btnClearPurchased = document.getElementById("btn-clear-purchased");
 const btnUncheckAll = document.getElementById("btn-uncheck-all");
 const btnClearAll = document.getElementById("btn-clear-all");
+const btnToggleMoreOptions = document.getElementById("btn-toggle-more-options");
+const moreOptionsPanel = document.getElementById("more-options-panel");
 
 /* ==========================================================================
    Utilidades
@@ -722,6 +724,12 @@ btnClearAll.addEventListener("click", () => {
   if (confirm("¿Vaciar toda la lista de compras? Esta acción no se puede deshacer.")) {
     clearAllProducts();
   }
+});
+
+btnToggleMoreOptions.addEventListener("click", () => {
+  const isOpen = !moreOptionsPanel.hidden;
+  moreOptionsPanel.hidden = isOpen;
+  btnToggleMoreOptions.setAttribute("aria-expanded", String(!isOpen));
 });
 
 /* ==========================================================================

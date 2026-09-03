@@ -580,6 +580,33 @@ select:focus {
   gap: 8px;
 }
 
+/* Acciones destructivas, escondidas detrás de un toggle a propósito */
+.more-options {
+  text-align: center;
+}
+
+.more-options-toggle {
+  background: none;
+  border: none;
+  padding: 8px 12px;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.more-options-panel[hidden] {
+  display: none;
+}
+
+.more-options-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+  text-align: left;
+}
+
 /* Escritorio */
 @media (min-width: 640px) {
   .container {
@@ -599,6 +626,14 @@ select:focus {
   }
 
   .actions .btn {
+    flex: 1;
+  }
+
+  .more-options-panel {
+    flex-direction: row;
+  }
+
+  .more-options-panel .btn {
     flex: 1;
   }
 

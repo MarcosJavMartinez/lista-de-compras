@@ -229,6 +229,8 @@ const inputName = document.getElementById("input-name");
 const inputQuantity = document.getElementById("input-quantity");
 const inputPrice = document.getElementById("input-price");
 const inputIconPreview = document.getElementById("input-icon-preview");
+const btnShowAddForm = document.getElementById("btn-show-add-form");
+const btnCancelAdd = document.getElementById("btn-cancel-add");
 
 const searchInput = document.getElementById("search-input");
 const btnToggleFilters = document.getElementById("btn-toggle-filters");
@@ -618,6 +620,20 @@ function renderProducts() {
 /* ==========================================================================
    Eventos generales
    ========================================================================== */
+
+btnShowAddForm.addEventListener("click", () => {
+  btnShowAddForm.hidden = true;
+  addForm.hidden = false;
+  inputName.focus();
+});
+
+btnCancelAdd.addEventListener("click", () => {
+  addForm.hidden = true;
+  btnShowAddForm.hidden = false;
+  addForm.reset();
+  inputQuantity.value = 1;
+  inputIconPreview.textContent = DEFAULT_ICON;
+});
 
 addForm.addEventListener("submit", (event) => {
   event.preventDefault();

@@ -388,6 +388,14 @@ select:focus {
   transition: background 0.2s ease;
 }
 
+.add-item-card {
+  margin-bottom: 8px;
+  border-radius: var(--radius-md);
+  padding: 10px;
+  background: #fff;
+  border: 1px solid var(--color-border);
+}
+
 .product-item.purchased {
   background: var(--color-purchased-bg);
 }
@@ -598,7 +606,8 @@ select:focus {
     font-size: 1.5rem;
   }
 
-  .product-item {
+  .product-item,
+  .add-item-card {
     padding: 14px;
   }
 }

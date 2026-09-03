@@ -534,7 +534,7 @@ function renderList(listEl, list) {
 
 function renderProducts() {
   const showPending = currentFilter !== "purchased";
-  const showPurchased = currentFilter !== "pending";
+  const showPurchased = true;
 
   const pendingItems = showPending
     ? sortByPriority(searchProducts(filterProducts(products, "pending"), searchQuery))

@@ -577,6 +577,13 @@ select:focus {
   color: var(--color-text-muted);
 }
 
+.product-total {
+  flex-shrink: 0;
+  font-weight: 700;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
 .qty-control {
   display: flex;
   align-items: center;

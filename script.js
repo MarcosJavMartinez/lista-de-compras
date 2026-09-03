@@ -576,6 +576,9 @@ function createProductElement(product) {
   li.querySelector(".product-qty-display").textContent = product.quantity;
   li.querySelector(".priority-badge").textContent = product.priority ? "⭐" : "";
   li.querySelector(".product-name").textContent = product.name;
+  li.querySelector(".product-total").textContent = formatCurrency(
+    product.quantity * product.price
+  );
 
   const editForm = li.querySelector(".product-edit");
   li.querySelector(".edit-name").value = product.name;

@@ -256,7 +256,10 @@ h1, h2,
   transition: border-color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
 }
 
-.input-icon-preview:hover,
+.input-icon-preview:hover {
+  box-shadow: var(--shadow-soft);
+}
+
 .input-icon-preview[aria-expanded="true"] {
   border-color: var(--color-primary);
   box-shadow: var(--shadow-xs);
@@ -670,13 +673,14 @@ a:focus-visible {
   padding: 10px;
   background: var(--color-card);
   border: 1px solid var(--color-border);
-  transition: background 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 @media (hover: hover) {
-  .product-item:hover {
-    border-color: color-mix(in srgb, var(--color-primary) 35%, var(--color-border));
-    box-shadow: var(--shadow-soft);
+  .product-item:hover,
+  .add-item-card:hover {
+    box-shadow: var(--shadow-medium);
+    transform: translateY(-2px);
   }
 }
 
@@ -686,6 +690,7 @@ a:focus-visible {
   padding: 10px;
   background: var(--color-card);
   border: 1px solid var(--color-border);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .product-item.purchased {

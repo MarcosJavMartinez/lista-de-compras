@@ -501,6 +501,7 @@ select:focus {
   display: flex;
   align-items: center;
   gap: 10px;
+  cursor: pointer;
 }
 
 .checkbox-wrap {
@@ -542,6 +543,18 @@ select:focus {
   flex-shrink: 0;
   font-size: 1.5rem;
   line-height: 1;
+}
+
+.product-qty-display {
+  flex-shrink: 0;
+  min-width: 20px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  background: var(--color-bg);
+  border-radius: 6px;
+  padding: 2px 6px;
 }
 
 .priority-badge {
@@ -594,11 +607,21 @@ select:focus {
   transform: scale(0.92);
 }
 
-.qty-value {
-  min-width: 20px;
+.qty-control .edit-quantity {
+  width: 46px;
+  min-width: 0;
   text-align: center;
   font-weight: 600;
   font-size: 0.9rem;
+  border: none;
+  background: transparent;
+  padding: 4px 0;
+}
+
+.qty-control .edit-quantity:focus {
+  outline: none;
+  background: #fff;
+  border-radius: 4px;
 }
 
 .edit-priority-label {
@@ -614,29 +637,6 @@ select:focus {
 .edit-priority-label input {
   width: 18px;
   height: 18px;
-}
-
-.icon-btn {
-  width: 32px;
-  height: 32px;
-  border: none;
-  border-radius: 8px;
-  background: var(--color-bg);
-  cursor: pointer;
-  font-size: 0.95rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.15s ease;
-  flex-shrink: 0;
-}
-
-.icon-btn:active {
-  transform: scale(0.94);
-}
-
-.btn-edit:hover {
-  background: #e7f5ff;
 }
 
 /* Edición inline */

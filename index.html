@@ -151,16 +151,9 @@
 
       <span class="product-icon" aria-hidden="true"></span>
 
+      <span class="product-qty-display" aria-hidden="true"></span>
       <span class="priority-badge" aria-hidden="true"></span>
       <p class="product-name"></p>
-
-      <div class="qty-control">
-        <button type="button" class="qty-btn qty-minus" aria-label="Restar cantidad">−</button>
-        <span class="qty-value"></span>
-        <button type="button" class="qty-btn qty-plus" aria-label="Sumar cantidad">+</button>
-      </div>
-
-      <button type="button" class="icon-btn btn-edit" aria-label="Editar">✏️</button>
     </div>
 
     <form class="product-edit" hidden>
@@ -170,8 +163,12 @@
       </div>
       <div class="edit-icon-picker-slot icon-picker-slot"></div>
       <div class="form-row-split">
-        <input type="number" class="edit-quantity" min="1" step="1" required />
-        <input type="number" class="edit-price" min="0" step="0.01" />
+        <div class="qty-control">
+          <button type="button" class="qty-btn edit-qty-minus" aria-label="Restar cantidad">−</button>
+          <input type="number" class="edit-quantity" min="1" step="1" required />
+          <button type="button" class="qty-btn edit-qty-plus" aria-label="Sumar cantidad">+</button>
+        </div>
+        <input type="number" class="edit-price" min="0" step="0.01" placeholder="Precio unitario" />
       </div>
       <div class="form-row-split">
         <select class="edit-category">

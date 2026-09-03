@@ -461,15 +461,6 @@ function togglePurchased(id) {
   renderProducts();
 }
 
-function updateQuantity(id, delta) {
-  const product = findProduct(id);
-  if (!product) return;
-
-  product.quantity = Math.max(1, product.quantity + delta);
-  saveToLocalStorage();
-  renderProducts();
-}
-
 function clearPurchased() {
   const hasPurchased = products.some((p) => p.purchased);
   if (!hasPurchased) return;
@@ -582,9 +573,9 @@ function createProductElement(product) {
   checkbox.checked = product.purchased;
 
   li.querySelector(".product-icon").textContent = product.icon || getProductIcon(product.name);
+  li.querySelector(".product-qty-display").textContent = product.quantity;
   li.querySelector(".priority-badge").textContent = product.priority ? "⭐" : "";
   li.querySelector(".product-name").textContent = product.name;
-  li.querySelector(".qty-value").textContent = product.quantity;
 
   const editForm = li.querySelector(".product-edit");
   li.querySelector(".edit-name").value = product.name;
@@ -605,23 +596,30 @@ function createProductElement(product) {
     });
   });
 
+  const editQuantityInput = li.querySelector(".edit-quantity");
+
+  li.querySelector(".edit-qty-minus").addEventListener("click", () => {
+    editQuantityInput.value = Math.max(1, (parseInt(editQuantityInput.value, 10) || 1) - 1);
+  });
+  li.querySelector(".edit-qty-plus").addEventListener("click", () => {
+    editQuantityInput.value = (parseInt(editQuantityInput.value, 10) || 1) + 1;
+  });
+
   // Eventos
   checkbox.addEventListener("change", () => togglePurchased(product.id));
 
-  li.querySelector(".qty-minus").addEventListener("click", () =>
-    updateQuantity(product.id, -1)
-  );
-  li.querySelector(".qty-plus").addEventListener("click", () =>
-    updateQuantity(product.id, 1)
-  );
-
-  li.querySelector(".btn-edit").addEventListener("click", () => {
+  const openEdit = () => {
     const view = li.querySelector(".product-view");
     view.hidden = true;
     editForm.hidden = false;
     editIcon = product.icon || getProductIcon(product.name);
     editIconPreview.textContent = editIcon;
     li.querySelector(".edit-name").focus();
+  };
+
+  li.querySelector(".product-view").addEventListener("click", (event) => {
+    if (event.target.closest(".checkbox-wrap")) return;
+    openEdit();
   });
 
   li.querySelector(".btn-cancel-edit").addEventListener("click", () => {

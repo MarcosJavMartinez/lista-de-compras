@@ -190,12 +190,7 @@ h1, h2,
 }
 
 .app-header {
-  background: radial-gradient(
-    ellipse farthest-side at center,
-    color-mix(in srgb, var(--color-primary) 42%, transparent) 0%,
-    var(--color-primary) 75%,
-    var(--color-primary-dark) 100%
-  );
+  background: linear-gradient(to bottom, var(--color-primary-dark) 0%, transparent 100%);
   backdrop-filter: blur(16px) saturate(160%);
   -webkit-backdrop-filter: blur(16px) saturate(160%);
   color: white;

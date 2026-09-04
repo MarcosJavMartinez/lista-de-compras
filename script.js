@@ -7,12 +7,109 @@
 const STORAGE_KEY = "listaCompras.productos";
 const THEME_KEY = "listaCompras.theme";
 const BG_COLOR_KEY = "listaCompras.bgColor";
+const PALETTE_KEY = "listaCompras.palette";
+const BG_IMAGE_CHOICE_KEY = "listaCompras.bgImageChoice";
+const BG_IMAGE_CUSTOM_KEY = "listaCompras.bgImageCustom";
 const DEFAULT_BG_LIGHT = "#f5f3ee";
 const DEFAULT_BG_DARK = "#10140e";
 const currencyFormatter = new Intl.NumberFormat("es-AR", {
   style: "currency",
   currency: "ARS",
 });
+
+// Seis plantillas de color bien diferenciadas. Cada una define el acento
+// (primario) para modo día y modo noche; el resto de la paleta (fondos,
+// tarjetas, bordes) no cambia, solo el color de marca en toda la app.
+const COLOR_PALETTES = [
+  {
+    id: "verde",
+    label: "Verde",
+    swatch: "#2f9e44",
+    light: { primary: "#2f9e44", primaryDark: "#1f7a34", primarySoft: "#e8f4ea" },
+    dark: { primary: "#52c374", primaryDark: "#3a9c58", primarySoft: "#1e2b20" },
+  },
+  {
+    id: "oceano",
+    label: "Océano",
+    swatch: "#1c7ed6",
+    light: { primary: "#1c7ed6", primaryDark: "#145a9e", primarySoft: "#e3f1fc" },
+    dark: { primary: "#4dabf7", primaryDark: "#2f8fd6", primarySoft: "#132534" },
+  },
+  {
+    id: "atardecer",
+    label: "Atardecer",
+    swatch: "#e8590c",
+    light: { primary: "#e8590c", primaryDark: "#b7440a", primarySoft: "#fdebe0" },
+    dark: { primary: "#ff922b", primaryDark: "#e8720f", primarySoft: "#3a2415" },
+  },
+  {
+    id: "uva",
+    label: "Uva",
+    swatch: "#7048c2",
+    light: { primary: "#7048c2", primaryDark: "#56349c", primarySoft: "#f0e9fb" },
+    dark: { primary: "#a389f0", primaryDark: "#8264d6", primarySoft: "#251c3a" },
+  },
+  {
+    id: "frambuesa",
+    label: "Frambuesa",
+    swatch: "#e64980",
+    light: { primary: "#e64980", primaryDark: "#b93867", primarySoft: "#fde3ee" },
+    dark: { primary: "#f783ac", primaryDark: "#e0628e", primarySoft: "#3a1f28" },
+  },
+  {
+    id: "grafito",
+    label: "Grafito",
+    swatch: "#495057",
+    light: { primary: "#495057", primaryDark: "#343a40", primarySoft: "#eef0f1" },
+    dark: { primary: "#adb5bd", primaryDark: "#868e96", primarySoft: "#22262a" },
+  },
+];
+
+// Patrón de fondo por defecto: siluetas de comida (manzana, pan, caja de
+// leche, muslo de pollo, baguette) desperdigadas como textura sutil.
+// Es un SVG armado en código, no una foto, así que queda liviano y se
+// puede recolorear según el tema sin pedir ninguna imagen externa.
+function buildFoodPatternSvg(strokeColor) {
+  return `<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'>
+    <g fill='none' stroke='${strokeColor}' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'>
+      <g transform='translate(70,80) rotate(-8)'>
+        <circle cx='0' cy='10' r='26'/>
+        <line x1='0' y1='-16' x2='0' y2='-28'/>
+        <ellipse cx='10' cy='-22' rx='10' ry='5' transform='rotate(-30 10 -22)'/>
+      </g>
+      <g transform='translate(260,70) rotate(6)'>
+        <rect x='-45' y='-18' width='90' height='40' rx='20'/>
+        <line x1='-20' y1='-14' x2='-10' y2='2'/>
+        <line x1='0' y1='-14' x2='10' y2='2'/>
+        <line x1='20' y1='-14' x2='30' y2='2'/>
+      </g>
+      <g transform='translate(330,230) rotate(-5)'>
+        <rect x='-26' y='-10' width='52' height='68'/>
+        <path d='M -26 -10 L 0 -34 L 26 -10'/>
+        <line x1='0' y1='-34' x2='0' y2='-10'/>
+      </g>
+      <g transform='translate(95,270) rotate(20)'>
+        <ellipse cx='-14' cy='0' rx='26' ry='20'/>
+        <line x1='10' y1='-10' x2='34' y2='-30'/>
+        <circle cx='38' cy='-34' r='7'/>
+      </g>
+      <g transform='translate(230,340) rotate(-18)'>
+        <rect x='-60' y='-13' width='120' height='26' rx='13'/>
+        <line x1='-38' y1='-9' x2='-28' y2='9'/>
+        <line x1='-14' y1='-9' x2='-4' y2='9'/>
+        <line x1='10' y1='-9' x2='20' y2='9'/>
+        <line x1='34' y1='-9' x2='44' y2='9'/>
+      </g>
+    </g>
+  </svg>`;
+}
+
+function foodPatternDataUrl(strokeColor) {
+  return `data:image/svg+xml,${encodeURIComponent(buildFoodPatternSvg(strokeColor))}`;
+}
+
+const FOOD_PATTERN_LIGHT = foodPatternDataUrl("#21261f0f");
+const FOOD_PATTERN_DARK = foodPatternDataUrl("#edf1ea12");
 
 const DEFAULT_ICON = "🛒";
 const DEFAULT_CATEGORY = "Otros";
@@ -238,6 +335,10 @@ const btnExportData = document.getElementById("btn-export-data");
 const inputImportData = document.getElementById("input-import-data");
 const inputBgColor = document.getElementById("input-bg-color");
 const btnResetBg = document.getElementById("btn-reset-bg");
+const paletteRow = document.getElementById("palette-row");
+const bgImageOptionButtons = document.querySelectorAll(".bg-image-option[data-bg-choice]");
+const inputBgImage = document.getElementById("input-bg-image");
+const bgImageStatusEl = document.getElementById("bg-image-status");
 
 const addForm = document.getElementById("add-form");
 const inputName = document.getElementById("input-name");
@@ -335,6 +436,8 @@ function setTheme(theme) {
   }
   applyTheme(theme);
   refreshBgColorInput();
+  applyPalette(getSavedPaletteId());
+  applyBackgroundImage();
 }
 
 function getDefaultBgColor() {
@@ -357,6 +460,100 @@ function refreshBgColorInput() {
     console.error("No se pudo leer el color de fondo guardado.", error);
   }
   inputBgColor.value = saved || getDefaultBgColor();
+}
+
+function getSavedPaletteId() {
+  try {
+    return localStorage.getItem(PALETTE_KEY);
+  } catch (error) {
+    console.error("No se pudo leer la plantilla de color guardada.", error);
+    return null;
+  }
+}
+
+function applyPalette(paletteId) {
+  const palette = COLOR_PALETTES.find((p) => p.id === paletteId) || COLOR_PALETTES[0];
+  const variant = getEffectiveTheme() === "dark" ? palette.dark : palette.light;
+  document.documentElement.style.setProperty("--color-primary", variant.primary);
+  document.documentElement.style.setProperty("--color-primary-dark", variant.primaryDark);
+  document.documentElement.style.setProperty("--color-primary-soft", variant.primarySoft);
+}
+
+function renderPaletteRow() {
+  const activeId = getSavedPaletteId() || COLOR_PALETTES[0].id;
+  paletteRow.innerHTML = "";
+  COLOR_PALETTES.forEach((palette) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "palette-swatch";
+    btn.style.background = palette.swatch;
+    btn.title = palette.label;
+    btn.setAttribute("aria-label", `Plantilla de color ${palette.label}`);
+    btn.classList.toggle("active", palette.id === activeId);
+    btn.addEventListener("click", () => {
+      try {
+        localStorage.setItem(PALETTE_KEY, palette.id);
+      } catch (error) {
+        console.error("No se pudo guardar la plantilla de color.", error);
+      }
+      applyPalette(palette.id);
+      renderPaletteRow();
+    });
+    paletteRow.appendChild(btn);
+  });
+}
+
+function getSavedBgImageChoice() {
+  let choice = null;
+  try {
+    choice = localStorage.getItem(BG_IMAGE_CHOICE_KEY);
+  } catch (error) {
+    console.error("No se pudo leer la preferencia de imagen de fondo.", error);
+  }
+  return choice || "pattern";
+}
+
+function updateBgImageButtons(choice) {
+  bgImageOptionButtons.forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.bgChoice === choice);
+  });
+  bgImageStatusEl.textContent =
+    choice === "custom" ? "Estás usando una imagen propia como fondo." : "";
+}
+
+function applyBackgroundImage() {
+  let choice = getSavedBgImageChoice();
+
+  if (choice === "none") {
+    document.body.style.backgroundImage = "none";
+  } else if (choice === "custom") {
+    let customImage = null;
+    try {
+      customImage = localStorage.getItem(BG_IMAGE_CUSTOM_KEY);
+    } catch (error) {
+      console.error("No se pudo leer la imagen de fondo guardada.", error);
+    }
+    if (customImage) {
+      document.body.style.backgroundImage = `url("${customImage}")`;
+      document.body.style.backgroundSize = "cover";
+      document.body.style.backgroundRepeat = "no-repeat";
+      document.body.style.backgroundAttachment = "fixed";
+      document.body.style.backgroundPosition = "center";
+    } else {
+      choice = "pattern";
+    }
+  }
+
+  if (choice === "pattern") {
+    const pattern = getEffectiveTheme() === "dark" ? FOOD_PATTERN_DARK : FOOD_PATTERN_LIGHT;
+    document.body.style.backgroundImage = `url("${pattern}")`;
+    document.body.style.backgroundSize = "400px 400px";
+    document.body.style.backgroundRepeat = "repeat";
+    document.body.style.backgroundAttachment = "fixed";
+    document.body.style.backgroundPosition = "center";
+  }
+
+  updateBgImageButtons(choice);
 }
 
 // Abre/cierra un selector de íconos dentro de `slotEl`, creándolo al vuelo.
@@ -919,6 +1116,66 @@ btnResetBg.addEventListener("click", () => {
   refreshBgColorInput();
 });
 
+bgImageOptionButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const choice = btn.dataset.bgChoice;
+    try {
+      localStorage.setItem(BG_IMAGE_CHOICE_KEY, choice);
+    } catch (error) {
+      console.error("No se pudo guardar la preferencia de imagen de fondo.", error);
+    }
+    applyBackgroundImage();
+  });
+});
+
+inputBgImage.addEventListener("change", () => {
+  const file = inputBgImage.files[0];
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+    alert("Elegí un archivo de imagen.");
+    inputBgImage.value = "";
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    const img = new Image();
+    img.onload = () => {
+      const maxDim = 1600;
+      let { width, height } = img;
+      if (width > maxDim || height > maxDim) {
+        const scale = maxDim / Math.max(width, height);
+        width = Math.round(width * scale);
+        height = Math.round(height * scale);
+      }
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      canvas.getContext("2d").drawImage(img, 0, 0, width, height);
+      const dataUrl = canvas.toDataURL("image/jpeg", 0.75);
+
+      try {
+        localStorage.setItem(BG_IMAGE_CUSTOM_KEY, dataUrl);
+        localStorage.setItem(BG_IMAGE_CHOICE_KEY, "custom");
+      } catch (error) {
+        console.error("No se pudo guardar la imagen de fondo.", error);
+        alert("La imagen es muy pesada para guardarla. Probá con una más chica.");
+        inputBgImage.value = "";
+        return;
+      }
+      applyBackgroundImage();
+      inputBgImage.value = "";
+    };
+    img.onerror = () => {
+      alert("No se pudo cargar la imagen.");
+      inputBgImage.value = "";
+    };
+    img.src = reader.result;
+  };
+  reader.readAsDataURL(file);
+});
+
 btnToggleFilters.addEventListener("click", () => {
   const isOpen = !filtersPanel.hidden;
   filtersPanel.hidden = isOpen;
@@ -1007,6 +1264,9 @@ btnToggleMoreOptions.addEventListener("click", () => {
 function init() {
   updateThemeToggleButton();
   refreshBgColorInput();
+  renderPaletteRow();
+  applyPalette(getSavedPaletteId());
+  applyBackgroundImage();
   window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
     if (!document.documentElement.getAttribute("data-theme")) {
       updateThemeToggleButton();
@@ -1017,6 +1277,8 @@ function init() {
         console.error("No se pudo leer el color de fondo guardado.", error);
       }
       if (!savedBgOnChange) refreshBgColorInput();
+      applyPalette(getSavedPaletteId());
+      applyBackgroundImage();
     }
   });
 

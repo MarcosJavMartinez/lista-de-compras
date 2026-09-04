@@ -22,6 +22,23 @@
       if (savedBg) {
         document.documentElement.style.setProperty("--color-page-bg", savedBg);
       }
+      var savedPalette = localStorage.getItem("listaCompras.palette");
+      var palettes = {
+        verde: { light: ["#2f9e44", "#1f7a34", "#e8f4ea"], dark: ["#52c374", "#3a9c58", "#1e2b20"] },
+        oceano: { light: ["#1c7ed6", "#145a9e", "#e3f1fc"], dark: ["#4dabf7", "#2f8fd6", "#132534"] },
+        atardecer: { light: ["#e8590c", "#b7440a", "#fdebe0"], dark: ["#ff922b", "#e8720f", "#3a2415"] },
+        uva: { light: ["#7048c2", "#56349c", "#f0e9fb"], dark: ["#a389f0", "#8264d6", "#251c3a"] },
+        frambuesa: { light: ["#e64980", "#b93867", "#fde3ee"], dark: ["#f783ac", "#e0628e", "#3a1f28"] },
+        grafito: { light: ["#495057", "#343a40", "#eef0f1"], dark: ["#adb5bd", "#868e96", "#22262a"] },
+      };
+      var chosen = palettes[savedPalette];
+      if (chosen) {
+        var isDark = saved === "dark" || (saved !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+        var variant = isDark ? chosen.dark : chosen.light;
+        document.documentElement.style.setProperty("--color-primary", variant[0]);
+        document.documentElement.style.setProperty("--color-primary-dark", variant[1]);
+        document.documentElement.style.setProperty("--color-primary-soft", variant[2]);
+      }
     } catch (error) {
       /* localStorage no disponible, seguimos con los valores por defecto */
     }
@@ -54,11 +71,29 @@
     </div>
 
     <div class="settings-row">
+      <span class="settings-label">Plantilla de color</span>
+      <div id="palette-row" class="palette-row"></div>
+    </div>
+
+    <div class="settings-row">
       <span class="settings-label">Color de fondo</span>
       <div class="settings-bg-row">
         <input type="color" id="input-bg-color" aria-label="Elegir color de fondo" />
         <button type="button" id="btn-reset-bg" class="btn btn-secondary btn-small">Restablecer</button>
       </div>
+    </div>
+
+    <div class="settings-row">
+      <span class="settings-label">Imagen de fondo</span>
+      <div class="bg-image-options" role="group" aria-label="Elegir imagen de fondo">
+        <button type="button" class="bg-image-option" data-bg-choice="pattern">🍎 Patrón</button>
+        <button type="button" class="bg-image-option" data-bg-choice="none">🚫 Sin imagen</button>
+        <label class="bg-image-option bg-image-upload-label">
+          🖼️ Subir imagen
+          <input type="file" id="input-bg-image" accept="image/*" hidden />
+        </label>
+      </div>
+      <p id="bg-image-status" class="settings-desc"></p>
     </div>
 
     <div class="settings-row">

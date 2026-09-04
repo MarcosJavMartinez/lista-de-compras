@@ -213,13 +213,42 @@ h1, h2,
   gap: 10px;
 }
 
+.app-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-brand-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+}
+
+.app-brand-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.15;
+}
+
 .app-header h1 {
   margin: 0;
+  font-family: "Nunito", "Outfit", sans-serif;
   font-size: 1.4rem;
   font-weight: 800;
   letter-spacing: -0.01em;
-  text-align: center;
   text-wrap: balance;
+}
+
+.app-brand-by {
+  font-family: "Nunito", "Inter", sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.75);
+  letter-spacing: 0.02em;
 }
 
 .header-actions {
@@ -743,6 +772,13 @@ textarea:focus {
 
 .btn:active {
   transform: scale(0.97);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  filter: none;
+  transform: none;
 }
 
 .btn:focus-visible,
@@ -1322,6 +1358,10 @@ a:focus-visible {
   animation: fade-slide-in 180ms ease;
 }
 
+.support-row {
+  display: flex;
+}
+
 .more-options-warning {
   margin: 0;
   padding: 10px 12px;
@@ -1390,4 +1430,53 @@ a:focus-visible {
   .add-item-card {
     padding: 14px;
   }
+}
+
+/* Footer de marca */
+.app-footer {
+  max-width: 640px;
+  margin: 8px auto 0;
+  padding: 8px 16px 8px;
+  text-align: center;
+}
+
+.app-footer-line {
+  margin: 0 0 4px;
+  font-family: "Nunito", "Inter", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.app-footer-links {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.app-footer-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-family: "Nunito", "Inter", sans-serif;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.app-footer-link:hover {
+  color: var(--color-primary);
+}
+
+.app-footer-link-disabled {
+  color: var(--color-text-muted);
+  cursor: default;
+  text-decoration: none;
 }

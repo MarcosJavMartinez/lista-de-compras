@@ -1,6 +1,22 @@
 "use strict";
 
 /* ==========================================================================
+   Marca
+   ========================================================================== */
+
+// Datos de identidad de marca, centralizados para no repetir strings sueltos.
+// donationUrl/websiteUrl quedan vacíos hasta que Neko Tools tenga esos
+// enlaces: mientras tanto los botones/links correspondientes se deshabilitan
+// solos en vez de apuntar a una URL inventada.
+const BRAND = {
+  companyName: "Neko Tools",
+  appName: "Neko Lista",
+  tagline: "Tu lista. Tu presupuesto. Sin complicaciones.",
+  donationUrl: "",
+  websiteUrl: "",
+};
+
+/* ==========================================================================
    Constantes y estado
    ========================================================================== */
 
@@ -298,6 +314,13 @@ const btnThemeToggle = document.getElementById("btn-theme-toggle");
 const btnSettingsToggle = document.getElementById("btn-settings-toggle");
 const settingsBackdrop = document.getElementById("settings-backdrop");
 const btnSettingsClose = document.getElementById("btn-settings-close");
+const supportBackdrop = document.getElementById("support-backdrop");
+const btnSupportProject = document.getElementById("btn-support-project");
+const btnFooterSupport = document.getElementById("btn-footer-support");
+const btnSupportClose = document.getElementById("btn-support-close");
+const btnDonate = document.getElementById("btn-donate");
+const donateStatus = document.getElementById("donate-status");
+const footerMoreTools = document.getElementById("footer-more-tools");
 const themeOptionButtons = document.querySelectorAll(".theme-option");
 const btnExportData = document.getElementById("btn-export-data");
 const inputImportData = document.getElementById("input-import-data");
@@ -927,7 +950,7 @@ function exportListAsPdf() {
 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(18);
-  doc.text("Mi Lista de Compras", marginX, y);
+  doc.text("Neko Lista", marginX, y);
   y += 20;
 
   doc.setFont("helvetica", "normal");
@@ -981,6 +1004,7 @@ function exportListAsPdf() {
 // pone nuestro propio exportador. Se filtran antes de parsear, para que
 // re-importar un PDF exportado desde acá no cree productos falsos.
 const PDF_BOILERPLATE_PATTERNS = [
+  /^neko lista$/i,
   /^mi lista de compras$/i,
   /^generado el /i,
   /^pendientes$/i,
@@ -1103,7 +1127,7 @@ async function exportListAsImage() {
   ctx.textBaseline = "alphabetic";
   ctx.fillStyle = "#ffffff";
   ctx.font = "700 26px Outfit, sans-serif";
-  ctx.fillText("🛒 Mi Lista de Compras", cardX + paddingX, cardY + 46);
+  ctx.fillText("🐱 Neko Lista", cardX + paddingX, cardY + 46);
   ctx.font = "500 14px Inter, sans-serif";
   ctx.globalAlpha = 0.9;
   const dateLabel = new Date().toLocaleDateString("es-AR", { day: "numeric", month: "long", year: "numeric" });
@@ -1648,6 +1672,49 @@ settingsBackdrop.addEventListener("click", (event) => {
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && !settingsBackdrop.hidden) closeSettings();
 });
+
+function openSupportModal() {
+  supportBackdrop.hidden = false;
+}
+
+function closeSupportModal() {
+  supportBackdrop.hidden = true;
+}
+
+btnSupportProject.addEventListener("click", openSupportModal);
+btnFooterSupport.addEventListener("click", openSupportModal);
+btnSupportClose.addEventListener("click", closeSupportModal);
+
+supportBackdrop.addEventListener("click", (event) => {
+  if (event.target === supportBackdrop) closeSupportModal();
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !supportBackdrop.hidden) closeSupportModal();
+});
+
+// El link de donación queda listo para cuando exista BRAND.donationUrl:
+// mientras esté vacío, el botón se deshabilita en vez de apuntar a nada.
+if (BRAND.donationUrl) {
+  btnDonate.addEventListener("click", () => {
+    window.open(BRAND.donationUrl, "_blank", "noopener");
+  });
+} else {
+  btnDonate.disabled = true;
+  donateStatus.textContent = "Todavía no está disponible, ¡pronto!";
+}
+
+// Igual que arriba: "Más herramientas" se activa solo cuando haya
+// BRAND.websiteUrl; hasta entonces queda como texto simple, no clickeable.
+if (BRAND.websiteUrl) {
+  const websiteLink = document.createElement("a");
+  websiteLink.href = BRAND.websiteUrl;
+  websiteLink.target = "_blank";
+  websiteLink.rel = "noopener";
+  websiteLink.className = "app-footer-link";
+  websiteLink.textContent = footerMoreTools.textContent;
+  footerMoreTools.replaceWith(websiteLink);
+}
 
 ioTabButtons.forEach((tab) => {
   tab.addEventListener("click", () => {

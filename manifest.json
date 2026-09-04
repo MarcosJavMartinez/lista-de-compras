@@ -1,0 +1,13 @@
+{
+  "name": "Neko Lista",
+  "short_name": "Neko Lista",
+  "description": "Organizá tu lista de compras, controlá cantidades y llevá un seguimiento de tu presupuesto de forma simple y rápida con Neko Lista.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f5f3ee",
+  "theme_color": "#2f9e44",
+  "icons": [
+    { "src": "img/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "img/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

@@ -3,12 +3,22 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Mi Lista de Compras</title>
+<title>Neko Lista — Lista de compras y presupuesto</title>
+<meta name="description" content="Organizá tu lista de compras, controlá cantidades y llevá un seguimiento de tu presupuesto de forma simple y rápida con Neko Lista." />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Neko Lista — Lista de compras y presupuesto" />
+<meta property="og:description" content="Organizá tu lista de compras, controlá cantidades y llevá un seguimiento de tu presupuesto de forma simple y rápida con Neko Lista." />
+<meta property="og:image" content="img/icon-512.png" />
+<meta name="theme-color" content="#2f9e44" />
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16.png" />
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
+<link rel="manifest" href="manifest.json" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
   rel="stylesheet"
-  href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+  href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Nunito:wght@400;700;800&display=swap"
 />
 <link rel="stylesheet" href="styles.css" />
 <script>
@@ -71,7 +81,13 @@
 
 <header class="app-header">
   <div class="app-header-top">
-    <h1>🛒 Mi Lista de Compras</h1>
+    <div class="app-brand">
+      <img src="img/logo-header.png" alt="" class="app-brand-logo" width="40" height="40" />
+      <div class="app-brand-text">
+        <h1>Neko Lista</h1>
+        <span class="app-brand-by">by Neko Tools</span>
+      </div>
+    </div>
     <div class="header-actions">
       <button type="button" id="btn-theme-toggle" class="header-icon-btn" aria-label="Cambiar a modo noche"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button>
       <button type="button" id="btn-settings-toggle" class="header-icon-btn" aria-label="Configuración" aria-expanded="false" aria-controls="settings-panel"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
@@ -189,6 +205,10 @@
       Más opciones ▾
     </button>
     <div id="more-options-panel" class="more-options-panel" hidden>
+      <div class="support-row">
+        <button type="button" id="btn-support-project" class="btn btn-secondary btn-block">❤️ Apoyar el proyecto</button>
+      </div>
+
       <p class="more-options-warning">⚠️ Estas dos acciones son permanentes: no hay forma de deshacerlas ni de recuperar lo borrado.</p>
 
       <div class="danger-actions-row">
@@ -206,6 +226,31 @@
   </section>
 
 </main>
+
+<footer class="app-footer">
+  <p class="app-footer-line">Hecho con ❤️ por Neko Tools</p>
+  <p class="app-footer-links">
+    <button type="button" id="btn-footer-support" class="app-footer-link">Apoyar el proyecto</button>
+    <span aria-hidden="true">·</span>
+    <span id="footer-more-tools" class="app-footer-link app-footer-link-disabled">Más herramientas</span>
+  </p>
+</footer>
+
+<!-- Apoyar el proyecto: mismo patrón de modal que Configuración -->
+<div id="support-backdrop" class="modal-backdrop" hidden>
+  <section id="support-panel" class="card settings-panel" role="dialog" aria-modal="true" aria-labelledby="support-title-text">
+    <div class="settings-header">
+      <h2 id="support-title-text" class="settings-title">☕ ¿Te sirve Neko Lista?</h2>
+      <button type="button" id="btn-support-close" class="settings-close-btn" aria-label="Cerrar">✕</button>
+    </div>
+    <p class="settings-desc">
+      Neko Lista es gratuita y no tiene publicidad. Si querés ayudarme a mantenerla online y seguir creando herramientas gratuitas, podés apoyar el proyecto.
+    </p>
+    <button type="button" id="btn-donate" class="btn btn-primary btn-block">☕ Invitarme un café</button>
+    <p id="donate-status" class="settings-desc"></p>
+    <p class="settings-desc" style="text-align: center;">¡Gracias por usar Neko Lista! ❤️</p>
+  </section>
+</div>
 
 <!-- Configuración: se abre como ventana modal aparte, no empuja el contenido -->
 <div id="settings-backdrop" class="modal-backdrop" hidden>

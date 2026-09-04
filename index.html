@@ -388,25 +388,20 @@
 <!-- Resumen: barra fija abajo, siempre visible -->
 <div class="bottom-summary-bar">
   <div class="header-summary">
-    <div class="summary-grid">
-      <div class="summary-item">
-        <span class="summary-label">Pendientes</span>
-        <span class="summary-value" id="summary-pending">0</span>
-      </div>
-      <div class="summary-item">
-        <span class="summary-label">Comprados</span>
-        <span class="summary-value" id="summary-purchased">0</span>
-      </div>
-      <div class="summary-item">
-        <span class="summary-label">Total productos</span>
-        <span class="summary-value" id="summary-count">0</span>
-      </div>
+    <div class="summary-inline">
+      <span class="summary-inline-item"><strong id="summary-pending">0</strong> pendientes</span>
+      <span class="summary-divider" aria-hidden="true"></span>
+      <span class="summary-inline-item"><strong id="summary-purchased">0</strong> comprados</span>
+      <span class="summary-divider" aria-hidden="true"></span>
+      <span class="summary-inline-item"><strong id="summary-count">0</strong> total</span>
     </div>
     <div class="summary-total">
-      <span class="summary-total-label">Falta comprar</span>
+      <div class="summary-total-text">
+        <span class="summary-total-label">Falta comprar</span>
+        <p class="summary-spent" id="summary-spent">Ya compraste $0,00</p>
+      </div>
       <span class="summary-total-value" id="summary-total">$0,00</span>
     </div>
-    <p class="summary-spent" id="summary-spent">Ya compraste $0,00</p>
   </div>
 </div>
 

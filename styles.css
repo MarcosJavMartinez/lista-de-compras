@@ -195,8 +195,6 @@ h1, h2,
     rgb(from var(--color-primary-dark) r g b / 1) 0%,
     rgb(from var(--color-primary-dark) r g b / 0) 100%
   );
-  backdrop-filter: blur(16px) saturate(160%);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
   color: white;
   position: sticky;
   top: 0;

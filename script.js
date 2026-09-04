@@ -67,49 +67,10 @@ const COLOR_PALETTES = [
 
 // Patrón de fondo por defecto: siluetas de comida (manzana, pan, caja de
 // leche, muslo de pollo, baguette) desperdigadas como textura sutil.
-// Es un SVG armado en código, no una foto, así que queda liviano y se
-// puede recolorear según el tema sin pedir ninguna imagen externa.
-function buildFoodPatternSvg(strokeColor) {
-  return `<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'>
-    <g fill='none' stroke='${strokeColor}' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'>
-      <g transform='translate(70,80) rotate(-8)'>
-        <circle cx='0' cy='10' r='26'/>
-        <line x1='0' y1='-16' x2='0' y2='-28'/>
-        <ellipse cx='10' cy='-22' rx='10' ry='5' transform='rotate(-30 10 -22)'/>
-      </g>
-      <g transform='translate(260,70) rotate(6)'>
-        <rect x='-45' y='-18' width='90' height='40' rx='20'/>
-        <line x1='-20' y1='-14' x2='-10' y2='2'/>
-        <line x1='0' y1='-14' x2='10' y2='2'/>
-        <line x1='20' y1='-14' x2='30' y2='2'/>
-      </g>
-      <g transform='translate(330,230) rotate(-5)'>
-        <rect x='-26' y='-10' width='52' height='68'/>
-        <path d='M -26 -10 L 0 -34 L 26 -10'/>
-        <line x1='0' y1='-34' x2='0' y2='-10'/>
-      </g>
-      <g transform='translate(95,270) rotate(20)'>
-        <ellipse cx='-14' cy='0' rx='26' ry='20'/>
-        <line x1='10' y1='-10' x2='34' y2='-30'/>
-        <circle cx='38' cy='-34' r='7'/>
-      </g>
-      <g transform='translate(230,340) rotate(-18)'>
-        <rect x='-60' y='-13' width='120' height='26' rx='13'/>
-        <line x1='-38' y1='-9' x2='-28' y2='9'/>
-        <line x1='-14' y1='-9' x2='-4' y2='9'/>
-        <line x1='10' y1='-9' x2='20' y2='9'/>
-        <line x1='34' y1='-9' x2='44' y2='9'/>
-      </g>
-    </g>
-  </svg>`;
-}
-
-function foodPatternDataUrl(strokeColor) {
-  return `data:image/svg+xml,${encodeURIComponent(buildFoodPatternSvg(strokeColor))}`;
-}
-
-const FOOD_PATTERN_LIGHT = foodPatternDataUrl("#21261f0f");
-const FOOD_PATTERN_DARK = foodPatternDataUrl("#edf1ea12");
+// Imágenes provistas por el usuario (generadas con IA): frutas, panificados,
+// carnes, leche y baquitas dibujadas como contornos, una versión por tema.
+const FOOD_PATTERN_LIGHT = "img/bg-pattern-light.jpg";
+const FOOD_PATTERN_DARK = "img/bg-pattern-dark.jpg";
 
 const DEFAULT_ICON = "🛒";
 const DEFAULT_CATEGORY = "Otros";
@@ -547,7 +508,7 @@ function applyBackgroundImage() {
   if (choice === "pattern") {
     const pattern = getEffectiveTheme() === "dark" ? FOOD_PATTERN_DARK : FOOD_PATTERN_LIGHT;
     document.body.style.backgroundImage = `url("${pattern}")`;
-    document.body.style.backgroundSize = "400px 400px";
+    document.body.style.backgroundSize = "560px 560px";
     document.body.style.backgroundRepeat = "repeat";
     document.body.style.backgroundAttachment = "fixed";
     document.body.style.backgroundPosition = "center";

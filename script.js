@@ -1448,6 +1448,51 @@ function createProductElement(product) {
   return li;
 }
 
+/* ==========================================================================
+   Aparición en cascada al hacer scroll
+   ========================================================================== */
+
+let scrollRevealObserver = null;
+
+function getScrollRevealObserver() {
+  if (!scrollRevealObserver && "IntersectionObserver" in window) {
+    scrollRevealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            scrollRevealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.08, rootMargin: "0px 0px -30px 0px" }
+    );
+  }
+  return scrollRevealObserver;
+}
+
+// Marca `el` para aparecer con una animación cuando entra en pantalla al
+// scrollear, en vez de estar visible de entrada. `index` arma el efecto
+// cascada (los primeros elementos aparecen con más demora entre sí).
+function applyScrollReveal(el, index) {
+  const observer = getScrollRevealObserver();
+  if (!observer) return; // sin soporte: el elemento queda visible normal
+  el.classList.add("scroll-reveal");
+  el.style.animationDelay = `${Math.min(index, 8) * 55}ms`;
+  observer.observe(el);
+}
+
+function revealSummaryOnScroll() {
+  const summaryEls = [
+    summaryPendingEl.closest(".summary-item"),
+    summaryPurchasedEl.closest(".summary-item"),
+    summaryCountEl.closest(".summary-item"),
+    summaryTotalEl.closest(".summary-total"),
+    summarySpentEl,
+  ].filter(Boolean);
+  summaryEls.forEach((el, index) => applyScrollReveal(el, index));
+}
+
 function renderList(listEl, list) {
   listEl.innerHTML = "";
   const fragment = document.createDocumentFragment();
@@ -1464,7 +1509,7 @@ function applyListFilters(list) {
   return sortPriceOrder ? sortByPrice(result, sortPriceOrder) : sortByPriority(result);
 }
 
-function renderProducts() {
+function renderProducts(revealOnScroll) {
   const showPending = currentFilter !== "purchased";
   const showPurchased = true;
 
@@ -1497,6 +1542,10 @@ function renderProducts() {
   );
 
   renderSummary();
+
+  if (revealOnScroll) {
+    document.querySelectorAll(".product-item").forEach((el, index) => applyScrollReveal(el, index));
+  }
 }
 
 /* ==========================================================================
@@ -1970,7 +2019,8 @@ function init() {
   if (savedBg) applyBgColor(savedBg);
 
   loadFromLocalStorage();
-  renderProducts();
+  revealSummaryOnScroll();
+  renderProducts(true);
 }
 
 init();

@@ -140,6 +140,17 @@ h1, h2,
   }
 }
 
+@keyframes scroll-reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @keyframes total-pulse {
   0% {
     transform: scale(1);
@@ -162,6 +173,20 @@ h1, h2,
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
+
+  .scroll-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(22px);
+}
+
+.scroll-reveal.is-visible {
+  animation: scroll-reveal-in 0.5s ease forwards;
 }
 
 .app-header {

@@ -104,7 +104,8 @@ h1, h2,
 .btn,
 .filter-btn,
 .filter-toggle-btn,
-.sort-price-btn {
+.sort-price-btn,
+.more-options-toggle {
   font-family: "Outfit", "Inter", sans-serif;
 }
 
@@ -897,13 +898,28 @@ a:focus-visible {
 }
 
 .more-options-toggle {
-  background: none;
-  border: none;
-  padding: 8px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-card);
   color: var(--color-text-muted);
-  font-size: 0.85rem;
-  text-decoration: underline;
+  font-weight: 600;
+  font-size: 0.9rem;
   cursor: pointer;
+  box-shadow: var(--shadow-xs);
+  transition: border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.more-options-toggle:hover {
+  box-shadow: var(--shadow-soft);
+}
+
+.more-options-toggle[aria-expanded="true"] {
+  border-color: var(--color-primary);
+  color: var(--color-text);
 }
 
 .more-options-panel[hidden] {

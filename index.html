@@ -105,29 +105,6 @@
         Filtros
       </button>
     </div>
-
-    <!-- Resumen -->
-    <div class="header-summary">
-      <div class="summary-grid">
-        <div class="summary-item">
-          <span class="summary-label">Pendientes</span>
-          <span class="summary-value" id="summary-pending">0</span>
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">Comprados</span>
-          <span class="summary-value" id="summary-purchased">0</span>
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">Total productos</span>
-          <span class="summary-value" id="summary-count">0</span>
-        </div>
-      </div>
-      <div class="summary-total">
-        <span class="summary-total-label">Falta comprar</span>
-        <span class="summary-total-value" id="summary-total">$0,00</span>
-      </div>
-      <p class="summary-spent" id="summary-spent">Ya compraste $0,00</p>
-    </div>
   </div>
 </header>
 
@@ -407,6 +384,31 @@
     </form>
   </li>
 </template>
+
+<!-- Resumen: barra fija abajo, siempre visible -->
+<div class="bottom-summary-bar">
+  <div class="header-summary">
+    <div class="summary-grid">
+      <div class="summary-item">
+        <span class="summary-label">Pendientes</span>
+        <span class="summary-value" id="summary-pending">0</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">Comprados</span>
+        <span class="summary-value" id="summary-purchased">0</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">Total productos</span>
+        <span class="summary-value" id="summary-count">0</span>
+      </div>
+    </div>
+    <div class="summary-total">
+      <span class="summary-total-label">Falta comprar</span>
+      <span class="summary-total-value" id="summary-total">$0,00</span>
+    </div>
+    <p class="summary-spent" id="summary-spent">Ya compraste $0,00</p>
+  </div>
+</div>
 
 <script src="script.js"></script>
 </body>

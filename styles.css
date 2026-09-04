@@ -866,14 +866,11 @@ a:focus-visible {
   right: 0;
   bottom: 0;
   z-index: 10;
-  background: radial-gradient(
-    ellipse farthest-side at center,
-    color-mix(in srgb, var(--color-primary) 42%, transparent) 0%,
-    var(--color-primary) 75%,
-    var(--color-primary-dark) 100%
+  background: linear-gradient(
+    to top,
+    rgb(from var(--color-primary-dark) r g b / 1) 0%,
+    rgb(from var(--color-primary-dark) r g b / 0) 100%
   );
-  backdrop-filter: blur(16px) saturate(160%);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
   box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.18);
   padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
 }

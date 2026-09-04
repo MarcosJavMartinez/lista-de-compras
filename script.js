@@ -299,6 +299,9 @@ const pasteListTextarea = document.getElementById("paste-list-textarea");
 const btnCopyListText = document.getElementById("btn-copy-list-text");
 const btnCreateFromText = document.getElementById("btn-create-from-text");
 const pasteListStatus = document.getElementById("paste-list-status");
+const btnExportPdf = document.getElementById("btn-export-pdf");
+const inputImportPdf = document.getElementById("input-import-pdf");
+const pdfStatus = document.getElementById("pdf-status");
 const inputBgColor = document.getElementById("input-bg-color");
 const btnResetBg = document.getElementById("btn-reset-bg");
 const paletteRow = document.getElementById("palette-row");
@@ -761,6 +764,139 @@ function buildListText() {
     .join("\n");
 }
 
+/* ==========================================================================
+   PDF (carga las librerías al vuelo, solo cuando hacen falta)
+   ========================================================================== */
+
+const JSPDF_URL = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/4.2.1/jspdf.umd.min.js";
+const PDFJS_URL = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
+const PDFJS_WORKER_URL = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+const loadedScripts = {};
+function loadScript(src) {
+  if (!loadedScripts[src]) {
+    loadedScripts[src] = new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = src;
+      script.onload = resolve;
+      script.onerror = () => reject(new Error(`No se pudo cargar ${src}`));
+      document.head.appendChild(script);
+    });
+  }
+  return loadedScripts[src];
+}
+
+async function ensureJsPdfLoaded() {
+  if (!window.jspdf) await loadScript(JSPDF_URL);
+}
+
+async function ensurePdfJsLoaded() {
+  if (!window.pdfjsLib) {
+    await loadScript(PDFJS_URL);
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER_URL;
+  }
+}
+
+function exportListAsPdf() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: "pt", format: "a4" });
+  const marginX = 40;
+  const rightEdge = doc.internal.pageSize.getWidth() - marginX;
+  const pageHeight = doc.internal.pageSize.getHeight();
+  let y = 50;
+
+  function ensureSpace(lineHeight) {
+    if (y + lineHeight > pageHeight - 50) {
+      doc.addPage();
+      y = 50;
+    }
+  }
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(18);
+  doc.text("Mi Lista de Compras", marginX, y);
+  y += 20;
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  doc.setTextColor(120);
+  doc.text(`Generado el ${new Date().toLocaleDateString("es-AR")}`, marginX, y);
+  y += 28;
+  doc.setTextColor(20);
+
+  function renderSection(title, items) {
+    if (!items.length) return;
+    ensureSpace(24);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(13);
+    doc.text(title, marginX, y);
+    y += 18;
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(11);
+    items.forEach((product) => {
+      ensureSpace(18);
+      doc.text(`${product.quantity} x ${product.name}`, marginX, y, { maxWidth: rightEdge - marginX - 100 });
+      if (product.price > 0) {
+        doc.text(formatCurrency(product.price * product.quantity), rightEdge, y, { align: "right" });
+      }
+      y += 16;
+    });
+    y += 10;
+  }
+
+  const pending = products.filter((product) => !product.purchased);
+  const purchased = products.filter((product) => product.purchased);
+  renderSection("Pendientes", pending);
+  renderSection("Comprados", purchased);
+
+  ensureSpace(60);
+  doc.setDrawColor(200);
+  doc.line(marginX, y, rightEdge, y);
+  y += 20;
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(12);
+  const totalPending = pending.reduce((sum, product) => sum + product.price * product.quantity, 0);
+  const totalPurchased = purchased.reduce((sum, product) => sum + product.price * product.quantity, 0);
+  doc.text(`Falta comprar: ${formatCurrency(totalPending)}`, marginX, y);
+  y += 18;
+  doc.text(`Ya compraste: ${formatCurrency(totalPurchased)}`, marginX, y);
+
+  doc.save(`lista-de-compras-${new Date().toISOString().slice(0, 10)}.pdf`);
+}
+
+// Líneas que no son productos: el título, la fecha y los subtotales que
+// pone nuestro propio exportador. Se filtran antes de parsear, para que
+// re-importar un PDF exportado desde acá no cree productos falsos.
+const PDF_BOILERPLATE_PATTERNS = [
+  /^mi lista de compras$/i,
+  /^generado el /i,
+  /^pendientes$/i,
+  /^comprados$/i,
+  /^falta comprar\b/i,
+  /^ya compraste\b/i,
+];
+
+function stripPdfBoilerplate(text) {
+  return text
+    .split(/\r?\n/)
+    .filter((line) => !PDF_BOILERPLATE_PATTERNS.some((pattern) => pattern.test(line.trim())))
+    .join("\n");
+}
+
+async function extractTextFromPdf(arrayBuffer) {
+  const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+  let fullText = "";
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    content.items.forEach((item) => {
+      fullText += item.str + (item.hasEOL ? "\n" : " ");
+    });
+    fullText += "\n";
+  }
+  return fullText;
+}
+
 function editProduct(id, changes) {
   const product = findProduct(id);
   if (!product) return;
@@ -1219,6 +1355,46 @@ btnCreateFromText.addEventListener("click", () => {
     }
     pasteListStatus.textContent = message;
   }
+});
+
+btnExportPdf.addEventListener("click", async () => {
+  if (!products.length) {
+    pdfStatus.textContent = "Todavía no tenés productos para exportar.";
+    return;
+  }
+  pdfStatus.textContent = "Generando PDF...";
+  try {
+    await ensureJsPdfLoaded();
+    exportListAsPdf();
+    pdfStatus.textContent = "PDF descargado.";
+  } catch (error) {
+    console.error("No se pudo generar el PDF.", error);
+    pdfStatus.textContent = "No se pudo generar el PDF. Revisá tu conexión e intentá de nuevo.";
+  }
+});
+
+inputImportPdf.addEventListener("change", async () => {
+  const file = inputImportPdf.files[0];
+  if (!file) return;
+
+  pdfStatus.textContent = "Leyendo el PDF...";
+  try {
+    await ensurePdfJsLoaded();
+    const arrayBuffer = await file.arrayBuffer();
+    const text = await extractTextFromPdf(arrayBuffer);
+    const { added, skipped } = addProductsFromText(stripPdfBoilerplate(text));
+    if (added === 0 && skipped === 0) {
+      pdfStatus.textContent = "No se reconoció ningún producto en el PDF.";
+    } else {
+      let message = `Se agregaron ${added} producto${added === 1 ? "" : "s"} desde el PDF.`;
+      if (skipped > 0) message += ` (${skipped} ya estaban en tu lista.)`;
+      pdfStatus.textContent = message;
+    }
+  } catch (error) {
+    console.error("No se pudo leer el PDF.", error);
+    pdfStatus.textContent = "No se pudo leer el PDF. Probá con otro archivo.";
+  }
+  inputImportPdf.value = "";
 });
 
 inputBgColor.addEventListener("input", () => {

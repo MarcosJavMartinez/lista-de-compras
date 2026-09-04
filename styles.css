@@ -202,6 +202,10 @@ h1, h2,
 
 .app-header-top {
   position: relative;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  box-sizing: border-box;
   padding: 20px 16px;
   display: flex;
   align-items: center;
@@ -226,6 +230,10 @@ h1, h2,
 }
 
 .header-toolbar {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  box-sizing: border-box;
   padding: 0 16px 14px;
   display: flex;
   flex-direction: column;

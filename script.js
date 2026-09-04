@@ -1482,7 +1482,26 @@ function applyScrollReveal(el, index) {
   observer.observe(el);
 }
 
-function revealSummaryOnScroll() {
+// Para elementos que ya están a la vista de entrada (la barra pegajosa del
+// header): arma la misma cascada que `applyScrollReveal`, pero sin esperar
+// a que entren en pantalla, porque ya están.
+function revealImmediately(el, index) {
+  if (!el) return;
+  el.classList.add("scroll-reveal");
+  el.style.animationDelay = `${Math.min(index, 8) * 55}ms`;
+  el.classList.add("is-visible");
+}
+
+// Barra pegajosa (Todos/Comprados, buscador, Filtros) y bloque de resumen:
+// arman una sola cascada continua al cargar la página.
+function revealHeaderAndSummaryOnLoad() {
+  let index = 0;
+  document.querySelectorAll(".filters .filter-btn").forEach((el) => {
+    revealImmediately(el, index++);
+  });
+  revealImmediately(searchInput, index++);
+  revealImmediately(btnToggleFilters, index++);
+
   const summaryEls = [
     summaryPendingEl.closest(".summary-item"),
     summaryPurchasedEl.closest(".summary-item"),
@@ -1490,7 +1509,7 @@ function revealSummaryOnScroll() {
     summaryTotalEl.closest(".summary-total"),
     summarySpentEl,
   ].filter(Boolean);
-  summaryEls.forEach((el, index) => applyScrollReveal(el, index));
+  summaryEls.forEach((el) => revealImmediately(el, index++));
 }
 
 function renderList(listEl, list) {
@@ -2019,7 +2038,7 @@ function init() {
   if (savedBg) applyBgColor(savedBg);
 
   loadFromLocalStorage();
-  revealSummaryOnScroll();
+  revealHeaderAndSummaryOnLoad();
   renderProducts(true);
 }
 

@@ -546,7 +546,6 @@ function renderPaletteRow() {
   customBtn.title = "Elegir tu color";
   customBtn.setAttribute("aria-label", "Elegir tu propio color");
   customBtn.classList.toggle("active", activeId === "custom");
-  if (customColor) customBtn.style.background = customColor;
 
   const customInput = document.createElement("input");
   customInput.type = "color";

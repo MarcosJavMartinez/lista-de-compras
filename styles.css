@@ -378,6 +378,33 @@ h1, h2,
   box-shadow: 0 0 0 2px var(--color-card), 0 0 0 4px var(--color-text);
 }
 
+.palette-swatch-custom {
+  background: conic-gradient(from 0deg, #e03131, #f0b429, #2f9e44, #1c7ed6, #7048c2, #e64980, #e03131);
+}
+
+.palette-custom-wrap {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+}
+
+.palette-custom-wrap .palette-swatch {
+  width: 100%;
+  height: 100%;
+}
+
+.palette-custom-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  border: none;
+  padding: 0;
+}
+
 .bg-image-options {
   display: flex;
   gap: 8px;

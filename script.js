@@ -8,6 +8,7 @@ const STORAGE_KEY = "listaCompras.productos";
 const THEME_KEY = "listaCompras.theme";
 const BG_COLOR_KEY = "listaCompras.bgColor";
 const PALETTE_KEY = "listaCompras.palette";
+const CUSTOM_COLOR_KEY = "listaCompras.customColor";
 const BG_IMAGE_CHOICE_KEY = "listaCompras.bgImageChoice";
 const BG_IMAGE_CUSTOM_KEY = "listaCompras.bgImageCustom";
 const DEFAULT_BG_LIGHT = "#f5f3ee";
@@ -445,17 +446,77 @@ function getSavedPaletteId() {
   }
 }
 
-function applyPalette(paletteId) {
-  const palette = COLOR_PALETTES.find((p) => p.id === paletteId) || COLOR_PALETTES[0];
-  const variant = getEffectiveTheme() === "dark" ? palette.dark : palette.light;
+function getSavedCustomColor() {
+  try {
+    return localStorage.getItem(CUSTOM_COLOR_KEY);
+  } catch (error) {
+    console.error("No se pudo leer tu color personalizado.", error);
+    return null;
+  }
+}
+
+function hexToRgb(hex) {
+  const n = parseInt(hex.replace("#", ""), 16);
+  return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
+}
+
+function rgbToHex({ r, g, b }) {
+  return `#${[r, g, b]
+    .map((c) => Math.max(0, Math.min(255, Math.round(c))).toString(16).padStart(2, "0"))
+    .join("")}`;
+}
+
+function mixColors(hexA, hexB, weightA) {
+  const a = hexToRgb(hexA);
+  const b = hexToRgb(hexB);
+  return rgbToHex({
+    r: a.r * weightA + b.r * (1 - weightA),
+    g: a.g * weightA + b.g * (1 - weightA),
+    b: a.b * weightA + b.b * (1 - weightA),
+  });
+}
+
+// A partir de un único color elegido a mano, arma variantes de claro/oscuro
+// razonables (oscurecida para el modo día, aclarada para el modo noche, y un
+// fondo suave mezclado con blanco o con el fondo oscuro según corresponda).
+function buildCustomPaletteVariant(hex) {
+  return {
+    light: {
+      primary: hex,
+      primaryDark: mixColors(hex, "#000000", 0.78),
+      primarySoft: mixColors(hex, "#ffffff", 0.13),
+    },
+    dark: {
+      primary: mixColors(hex, "#ffffff", 0.72),
+      primaryDark: mixColors(hex, "#ffffff", 0.5),
+      primarySoft: mixColors(hex, "#10140e", 0.18),
+    },
+  };
+}
+
+function getPaletteVariants(paletteId) {
+  if (paletteId === "custom") {
+    return buildCustomPaletteVariant(getSavedCustomColor() || COLOR_PALETTES[0].swatch);
+  }
+  return COLOR_PALETTES.find((p) => p.id === paletteId) || COLOR_PALETTES[0];
+}
+
+function applyColorVariant(variant) {
   document.documentElement.style.setProperty("--color-primary", variant.primary);
   document.documentElement.style.setProperty("--color-primary-dark", variant.primaryDark);
   document.documentElement.style.setProperty("--color-primary-soft", variant.primarySoft);
 }
 
+function applyPalette(paletteId) {
+  const variants = getPaletteVariants(paletteId);
+  applyColorVariant(getEffectiveTheme() === "dark" ? variants.dark : variants.light);
+}
+
 function renderPaletteRow() {
   const activeId = getSavedPaletteId() || COLOR_PALETTES[0].id;
+  const customColor = getSavedCustomColor();
   paletteRow.innerHTML = "";
+
   COLOR_PALETTES.forEach((palette) => {
     const btn = document.createElement("button");
     btn.type = "button";
@@ -475,6 +536,49 @@ function renderPaletteRow() {
     });
     paletteRow.appendChild(btn);
   });
+
+  const customWrap = document.createElement("div");
+  customWrap.className = "palette-custom-wrap";
+
+  const customBtn = document.createElement("button");
+  customBtn.type = "button";
+  customBtn.className = "palette-swatch palette-swatch-custom";
+  customBtn.title = "Elegir tu color";
+  customBtn.setAttribute("aria-label", "Elegir tu propio color");
+  customBtn.classList.toggle("active", activeId === "custom");
+  if (customColor) customBtn.style.background = customColor;
+
+  const customInput = document.createElement("input");
+  customInput.type = "color";
+  customInput.className = "palette-custom-input";
+  customInput.setAttribute("aria-hidden", "true");
+  customInput.tabIndex = -1;
+  customInput.value = customColor || COLOR_PALETTES[0].swatch;
+
+  customBtn.addEventListener("click", () => customInput.click());
+
+  // Vista previa en vivo mientras se arrastra en el selector nativo, sin
+  // guardar ni volver a armar la fila (eso rompería el selector abierto).
+  customInput.addEventListener("input", () => {
+    const variants = buildCustomPaletteVariant(customInput.value);
+    applyColorVariant(getEffectiveTheme() === "dark" ? variants.dark : variants.light);
+  });
+
+  customInput.addEventListener("change", () => {
+    const hex = customInput.value;
+    try {
+      localStorage.setItem(CUSTOM_COLOR_KEY, hex);
+      localStorage.setItem(PALETTE_KEY, "custom");
+    } catch (error) {
+      console.error("No se pudo guardar tu color personalizado.", error);
+    }
+    applyPalette("custom");
+    renderPaletteRow();
+  });
+
+  customWrap.appendChild(customBtn);
+  customWrap.appendChild(customInput);
+  paletteRow.appendChild(customWrap);
 }
 
 function getSavedBgImageChoice() {

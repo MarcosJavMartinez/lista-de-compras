@@ -103,7 +103,6 @@ h1, h2,
 .summary-total-value,
 .product-total,
 .btn,
-.filter-btn,
 .filter-toggle-btn,
 .sort-price-btn,
 .more-options-toggle {
@@ -914,31 +913,6 @@ a:focus-visible {
   font-size: 0.72rem;
   font-weight: 500;
   color: var(--color-text-muted);
-}
-
-/* Filtros y búsqueda: viven en la barra pegajosa del header */
-.filters {
-  display: flex;
-  gap: 8px;
-}
-
-.filter-btn {
-  flex: 1;
-  padding: 10px 8px;
-  border: 1.5px solid rgba(255, 255, 255, 0.35);
-  border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.14);
-  color: rgba(255, 255, 255, 0.92);
-  font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-}
-
-.filter-btn.active {
-  background: #fff;
-  border-color: #fff;
-  color: var(--color-primary-dark);
 }
 
 /* Lista de productos */

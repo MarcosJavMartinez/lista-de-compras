@@ -299,7 +299,6 @@ const CATALOG_VERSION = 3;
 const CATALOG_VERSION_KEY = "listaCompras.catalogVersion";
 
 let products = [];
-let currentFilter = "all";
 let searchQuery = "";
 let filterCategory = "";
 let filterPriorityOnly = false;
@@ -373,8 +372,6 @@ const summaryPurchasedEl = document.getElementById("summary-purchased");
 const summaryCountEl = document.getElementById("summary-count");
 const summaryTotalEl = document.getElementById("summary-total");
 const summarySpentEl = document.getElementById("summary-spent");
-
-const filterButtons = document.querySelectorAll(".filter-btn");
 
 const btnClearPurchased = document.getElementById("btn-clear-purchased");
 const btnUncheckAll = document.getElementById("btn-uncheck-all");
@@ -1489,15 +1486,8 @@ function applyListFilters(list) {
 }
 
 function renderProducts() {
-  const showPending = currentFilter !== "purchased";
-  const showPurchased = true;
-
-  const pendingItems = showPending
-    ? applyListFilters(filterProducts(products, "pending"))
-    : [];
-  const purchasedItems = showPurchased
-    ? applyListFilters(filterProducts(products, "purchased"))
-    : [];
+  const pendingItems = applyListFilters(filterProducts(products, "pending"));
+  const purchasedItems = applyListFilters(filterProducts(products, "purchased"));
 
   renderList(pendingListEl, pendingItems);
   renderList(purchasedListEl, purchasedItems);
@@ -1505,8 +1495,7 @@ function renderProducts() {
   pendingGroupEl.hidden = pendingItems.length === 0;
   purchasedGroupEl.hidden = purchasedItems.length === 0;
 
-  const showPurchasedTitle = currentFilter === "all" && purchasedItems.length > 0;
-  purchasedTitleEl.hidden = !showPurchasedTitle;
+  purchasedTitleEl.hidden = purchasedItems.length === 0;
   purchasedTitleEl.textContent = `Comprados (${purchasedItems.length})`;
 
   const visibleCount = pendingItems.length + purchasedItems.length;
@@ -1964,15 +1953,6 @@ btnClearFilters.addEventListener("click", () => {
   filterPriorityCheckbox.checked = false;
   updateSortPriceButton();
   renderProducts();
-});
-
-filterButtons.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    filterButtons.forEach((b) => b.classList.remove("active"));
-    btn.classList.add("active");
-    currentFilter = btn.dataset.filter;
-    renderProducts();
-  });
 });
 
 btnClearPurchased.addEventListener("click", () => {

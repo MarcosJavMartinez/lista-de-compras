@@ -1472,70 +1472,6 @@ function createProductElement(product) {
   return li;
 }
 
-/* ==========================================================================
-   Aparición en cascada al hacer scroll
-   ========================================================================== */
-
-let scrollRevealObserver = null;
-
-function getScrollRevealObserver() {
-  if (!scrollRevealObserver && "IntersectionObserver" in window) {
-    scrollRevealObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            scrollRevealObserver.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.08, rootMargin: "0px 0px -30px 0px" }
-    );
-  }
-  return scrollRevealObserver;
-}
-
-// Marca `el` para aparecer con una animación cuando entra en pantalla al
-// scrollear, en vez de estar visible de entrada. `index` arma el efecto
-// cascada (los primeros elementos aparecen con más demora entre sí).
-function applyScrollReveal(el, index) {
-  const observer = getScrollRevealObserver();
-  if (!observer) return; // sin soporte: el elemento queda visible normal
-  el.classList.add("scroll-reveal");
-  el.style.animationDelay = `${Math.min(index, 8) * 55}ms`;
-  observer.observe(el);
-}
-
-// Para elementos que ya están a la vista de entrada (la barra pegajosa del
-// header): arma la misma cascada que `applyScrollReveal`, pero sin esperar
-// a que entren en pantalla, porque ya están.
-function revealImmediately(el, index) {
-  if (!el) return;
-  el.classList.add("scroll-reveal");
-  el.style.animationDelay = `${Math.min(index, 8) * 55}ms`;
-  el.classList.add("is-visible");
-}
-
-// Barra pegajosa (Todos/Comprados, buscador, Filtros) y bloque de resumen:
-// arman una sola cascada continua al cargar la página.
-function revealHeaderAndSummaryOnLoad() {
-  let index = 0;
-  document.querySelectorAll(".filters .filter-btn").forEach((el) => {
-    revealImmediately(el, index++);
-  });
-  revealImmediately(searchInput, index++);
-  revealImmediately(btnToggleFilters, index++);
-
-  const summaryEls = [
-    summaryPendingEl.closest(".summary-item"),
-    summaryPurchasedEl.closest(".summary-item"),
-    summaryCountEl.closest(".summary-item"),
-    summaryTotalEl.closest(".summary-total"),
-    summarySpentEl,
-  ].filter(Boolean);
-  summaryEls.forEach((el) => revealImmediately(el, index++));
-}
-
 function renderList(listEl, list) {
   listEl.innerHTML = "";
   const fragment = document.createDocumentFragment();
@@ -1552,7 +1488,7 @@ function applyListFilters(list) {
   return sortPriceOrder ? sortByPrice(result, sortPriceOrder) : sortByPriority(result);
 }
 
-function renderProducts(revealOnScroll) {
+function renderProducts() {
   const showPending = currentFilter !== "purchased";
   const showPurchased = true;
 
@@ -1585,10 +1521,6 @@ function renderProducts(revealOnScroll) {
   );
 
   renderSummary();
-
-  if (revealOnScroll) {
-    document.querySelectorAll(".product-item").forEach((el, index) => applyScrollReveal(el, index));
-  }
 }
 
 /* ==========================================================================
@@ -2105,8 +2037,7 @@ function init() {
   if (savedBg) applyBgColor(savedBg);
 
   loadFromLocalStorage();
-  revealHeaderAndSummaryOnLoad();
-  renderProducts(true);
+  renderProducts();
 }
 
 init();

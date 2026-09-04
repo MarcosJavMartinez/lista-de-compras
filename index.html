@@ -18,8 +18,12 @@
       if (saved === "light" || saved === "dark") {
         document.documentElement.setAttribute("data-theme", saved);
       }
+      var savedBg = localStorage.getItem("listaCompras.bgColor");
+      if (savedBg) {
+        document.documentElement.style.setProperty("--color-page-bg", savedBg);
+      }
     } catch (error) {
-      /* localStorage no disponible, seguimos con el tema del sistema */
+      /* localStorage no disponible, seguimos con los valores por defecto */
     }
   })();
 </script>
@@ -46,6 +50,14 @@
         <button type="button" class="theme-option" data-theme-choice="auto">Auto</button>
         <button type="button" class="theme-option" data-theme-choice="light">☀️ Día</button>
         <button type="button" class="theme-option" data-theme-choice="dark">🌙 Noche</button>
+      </div>
+    </div>
+
+    <div class="settings-row">
+      <span class="settings-label">Color de fondo</span>
+      <div class="settings-bg-row">
+        <input type="color" id="input-bg-color" aria-label="Elegir color de fondo" />
+        <button type="button" id="btn-reset-bg" class="btn btn-secondary btn-small">Restablecer</button>
       </div>
     </div>
 

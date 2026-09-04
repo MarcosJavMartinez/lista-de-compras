@@ -6,6 +6,9 @@
 
 const STORAGE_KEY = "listaCompras.productos";
 const THEME_KEY = "listaCompras.theme";
+const BG_COLOR_KEY = "listaCompras.bgColor";
+const DEFAULT_BG_LIGHT = "#f5f3ee";
+const DEFAULT_BG_DARK = "#10140e";
 const currencyFormatter = new Intl.NumberFormat("es-AR", {
   style: "currency",
   currency: "ARS",
@@ -233,6 +236,8 @@ const settingsPanel = document.getElementById("settings-panel");
 const themeOptionButtons = document.querySelectorAll(".theme-option");
 const btnExportData = document.getElementById("btn-export-data");
 const inputImportData = document.getElementById("input-import-data");
+const inputBgColor = document.getElementById("input-bg-color");
+const btnResetBg = document.getElementById("btn-reset-bg");
 
 const addForm = document.getElementById("add-form");
 const inputName = document.getElementById("input-name");
@@ -329,6 +334,29 @@ function setTheme(theme) {
     console.error("No se pudo guardar la preferencia de tema.", error);
   }
   applyTheme(theme);
+  refreshBgColorInput();
+}
+
+function getDefaultBgColor() {
+  return getEffectiveTheme() === "dark" ? DEFAULT_BG_DARK : DEFAULT_BG_LIGHT;
+}
+
+function applyBgColor(color) {
+  if (color) {
+    document.documentElement.style.setProperty("--color-page-bg", color);
+  } else {
+    document.documentElement.style.removeProperty("--color-page-bg");
+  }
+}
+
+function refreshBgColorInput() {
+  let saved = null;
+  try {
+    saved = localStorage.getItem(BG_COLOR_KEY);
+  } catch (error) {
+    console.error("No se pudo leer el color de fondo guardado.", error);
+  }
+  inputBgColor.value = saved || getDefaultBgColor();
 }
 
 // Abre/cierra un selector de íconos dentro de `slotEl`, creándolo al vuelo.
@@ -871,6 +899,26 @@ inputImportData.addEventListener("change", () => {
   reader.readAsText(file);
 });
 
+inputBgColor.addEventListener("input", () => {
+  const color = inputBgColor.value;
+  applyBgColor(color);
+  try {
+    localStorage.setItem(BG_COLOR_KEY, color);
+  } catch (error) {
+    console.error("No se pudo guardar el color de fondo.", error);
+  }
+});
+
+btnResetBg.addEventListener("click", () => {
+  applyBgColor(null);
+  try {
+    localStorage.removeItem(BG_COLOR_KEY);
+  } catch (error) {
+    console.error("No se pudo restablecer el color de fondo.", error);
+  }
+  refreshBgColorInput();
+});
+
 btnToggleFilters.addEventListener("click", () => {
   const isOpen = !filtersPanel.hidden;
   filtersPanel.hidden = isOpen;
@@ -958,11 +1006,27 @@ btnToggleMoreOptions.addEventListener("click", () => {
 
 function init() {
   updateThemeToggleButton();
+  refreshBgColorInput();
   window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
     if (!document.documentElement.getAttribute("data-theme")) {
       updateThemeToggleButton();
+      let savedBgOnChange = null;
+      try {
+        savedBgOnChange = localStorage.getItem(BG_COLOR_KEY);
+      } catch (error) {
+        console.error("No se pudo leer el color de fondo guardado.", error);
+      }
+      if (!savedBgOnChange) refreshBgColorInput();
     }
   });
+
+  let savedBg = null;
+  try {
+    savedBg = localStorage.getItem(BG_COLOR_KEY);
+  } catch (error) {
+    console.error("No se pudo leer el color de fondo guardado.", error);
+  }
+  if (savedBg) applyBgColor(savedBg);
 
   loadFromLocalStorage();
   renderProducts();

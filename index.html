@@ -57,58 +57,6 @@
 
 <main class="container">
 
-  <!-- Configuración -->
-  <section id="settings-panel" class="card settings-panel" hidden>
-    <h2 class="settings-title">Configuración</h2>
-
-    <div class="settings-row">
-      <span class="settings-label">Tema</span>
-      <div class="theme-segmented" role="group" aria-label="Elegir tema">
-        <button type="button" class="theme-option" data-theme-choice="auto">Auto</button>
-        <button type="button" class="theme-option" data-theme-choice="light">☀️ Día</button>
-        <button type="button" class="theme-option" data-theme-choice="dark">🌙 Noche</button>
-      </div>
-    </div>
-
-    <div class="settings-row">
-      <span class="settings-label">Plantilla de color</span>
-      <div id="palette-row" class="palette-row"></div>
-    </div>
-
-    <div class="settings-row">
-      <span class="settings-label">Color de fondo</span>
-      <div class="settings-bg-row">
-        <input type="color" id="input-bg-color" aria-label="Elegir color de fondo" />
-        <button type="button" id="btn-reset-bg" class="btn btn-secondary btn-small">Restablecer</button>
-      </div>
-    </div>
-
-    <div class="settings-row">
-      <span class="settings-label">Imagen de fondo</span>
-      <div class="bg-image-options" role="group" aria-label="Elegir imagen de fondo">
-        <button type="button" class="bg-image-option" data-bg-choice="pattern">🍎 Patrón</button>
-        <button type="button" class="bg-image-option" data-bg-choice="none">🚫 Sin imagen</button>
-        <label class="bg-image-option bg-image-upload-label">
-          🖼️ Subir imagen
-          <input type="file" id="input-bg-image" accept="image/*" hidden />
-        </label>
-      </div>
-      <p id="bg-image-status" class="settings-desc"></p>
-    </div>
-
-    <div class="settings-row">
-      <span class="settings-label">Copia de seguridad</span>
-      <p class="settings-desc">Descargá un archivo con tu lista actual, o restaurala desde uno que hayas guardado antes.</p>
-      <div class="settings-backup-actions">
-        <button type="button" id="btn-export-data" class="btn btn-secondary btn-small">⬇️ Exportar lista</button>
-        <label class="btn btn-secondary btn-small settings-import-label">
-          ⬆️ Importar lista
-          <input type="file" id="input-import-data" accept="application/json" hidden />
-        </label>
-      </div>
-    </div>
-  </section>
-
   <!-- Resumen -->
   <section class="card summary-card">
     <div class="summary-grid">
@@ -234,6 +182,63 @@
   </section>
 
 </main>
+
+<!-- Configuración: se abre como ventana modal aparte, no empuja el contenido -->
+<div id="settings-backdrop" class="modal-backdrop" hidden>
+  <section id="settings-panel" class="card settings-panel" role="dialog" aria-modal="true" aria-labelledby="settings-title-text">
+    <div class="settings-header">
+      <h2 id="settings-title-text" class="settings-title">Configuración</h2>
+      <button type="button" id="btn-settings-close" class="settings-close-btn" aria-label="Cerrar configuración">✕</button>
+    </div>
+
+    <div class="settings-row">
+      <span class="settings-label">Tema</span>
+      <div class="theme-segmented" role="group" aria-label="Elegir tema">
+        <button type="button" class="theme-option" data-theme-choice="auto">Auto</button>
+        <button type="button" class="theme-option" data-theme-choice="light">☀️ Día</button>
+        <button type="button" class="theme-option" data-theme-choice="dark">🌙 Noche</button>
+      </div>
+    </div>
+
+    <div class="settings-row">
+      <span class="settings-label">Plantilla de color</span>
+      <div id="palette-row" class="palette-row"></div>
+    </div>
+
+    <div class="settings-row">
+      <span class="settings-label">Color de fondo</span>
+      <div class="settings-bg-row">
+        <input type="color" id="input-bg-color" aria-label="Elegir color de fondo" />
+        <button type="button" id="btn-reset-bg" class="btn btn-secondary btn-small">Restablecer</button>
+      </div>
+    </div>
+
+    <div class="settings-row">
+      <span class="settings-label">Imagen de fondo</span>
+      <div class="bg-image-options" role="group" aria-label="Elegir imagen de fondo">
+        <button type="button" class="bg-image-option" data-bg-choice="pattern">🍎 Patrón</button>
+        <button type="button" class="bg-image-option" data-bg-choice="none">🚫 Sin imagen</button>
+        <label class="bg-image-option bg-image-upload-label">
+          🖼️ Subir imagen
+          <input type="file" id="input-bg-image" accept="image/*" hidden />
+        </label>
+      </div>
+      <p id="bg-image-status" class="settings-desc"></p>
+    </div>
+
+    <div class="settings-row">
+      <span class="settings-label">Copia de seguridad</span>
+      <p class="settings-desc">Descargá un archivo con tu lista actual, o restaurala desde uno que hayas guardado antes.</p>
+      <div class="settings-backup-actions">
+        <button type="button" id="btn-export-data" class="btn btn-secondary btn-small">⬇️ Exportar lista</button>
+        <label class="btn btn-secondary btn-small settings-import-label">
+          ⬆️ Importar lista
+          <input type="file" id="input-import-data" accept="application/json" hidden />
+        </label>
+      </div>
+    </div>
+  </section>
+</div>
 
 <!-- Plantilla de item de producto -->
 <template id="product-item-template">

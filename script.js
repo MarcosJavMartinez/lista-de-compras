@@ -290,7 +290,8 @@ let manualIcon = null;
 
 const btnThemeToggle = document.getElementById("btn-theme-toggle");
 const btnSettingsToggle = document.getElementById("btn-settings-toggle");
-const settingsPanel = document.getElementById("settings-panel");
+const settingsBackdrop = document.getElementById("settings-backdrop");
+const btnSettingsClose = document.getElementById("btn-settings-close");
 const themeOptionButtons = document.querySelectorAll(".theme-option");
 const btnExportData = document.getElementById("btn-export-data");
 const inputImportData = document.getElementById("input-import-data");
@@ -1000,10 +1001,32 @@ btnThemeToggle.addEventListener("click", () => {
   setTheme(getEffectiveTheme() === "dark" ? "light" : "dark");
 });
 
+function openSettings() {
+  settingsBackdrop.hidden = false;
+  btnSettingsToggle.setAttribute("aria-expanded", "true");
+}
+
+function closeSettings() {
+  settingsBackdrop.hidden = true;
+  btnSettingsToggle.setAttribute("aria-expanded", "false");
+}
+
 btnSettingsToggle.addEventListener("click", () => {
-  const isOpen = !settingsPanel.hidden;
-  settingsPanel.hidden = isOpen;
-  btnSettingsToggle.setAttribute("aria-expanded", String(!isOpen));
+  if (settingsBackdrop.hidden) {
+    openSettings();
+  } else {
+    closeSettings();
+  }
+});
+
+btnSettingsClose.addEventListener("click", closeSettings);
+
+settingsBackdrop.addEventListener("click", (event) => {
+  if (event.target === settingsBackdrop) closeSettings();
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !settingsBackdrop.hidden) closeSettings();
 });
 
 themeOptionButtons.forEach((btn) => {

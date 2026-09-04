@@ -320,6 +320,10 @@ const btnSupportClose = document.getElementById("btn-support-close");
 const btnDonate = document.getElementById("btn-donate");
 const donateStatus = document.getElementById("donate-status");
 const footerMoreTools = document.getElementById("footer-more-tools");
+const btnInstallApp = document.getElementById("btn-install-app");
+const installBackdrop = document.getElementById("install-backdrop");
+const btnInstallClose = document.getElementById("btn-install-close");
+const installInstructionsEl = document.getElementById("install-instructions");
 const themeOptionButtons = document.querySelectorAll(".theme-option");
 const btnExportData = document.getElementById("btn-export-data");
 const inputImportData = document.getElementById("input-import-data");
@@ -1635,6 +1639,75 @@ if (BRAND.websiteUrl) {
   websiteLink.className = "app-footer-link";
   websiteLink.textContent = footerMoreTools.textContent;
   footerMoreTools.replaceWith(websiteLink);
+}
+
+/* ==========================================================================
+   Instalar como app (PWA)
+   ========================================================================== */
+
+let deferredInstallPrompt = null;
+
+function isRunningStandalone() {
+  return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+}
+
+function updateInstallButtonVisibility() {
+  btnInstallApp.hidden = isRunningStandalone();
+}
+
+function openInstallModal() {
+  const ua = navigator.userAgent || "";
+  const isIOS = /iphone|ipad|ipod/i.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  installInstructionsEl.textContent = isIOS
+    ? 'Tocá el botón Compartir (el cuadrado con la flecha hacia arriba) en la barra de Safari y elegí "Agregar a inicio".'
+    : 'Abrí el menú (⋮) de tu navegador y elegí "Instalar app" o "Agregar a pantalla de inicio".';
+  installBackdrop.hidden = false;
+}
+
+function closeInstallModal() {
+  installBackdrop.hidden = true;
+}
+
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+  updateInstallButtonVisibility();
+});
+
+window.addEventListener("appinstalled", () => {
+  deferredInstallPrompt = null;
+  updateInstallButtonVisibility();
+});
+
+btnInstallApp.addEventListener("click", async () => {
+  if (deferredInstallPrompt) {
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    updateInstallButtonVisibility();
+  } else {
+    openInstallModal();
+  }
+});
+
+btnInstallClose.addEventListener("click", closeInstallModal);
+
+installBackdrop.addEventListener("click", (event) => {
+  if (event.target === installBackdrop) closeInstallModal();
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !installBackdrop.hidden) closeInstallModal();
+});
+
+updateInstallButtonVisibility();
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch((error) => {
+      console.error("No se pudo registrar el service worker.", error);
+    });
+  });
 }
 
 ioTabButtons.forEach((tab) => {

@@ -28,10 +28,39 @@
 
 <header class="app-header">
   <h1>🛒 Mi Lista de Compras</h1>
-  <button type="button" id="btn-theme-toggle" class="theme-toggle" aria-label="Cambiar a modo noche">🌙</button>
+  <div class="header-actions">
+    <button type="button" id="btn-theme-toggle" class="header-icon-btn" aria-label="Cambiar a modo noche">🌙</button>
+    <button type="button" id="btn-settings-toggle" class="header-icon-btn" aria-label="Configuración" aria-expanded="false" aria-controls="settings-panel">⚙️</button>
+  </div>
 </header>
 
 <main class="container">
+
+  <!-- Configuración -->
+  <section id="settings-panel" class="card settings-panel" hidden>
+    <h2 class="settings-title">Configuración</h2>
+
+    <div class="settings-row">
+      <span class="settings-label">Tema</span>
+      <div class="theme-segmented" role="group" aria-label="Elegir tema">
+        <button type="button" class="theme-option" data-theme-choice="auto">Auto</button>
+        <button type="button" class="theme-option" data-theme-choice="light">☀️ Día</button>
+        <button type="button" class="theme-option" data-theme-choice="dark">🌙 Noche</button>
+      </div>
+    </div>
+
+    <div class="settings-row">
+      <span class="settings-label">Copia de seguridad</span>
+      <p class="settings-desc">Descargá un archivo con tu lista actual, o restaurala desde uno que hayas guardado antes.</p>
+      <div class="settings-backup-actions">
+        <button type="button" id="btn-export-data" class="btn btn-secondary btn-small">⬇️ Exportar lista</button>
+        <label class="btn btn-secondary btn-small settings-import-label">
+          ⬆️ Importar lista
+          <input type="file" id="input-import-data" accept="application/json" hidden />
+        </label>
+      </div>
+    </div>
+  </section>
 
   <!-- Resumen -->
   <section class="card summary-card">

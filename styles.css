@@ -186,9 +186,14 @@ h1, h2,
   text-wrap: balance;
 }
 
-.theme-toggle {
+.header-actions {
   position: absolute;
   right: 16px;
+  display: flex;
+  gap: 8px;
+}
+
+.header-icon-btn {
   width: 40px;
   height: 40px;
   flex-shrink: 0;
@@ -204,12 +209,99 @@ h1, h2,
   transition: background 0.15s ease, transform 0.1s ease;
 }
 
-.theme-toggle:hover {
+.header-icon-btn:hover {
   background: rgba(255, 255, 255, 0.26);
 }
 
-.theme-toggle:active {
+.header-icon-btn:active {
   transform: scale(0.9);
+}
+
+.header-icon-btn[aria-expanded="true"] {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Configuración */
+.settings-panel[hidden] {
+  display: none;
+}
+
+.settings-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: fade-slide-in 180ms ease;
+}
+
+.settings-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.settings-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.settings-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.settings-desc {
+  margin: -4px 0 0;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.theme-segmented {
+  display: flex;
+  gap: 4px;
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  padding: 4px;
+}
+
+.theme-option {
+  flex: 1;
+  padding: 9px 8px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-family: "Outfit", "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.theme-option.active {
+  background: var(--color-card);
+  color: var(--color-text);
+  box-shadow: var(--shadow-xs);
+}
+
+.settings-backup-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.settings-backup-actions .btn {
+  flex: 1;
+}
+
+.settings-import-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .container {

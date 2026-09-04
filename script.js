@@ -228,6 +228,11 @@ let manualIcon = null;
    ========================================================================== */
 
 const btnThemeToggle = document.getElementById("btn-theme-toggle");
+const btnSettingsToggle = document.getElementById("btn-settings-toggle");
+const settingsPanel = document.getElementById("settings-panel");
+const themeOptionButtons = document.querySelectorAll(".theme-option");
+const btnExportData = document.getElementById("btn-export-data");
+const inputImportData = document.getElementById("input-import-data");
 
 const addForm = document.getElementById("add-form");
 const inputName = document.getElementById("input-name");
@@ -297,6 +302,11 @@ function updateThemeToggleButton() {
     "aria-label",
     effective === "dark" ? "Cambiar a modo día" : "Cambiar a modo noche"
   );
+
+  const explicit = document.documentElement.getAttribute("data-theme") || "auto";
+  themeOptionButtons.forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.themeChoice === explicit);
+  });
 }
 
 function applyTheme(theme) {
@@ -306,6 +316,19 @@ function applyTheme(theme) {
     document.documentElement.removeAttribute("data-theme");
   }
   updateThemeToggleButton();
+}
+
+function setTheme(theme) {
+  try {
+    if (theme === "light" || theme === "dark") {
+      localStorage.setItem(THEME_KEY, theme);
+    } else {
+      localStorage.removeItem(THEME_KEY);
+    }
+  } catch (error) {
+    console.error("No se pudo guardar la preferencia de tema.", error);
+  }
+  applyTheme(theme);
 }
 
 // Abre/cierra un selector de íconos dentro de `slotEl`, creándolo al vuelo.
@@ -788,13 +811,64 @@ searchInput.addEventListener("input", () => {
 });
 
 btnThemeToggle.addEventListener("click", () => {
-  const next = getEffectiveTheme() === "dark" ? "light" : "dark";
-  try {
-    localStorage.setItem(THEME_KEY, next);
-  } catch (error) {
-    console.error("No se pudo guardar la preferencia de tema.", error);
-  }
-  applyTheme(next);
+  setTheme(getEffectiveTheme() === "dark" ? "light" : "dark");
+});
+
+btnSettingsToggle.addEventListener("click", () => {
+  const isOpen = !settingsPanel.hidden;
+  settingsPanel.hidden = isOpen;
+  btnSettingsToggle.setAttribute("aria-expanded", String(!isOpen));
+});
+
+themeOptionButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    setTheme(btn.dataset.themeChoice);
+  });
+});
+
+btnExportData.addEventListener("click", () => {
+  const blob = new Blob([JSON.stringify(products, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  const today = new Date().toISOString().slice(0, 10);
+  link.download = `lista-de-compras-${today}.json`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+});
+
+inputImportData.addEventListener("change", () => {
+  const file = inputImportData.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    let parsed;
+    try {
+      parsed = JSON.parse(reader.result);
+    } catch (error) {
+      alert("El archivo no es un JSON válido.");
+      inputImportData.value = "";
+      return;
+    }
+
+    if (!Array.isArray(parsed) || !parsed.every((item) => typeof item.name === "string")) {
+      alert("El archivo no tiene el formato de una lista de compras.");
+      inputImportData.value = "";
+      return;
+    }
+
+    if (confirm(`¿Reemplazar tu lista actual por la del archivo (${parsed.length} productos)?`)) {
+      products = parsed;
+      saveToLocalStorage();
+      mergeNewCatalogProducts();
+      renderProducts();
+    }
+    inputImportData.value = "";
+  };
+  reader.readAsText(file);
 });
 
 btnToggleFilters.addEventListener("click", () => {

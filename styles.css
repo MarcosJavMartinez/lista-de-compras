@@ -167,11 +167,17 @@ h1, h2,
 .app-header {
   background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
   color: white;
-  padding: 20px 16px;
   position: sticky;
   top: 0;
   z-index: 10;
   box-shadow: var(--shadow-medium);
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header-top {
+  position: relative;
+  padding: 20px 16px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -192,6 +198,13 @@ h1, h2,
   right: 16px;
   display: flex;
   gap: 8px;
+}
+
+.header-toolbar {
+  padding: 0 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .header-icon-btn {
@@ -834,7 +847,7 @@ a:focus-visible {
   color: var(--color-text-muted);
 }
 
-/* Filtros */
+/* Filtros y búsqueda: viven en la barra pegajosa del header */
 .filters {
   display: flex;
   gap: 8px;
@@ -843,21 +856,20 @@ a:focus-visible {
 .filter-btn {
   flex: 1;
   padding: 10px 8px;
-  border: 1px solid var(--color-border);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
   border-radius: var(--radius-md);
-  background: var(--color-card);
-  color: var(--color-text-muted);
+  background: rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.92);
   font-weight: 600;
   font-size: 0.9rem;
   cursor: pointer;
-  box-shadow: var(--shadow-xs);
   transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
 .filter-btn.active {
-  background: var(--color-primary);
-  border-color: var(--color-primary);
-  color: white;
+  background: #fff;
+  border-color: #fff;
+  color: var(--color-primary-dark);
 }
 
 /* Lista de productos */
@@ -866,7 +878,6 @@ a:focus-visible {
 }
 
 .search-row {
-  padding: 4px 4px 12px;
   display: flex;
   gap: 8px;
 }
@@ -875,27 +886,31 @@ a:focus-visible {
   flex: 1;
   min-width: 0;
   padding: 11px 14px;
-  border: 1.5px solid var(--color-border);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
   border-radius: var(--radius-md);
   font-size: 0.95rem;
-  background: var(--color-bg);
-  color: var(--color-text);
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+#search-input::placeholder {
+  color: rgba(255, 255, 255, 0.75);
 }
 
 #search-input:focus {
   outline: none;
-  border-color: var(--color-primary);
-  background: var(--color-card);
-  box-shadow: 0 0 0 3px var(--color-primary-soft);
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.18);
 }
 
 .filter-toggle-btn {
   flex-shrink: 0;
   padding: 0 16px;
-  border: 1.5px solid var(--color-border);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
   border-radius: var(--radius-md);
-  background: var(--color-card);
-  color: var(--color-text-muted);
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
   font-weight: 600;
   font-size: 0.9rem;
   cursor: pointer;
@@ -904,9 +919,9 @@ a:focus-visible {
 
 .filter-toggle-btn[aria-expanded="true"],
 .filter-toggle-btn.active {
-  border-color: var(--color-primary);
-  background: var(--color-primary);
-  color: #fff;
+  border-color: #fff;
+  background: #fff;
+  color: var(--color-primary-dark);
 }
 
 .filters-panel[hidden] {
@@ -917,9 +932,6 @@ a:focus-visible {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 4px 4px 16px;
-  margin-bottom: 4px;
-  border-bottom: 1px dashed var(--color-border);
   animation: fade-slide-in 180ms ease;
 }
 

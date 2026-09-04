@@ -70,14 +70,56 @@
 <body>
 
 <header class="app-header">
-  <h1>🛒 Mi Lista de Compras</h1>
-  <div class="header-actions">
-    <button type="button" id="btn-theme-toggle" class="header-icon-btn" aria-label="Cambiar a modo noche"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button>
-    <button type="button" id="btn-settings-toggle" class="header-icon-btn" aria-label="Configuración" aria-expanded="false" aria-controls="settings-panel"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
+  <div class="app-header-top">
+    <h1>🛒 Mi Lista de Compras</h1>
+    <div class="header-actions">
+      <button type="button" id="btn-theme-toggle" class="header-icon-btn" aria-label="Cambiar a modo noche"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button>
+      <button type="button" id="btn-settings-toggle" class="header-icon-btn" aria-label="Configuración" aria-expanded="false" aria-controls="settings-panel"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
+    </div>
+  </div>
+
+  <div class="header-toolbar">
+    <div class="filters">
+      <button class="filter-btn active" data-filter="all">Todos</button>
+      <button class="filter-btn" data-filter="purchased">Comprados</button>
+    </div>
+    <div class="search-row">
+      <input type="search" id="search-input" placeholder="🔍 Buscar producto..." aria-label="Buscar producto" />
+      <button type="button" id="btn-toggle-filters" class="filter-toggle-btn" aria-expanded="false" aria-controls="filters-panel">
+        Filtros
+      </button>
+    </div>
   </div>
 </header>
 
 <main class="container">
+
+  <div id="filters-panel" class="card filters-panel" hidden>
+    <div class="filters-panel-row">
+      <select id="filter-category" aria-label="Filtrar por categoría">
+        <option value="">Todas las categorías</option>
+        <option value="Verdulería">🥬 Verdulería</option>
+        <option value="Carnicería">🥩 Carnicería</option>
+        <option value="Panadería">🍞 Panadería</option>
+        <option value="Almacén">🛒 Almacén</option>
+        <option value="Limpieza">🧴 Limpieza</option>
+        <option value="Farmacia y Perfumería">💊 Farmacia y Perfumería</option>
+        <option value="Otros">📦 Otros</option>
+      </select>
+    </div>
+    <div class="filters-panel-row">
+      <label class="filter-priority-toggle">
+        <input type="checkbox" id="filter-priority" />
+        <span>⭐ Solo prioritarios</span>
+      </label>
+    </div>
+    <div class="filters-panel-row">
+      <button type="button" id="btn-sort-price" class="sort-price-btn" data-sort="none">
+        Ordenar por precio
+      </button>
+    </div>
+    <button type="button" id="btn-clear-filters" class="btn btn-secondary btn-small">Limpiar filtros</button>
+  </div>
 
   <!-- Resumen -->
   <section class="card summary-card">
@@ -102,48 +144,8 @@
     <p class="summary-spent" id="summary-spent">Ya compraste $0,00</p>
   </section>
 
-  <!-- Filtros -->
-  <section class="filters">
-    <button class="filter-btn active" data-filter="all">Todos</button>
-    <button class="filter-btn" data-filter="purchased">Comprados</button>
-  </section>
-
   <!-- Lista de productos -->
   <section class="card list-card">
-    <div class="search-row">
-      <input type="search" id="search-input" placeholder="🔍 Buscar producto..." aria-label="Buscar producto" />
-      <button type="button" id="btn-toggle-filters" class="filter-toggle-btn" aria-expanded="false" aria-controls="filters-panel">
-        Filtros
-      </button>
-    </div>
-
-    <div id="filters-panel" class="filters-panel" hidden>
-      <div class="filters-panel-row">
-        <select id="filter-category" aria-label="Filtrar por categoría">
-          <option value="">Todas las categorías</option>
-          <option value="Verdulería">🥬 Verdulería</option>
-          <option value="Carnicería">🥩 Carnicería</option>
-          <option value="Panadería">🍞 Panadería</option>
-          <option value="Almacén">🛒 Almacén</option>
-          <option value="Limpieza">🧴 Limpieza</option>
-          <option value="Farmacia y Perfumería">💊 Farmacia y Perfumería</option>
-          <option value="Otros">📦 Otros</option>
-        </select>
-      </div>
-      <div class="filters-panel-row">
-        <label class="filter-priority-toggle">
-          <input type="checkbox" id="filter-priority" />
-          <span>⭐ Solo prioritarios</span>
-        </label>
-      </div>
-      <div class="filters-panel-row">
-        <button type="button" id="btn-sort-price" class="sort-price-btn" data-sort="none">
-          Ordenar por precio
-        </button>
-      </div>
-      <button type="button" id="btn-clear-filters" class="btn btn-secondary btn-small">Limpiar filtros</button>
-    </div>
-
     <div class="add-item-card">
       <button type="button" id="btn-show-add-form" class="btn btn-primary btn-block">
         + Agregar producto

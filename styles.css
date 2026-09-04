@@ -416,6 +416,52 @@ h1, h2,
   justify-content: center;
 }
 
+.io-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.io-tab {
+  flex: 1;
+  min-width: 80px;
+  padding: 10px 8px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-card);
+  color: var(--color-text-muted);
+  font-family: "Outfit", "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.io-tab:hover {
+  box-shadow: var(--shadow-xs);
+}
+
+.io-tab.active {
+  border-color: var(--color-primary);
+  color: var(--color-text);
+  background: var(--color-primary-soft);
+}
+
+.io-panel[hidden] {
+  display: none;
+}
+
+.io-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--color-border);
+  animation: fade-slide-in 160ms ease;
+}
+
 .settings-bg-row {
   display: flex;
   align-items: center;

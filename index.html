@@ -227,51 +227,57 @@
     </div>
 
     <div class="settings-row">
-      <span class="settings-label">Texto (copiar y pegar)</span>
-      <p class="settings-desc">Pegá una lista escrita en el celu o la compu, una línea por producto (podés poner cantidad y precio), y se crean solos. También podés copiar tu lista actual como texto.</p>
-      <textarea id="paste-list-textarea" class="paste-list-textarea" rows="5" placeholder="Ej:&#10;2 Manzanas&#10;Pan - $1200&#10;Leche x3"></textarea>
-      <div class="settings-backup-actions">
-        <button type="button" id="btn-copy-list-text" class="btn btn-secondary btn-small">📋 Copiar mi lista</button>
-        <button type="button" id="btn-create-from-text" class="btn btn-primary btn-small">➕ Crear productos</button>
+      <span class="settings-label">Importar y exportar</span>
+      <div class="io-tabs" role="tablist" aria-label="Elegir formato">
+        <button type="button" class="io-tab" data-io-tab="texto">Texto</button>
+        <button type="button" class="io-tab" data-io-tab="pdf">PDF</button>
+        <button type="button" class="io-tab" data-io-tab="imagen">Imágenes</button>
+        <button type="button" class="io-tab" data-io-tab="tecnico">Técnico</button>
       </div>
-      <p id="paste-list-status" class="settings-desc"></p>
-    </div>
 
-    <div class="settings-row">
-      <span class="settings-label">PDF</span>
-      <p class="settings-desc">Descargá tu lista como PDF prolijo para imprimir o compartir, o importá productos leyendo el texto de un PDF existente.</p>
-      <div class="settings-backup-actions">
-        <button type="button" id="btn-export-pdf" class="btn btn-secondary btn-small">⬇️ Exportar a PDF</button>
-        <label class="btn btn-secondary btn-small settings-import-label">
-          ⬆️ Importar desde PDF
-          <input type="file" id="input-import-pdf" accept="application/pdf" hidden />
-        </label>
+      <div class="io-panel" data-io-panel="texto" hidden>
+        <p class="settings-desc">Pegá una lista escrita en el celu o la compu, una línea por producto (podés poner cantidad y precio), y se crean solos. También podés copiar tu lista actual como texto.</p>
+        <textarea id="paste-list-textarea" class="paste-list-textarea" rows="5" placeholder="Ej:&#10;2 Manzanas&#10;Pan - $1200&#10;Leche x3"></textarea>
+        <div class="settings-backup-actions">
+          <button type="button" id="btn-copy-list-text" class="btn btn-secondary btn-small">📋 Copiar mi lista</button>
+          <button type="button" id="btn-create-from-text" class="btn btn-primary btn-small">➕ Crear productos</button>
+        </div>
+        <p id="paste-list-status" class="settings-desc"></p>
       </div>
-      <p id="pdf-status" class="settings-desc"></p>
-    </div>
 
-    <div class="settings-row">
-      <span class="settings-label">Imagen</span>
-      <p class="settings-desc">Exportá tu lista como una imagen prolija para compartir por WhatsApp, o sacale una foto a una lista escrita a mano o un ticket y la app intenta leer los productos (puede tardar un poco y no siempre acierta del todo).</p>
-      <div class="settings-backup-actions">
-        <button type="button" id="btn-export-image" class="btn btn-secondary btn-small">⬇️ Exportar como imagen</button>
-        <label class="btn btn-secondary btn-small settings-import-label">
-          📷 Leer desde una foto
-          <input type="file" id="input-import-image" accept="image/*" hidden />
-        </label>
+      <div class="io-panel" data-io-panel="pdf" hidden>
+        <p class="settings-desc">Descargá tu lista como PDF prolijo para imprimir o compartir, o importá productos leyendo el texto de un PDF existente.</p>
+        <div class="settings-backup-actions">
+          <button type="button" id="btn-export-pdf" class="btn btn-secondary btn-small">⬇️ Exportar a PDF</button>
+          <label class="btn btn-secondary btn-small settings-import-label">
+            ⬆️ Importar desde PDF
+            <input type="file" id="input-import-pdf" accept="application/pdf" hidden />
+          </label>
+        </div>
+        <p id="pdf-status" class="settings-desc"></p>
       </div>
-      <p id="image-status" class="settings-desc"></p>
-    </div>
 
-    <div class="settings-row">
-      <span class="settings-label">Copia de seguridad</span>
-      <p class="settings-desc">Descargá un archivo con tu lista actual, o restaurala desde uno que hayas guardado antes.</p>
-      <div class="settings-backup-actions">
-        <button type="button" id="btn-export-data" class="btn btn-secondary btn-small">⬇️ Exportar lista</button>
-        <label class="btn btn-secondary btn-small settings-import-label">
-          ⬆️ Importar lista
-          <input type="file" id="input-import-data" accept="application/json" hidden />
-        </label>
+      <div class="io-panel" data-io-panel="imagen" hidden>
+        <p class="settings-desc">Exportá tu lista como una imagen prolija para compartir por WhatsApp, o sacale una foto a una lista escrita a mano o un ticket y la app intenta leer los productos (puede tardar un poco y no siempre acierta del todo).</p>
+        <div class="settings-backup-actions">
+          <button type="button" id="btn-export-image" class="btn btn-secondary btn-small">⬇️ Exportar como imagen</button>
+          <label class="btn btn-secondary btn-small settings-import-label">
+            📷 Leer desde una foto
+            <input type="file" id="input-import-image" accept="image/*" hidden />
+          </label>
+        </div>
+        <p id="image-status" class="settings-desc"></p>
+      </div>
+
+      <div class="io-panel" data-io-panel="tecnico" hidden>
+        <p class="settings-desc">Copia de seguridad completa y exacta de tu lista, en un formato técnico (JSON) pensado para vos, no para compartir. A diferencia de las otras opciones, importar acá reemplaza toda tu lista actual.</p>
+        <div class="settings-backup-actions">
+          <button type="button" id="btn-export-data" class="btn btn-secondary btn-small">⬇️ Exportar lista</button>
+          <label class="btn btn-secondary btn-small settings-import-label">
+            ⬆️ Importar lista
+            <input type="file" id="input-import-data" accept="application/json" hidden />
+          </label>
+        </div>
       </div>
     </div>
   </section>

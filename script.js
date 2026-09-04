@@ -295,6 +295,8 @@ const btnSettingsClose = document.getElementById("btn-settings-close");
 const themeOptionButtons = document.querySelectorAll(".theme-option");
 const btnExportData = document.getElementById("btn-export-data");
 const inputImportData = document.getElementById("input-import-data");
+const ioTabButtons = document.querySelectorAll(".io-tab");
+const ioPanels = document.querySelectorAll(".io-panel");
 const pasteListTextarea = document.getElementById("paste-list-textarea");
 const btnCopyListText = document.getElementById("btn-copy-list-text");
 const btnCreateFromText = document.getElementById("btn-create-from-text");
@@ -1469,6 +1471,20 @@ settingsBackdrop.addEventListener("click", (event) => {
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && !settingsBackdrop.hidden) closeSettings();
+});
+
+ioTabButtons.forEach((tab) => {
+  tab.addEventListener("click", () => {
+    const isActive = tab.classList.contains("active");
+    ioTabButtons.forEach((btn) => btn.classList.remove("active"));
+    ioPanels.forEach((panel) => {
+      panel.hidden = true;
+    });
+    if (!isActive) {
+      tab.classList.add("active");
+      document.querySelector(`.io-panel[data-io-panel="${tab.dataset.ioTab}"]`).hidden = false;
+    }
+  });
 });
 
 themeOptionButtons.forEach((btn) => {

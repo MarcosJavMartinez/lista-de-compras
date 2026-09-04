@@ -575,7 +575,8 @@ h1, h2,
 input[type="text"],
 input[type="number"],
 input[type="search"],
-select {
+select,
+textarea {
   width: 100%;
   padding: 12px 14px;
   border: 1.5px solid var(--color-border);
@@ -587,10 +588,16 @@ select {
   transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
 }
 
+.paste-list-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
 input[type="text"]:focus,
 input[type="number"]:focus,
 input[type="search"]:focus,
-select:focus {
+select:focus,
+textarea:focus {
   outline: none;
   border-color: var(--color-primary);
   background: var(--color-card);

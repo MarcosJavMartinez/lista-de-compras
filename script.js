@@ -295,6 +295,10 @@ const btnSettingsClose = document.getElementById("btn-settings-close");
 const themeOptionButtons = document.querySelectorAll(".theme-option");
 const btnExportData = document.getElementById("btn-export-data");
 const inputImportData = document.getElementById("input-import-data");
+const pasteListTextarea = document.getElementById("paste-list-textarea");
+const btnCopyListText = document.getElementById("btn-copy-list-text");
+const btnCreateFromText = document.getElementById("btn-create-from-text");
+const pasteListStatus = document.getElementById("paste-list-status");
 const inputBgColor = document.getElementById("input-bg-color");
 const btnResetBg = document.getElementById("btn-reset-bg");
 const paletteRow = document.getElementById("palette-row");
@@ -654,6 +658,107 @@ function addProduct(name, quantity, price, icon) {
 
   saveToLocalStorage();
   renderProducts();
+}
+
+// Interpreta una línea de texto pegado como un producto: separa cantidad
+// (prefijo "2 " / "2x ", o sufijo "x2") y precio (sufijo "$1.234,56") del
+// resto, que queda como nombre. Devuelve null si la línea queda vacía.
+function parsePastedLine(rawLine) {
+  let line = rawLine.trim();
+  if (!line) return null;
+
+  line = line.replace(/^[-*•●▪‣◦]+\s*/, "").trim();
+  line = line.replace(/^\d+[.)]\s+/, "").trim();
+  if (!line) return null;
+
+  let price = null;
+  const priceMatch = line.match(/\$\s*([\d.,]+)\s*$/);
+  if (priceMatch) {
+    const rawPrice = priceMatch[1].replace(/\./g, "").replace(",", ".");
+    const value = parseFloat(rawPrice);
+    if (!isNaN(value)) price = value;
+    line = line.slice(0, priceMatch.index).trim();
+    line = line.replace(/[-–—|:]\s*$/, "").trim();
+  }
+
+  let quantity = 1;
+  let match = line.match(/^(\d+)\s*[xX]\s+(.+)$/);
+  if (match) {
+    quantity = parseInt(match[1], 10);
+    line = match[2].trim();
+  } else {
+    match = line.match(/^(\d+)\s+(.+)$/);
+    if (match) {
+      quantity = parseInt(match[1], 10);
+      line = match[2].trim();
+    } else {
+      match = line.match(/^(.+?)\s*[xX]\s*(\d+)$/);
+      if (match) {
+        line = match[1].trim();
+        quantity = parseInt(match[2], 10);
+      }
+    }
+  }
+
+  line = line.replace(/^[-–—|:]\s*/, "").replace(/[-–—|:]\s*$/, "").trim();
+  if (!line) return null;
+
+  return {
+    name: line,
+    quantity: Math.max(1, quantity || 1),
+    price: price === null ? 0 : Math.max(0, price),
+  };
+}
+
+// Agrega productos a partir de texto pegado (una línea por producto), sin
+// duplicar los que ya están en la lista actual (por nombre, sin mayúsculas).
+function addProductsFromText(text) {
+  const existingNames = new Set(products.map((p) => p.name.trim().toLowerCase()));
+  let added = 0;
+  let skipped = 0;
+
+  text.split(/\r?\n/).forEach((rawLine) => {
+    const parsed = parsePastedLine(rawLine);
+    if (!parsed) return;
+
+    const key = parsed.name.toLowerCase();
+    if (existingNames.has(key)) {
+      skipped++;
+      return;
+    }
+    existingNames.add(key);
+
+    products.unshift({
+      id: generateId(),
+      name: parsed.name,
+      quantity: parsed.quantity,
+      price: parsed.price,
+      purchased: false,
+      category: getProductCategory(parsed.name),
+      priority: false,
+      icon: getProductIcon(parsed.name),
+    });
+    added++;
+  });
+
+  if (added > 0) {
+    saveToLocalStorage();
+    renderProducts();
+  }
+
+  return { added, skipped };
+}
+
+// Arma una representación en texto plano de la lista actual, pensada para
+// copiar y pegar (y que `parsePastedLine` pueda volver a leerla).
+function buildListText() {
+  return products
+    .map((p) => {
+      let line = `${p.quantity} ${p.name}`;
+      if (p.price > 0) line += ` - ${formatCurrency(p.price)}`;
+      return line;
+    })
+    .join("\n");
 }
 
 function editProduct(id, changes) {
@@ -1078,6 +1183,42 @@ inputImportData.addEventListener("change", () => {
     inputImportData.value = "";
   };
   reader.readAsText(file);
+});
+
+btnCopyListText.addEventListener("click", async () => {
+  const text = buildListText();
+  pasteListTextarea.value = text;
+
+  if (!text) {
+    pasteListStatus.textContent = "Todavía no tenés productos para copiar.";
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(text);
+    pasteListStatus.textContent = "Lista copiada al portapapeles.";
+  } catch (error) {
+    pasteListStatus.textContent = "Lista lista abajo: seleccioná el texto y copiala manualmente.";
+  }
+});
+
+btnCreateFromText.addEventListener("click", () => {
+  const text = pasteListTextarea.value;
+  if (!text.trim()) {
+    pasteListStatus.textContent = "Pegá o escribí al menos un producto primero.";
+    return;
+  }
+
+  const { added, skipped } = addProductsFromText(text);
+  if (added === 0 && skipped === 0) {
+    pasteListStatus.textContent = "No se reconoció ningún producto en el texto.";
+  } else {
+    let message = `Se agregaron ${added} producto${added === 1 ? "" : "s"}.`;
+    if (skipped > 0) {
+      message += ` (${skipped} ya estaban en tu lista y se omitieron.)`;
+    }
+    pasteListStatus.textContent = message;
+  }
 });
 
 inputBgColor.addEventListener("input", () => {

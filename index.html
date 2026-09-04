@@ -227,6 +227,17 @@
     </div>
 
     <div class="settings-row">
+      <span class="settings-label">Texto (copiar y pegar)</span>
+      <p class="settings-desc">Pegá una lista escrita en el celu o la compu, una línea por producto (podés poner cantidad y precio), y se crean solos. También podés copiar tu lista actual como texto.</p>
+      <textarea id="paste-list-textarea" class="paste-list-textarea" rows="5" placeholder="Ej:&#10;2 Manzanas&#10;Pan - $1200&#10;Leche x3"></textarea>
+      <div class="settings-backup-actions">
+        <button type="button" id="btn-copy-list-text" class="btn btn-secondary btn-small">📋 Copiar mi lista</button>
+        <button type="button" id="btn-create-from-text" class="btn btn-primary btn-small">➕ Crear productos</button>
+      </div>
+      <p id="paste-list-status" class="settings-desc"></p>
+    </div>
+
+    <div class="settings-row">
       <span class="settings-label">Copia de seguridad</span>
       <p class="settings-desc">Descargá un archivo con tu lista actual, o restaurala desde uno que hayas guardado antes.</p>
       <div class="settings-backup-actions">

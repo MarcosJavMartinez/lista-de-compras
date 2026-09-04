@@ -9,6 +9,11 @@ const THEME_KEY = "listaCompras.theme";
 const BG_COLOR_KEY = "listaCompras.bgColor";
 const PALETTE_KEY = "listaCompras.palette";
 const CUSTOM_COLOR_KEY = "listaCompras.customColor";
+
+const SVG_ICON_SUN =
+  '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><line x1="12" y1="2" x2="12" y2="4"></line><line x1="12" y1="20" x2="12" y2="22"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="2" y1="12" x2="4" y2="12"></line><line x1="20" y1="12" x2="22" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>';
+const SVG_ICON_MOON =
+  '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>';
 const BG_IMAGE_CHOICE_KEY = "listaCompras.bgImageChoice";
 const BG_IMAGE_CUSTOM_KEY = "listaCompras.bgImageCustom";
 const DEFAULT_BG_LIGHT = "#f5f3ee";
@@ -378,7 +383,7 @@ function getEffectiveTheme() {
 
 function updateThemeToggleButton() {
   const effective = getEffectiveTheme();
-  btnThemeToggle.textContent = effective === "dark" ? "☀️" : "🌙";
+  btnThemeToggle.innerHTML = effective === "dark" ? SVG_ICON_SUN : SVG_ICON_MOON;
   btnThemeToggle.setAttribute(
     "aria-label",
     effective === "dark" ? "Cambiar a modo día" : "Cambiar a modo noche"

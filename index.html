@@ -251,6 +251,19 @@
     </div>
 
     <div class="settings-row">
+      <span class="settings-label">Imagen</span>
+      <p class="settings-desc">Exportá tu lista como una imagen prolija para compartir por WhatsApp, o sacale una foto a una lista escrita a mano o un ticket y la app intenta leer los productos (puede tardar un poco y no siempre acierta del todo).</p>
+      <div class="settings-backup-actions">
+        <button type="button" id="btn-export-image" class="btn btn-secondary btn-small">⬇️ Exportar como imagen</button>
+        <label class="btn btn-secondary btn-small settings-import-label">
+          📷 Leer desde una foto
+          <input type="file" id="input-import-image" accept="image/*" hidden />
+        </label>
+      </div>
+      <p id="image-status" class="settings-desc"></p>
+    </div>
+
+    <div class="settings-row">
       <span class="settings-label">Copia de seguridad</span>
       <p class="settings-desc">Descargá un archivo con tu lista actual, o restaurala desde uno que hayas guardado antes.</p>
       <div class="settings-backup-actions">

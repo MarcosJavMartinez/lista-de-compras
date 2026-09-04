@@ -302,6 +302,9 @@ const pasteListStatus = document.getElementById("paste-list-status");
 const btnExportPdf = document.getElementById("btn-export-pdf");
 const inputImportPdf = document.getElementById("input-import-pdf");
 const pdfStatus = document.getElementById("pdf-status");
+const btnExportImage = document.getElementById("btn-export-image");
+const inputImportImage = document.getElementById("input-import-image");
+const imageStatus = document.getElementById("image-status");
 const inputBgColor = document.getElementById("input-bg-color");
 const btnResetBg = document.getElementById("btn-reset-bg");
 const paletteRow = document.getElementById("palette-row");
@@ -897,6 +900,204 @@ async function extractTextFromPdf(arrayBuffer) {
   return fullText;
 }
 
+/* ==========================================================================
+   Imagen: exportar la lista como foto, e importar leyendo una foto (OCR)
+   ========================================================================== */
+
+const TESSERACT_URL = "https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/7.0.0/tesseract.min.js";
+
+async function ensureTesseractLoaded() {
+  if (!window.Tesseract) await loadScript(TESSERACT_URL);
+}
+
+function pathRoundedRect(ctx, x, y, w, h, radii) {
+  const r = typeof radii === "number" ? { tl: radii, tr: radii, br: radii, bl: radii } : radii;
+  ctx.beginPath();
+  ctx.moveTo(x + r.tl, y);
+  ctx.lineTo(x + w - r.tr, y);
+  ctx.arcTo(x + w, y, x + w, y + r.tr, r.tr);
+  ctx.lineTo(x + w, y + h - r.br);
+  ctx.arcTo(x + w, y + h, x + w - r.br, y + h, r.br);
+  ctx.lineTo(x + r.bl, y + h);
+  ctx.arcTo(x, y + h, x, y + h - r.bl, r.bl);
+  ctx.lineTo(x, y + r.tl);
+  ctx.arcTo(x, y, x + r.tl, y, r.tl);
+  ctx.closePath();
+}
+
+function truncateToWidth(ctx, text, maxWidth) {
+  if (ctx.measureText(text).width <= maxWidth) return text;
+  let truncated = text;
+  while (truncated.length > 1 && ctx.measureText(`${truncated}…`).width > maxWidth) {
+    truncated = truncated.slice(0, -1);
+  }
+  return `${truncated}…`;
+}
+
+async function exportListAsImage() {
+  if (document.fonts && document.fonts.ready) await document.fonts.ready;
+
+  const rootStyles = getComputedStyle(document.documentElement);
+  const primary = rootStyles.getPropertyValue("--color-primary").trim() || "#2f9e44";
+  const primaryDark = rootStyles.getPropertyValue("--color-primary-dark").trim() || "#1f7a34";
+  const textColor = "#21261f";
+  const mutedColor = "#6f7d73";
+  const borderColor = "#e6e2d5";
+  const cardBg = "#ffffff";
+  const pageBg = "#f5f3ee";
+
+  const width = 800;
+  const paddingX = 40;
+  const headerHeight = 108;
+  const rowHeight = 34;
+  const sectionGap = 26;
+  const outerMargin = 20;
+
+  const pending = products.filter((product) => !product.purchased);
+  const purchased = products.filter((product) => product.purchased);
+  const totalPending = pending.reduce((sum, product) => sum + product.price * product.quantity, 0);
+  const totalPurchased = purchased.reduce((sum, product) => sum + product.price * product.quantity, 0);
+
+  let contentHeight = 30;
+  if (pending.length) contentHeight += 26 + pending.length * rowHeight + sectionGap;
+  if (purchased.length) contentHeight += 26 + purchased.length * rowHeight + sectionGap;
+  contentHeight += 76;
+
+  const cardHeight = headerHeight + contentHeight;
+  const totalHeight = cardHeight + outerMargin * 2;
+  const cardX = outerMargin;
+  const cardY = outerMargin;
+  const cardW = width - outerMargin * 2;
+
+  const scale = 2;
+  const canvas = document.createElement("canvas");
+  canvas.width = width * scale;
+  canvas.height = totalHeight * scale;
+  const ctx = canvas.getContext("2d");
+  ctx.scale(scale, scale);
+
+  ctx.fillStyle = pageBg;
+  ctx.fillRect(0, 0, width, totalHeight);
+
+  pathRoundedRect(ctx, cardX, cardY, cardW, cardHeight, 20);
+  ctx.fillStyle = cardBg;
+  ctx.fill();
+
+  pathRoundedRect(ctx, cardX, cardY, cardW, headerHeight, { tl: 20, tr: 20, br: 0, bl: 0 });
+  const gradient = ctx.createLinearGradient(cardX, cardY, cardX + cardW, cardY + headerHeight);
+  gradient.addColorStop(0, primary);
+  gradient.addColorStop(1, primaryDark);
+  ctx.fillStyle = gradient;
+  ctx.fill();
+
+  ctx.textBaseline = "alphabetic";
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "700 26px Outfit, sans-serif";
+  ctx.fillText("🛒 Mi Lista de Compras", cardX + paddingX, cardY + 46);
+  ctx.font = "500 14px Inter, sans-serif";
+  ctx.globalAlpha = 0.9;
+  const dateLabel = new Date().toLocaleDateString("es-AR", { day: "numeric", month: "long", year: "numeric" });
+  ctx.fillText(dateLabel, cardX + paddingX, cardY + 74);
+  ctx.globalAlpha = 1;
+
+  let y = cardY + headerHeight + 34;
+  const nameMaxWidth = cardW - paddingX * 2 - 150;
+
+  function drawSection(title, items) {
+    if (!items.length) return;
+    ctx.fillStyle = mutedColor;
+    ctx.font = "700 13px Outfit, sans-serif";
+    ctx.fillText(title.toUpperCase(), cardX + paddingX, y);
+    y += 24;
+
+    items.forEach((product, index) => {
+      ctx.fillStyle = textColor;
+      ctx.font = "600 15px Inter, sans-serif";
+      const icon = product.icon || getProductIcon(product.name);
+      const label = `${icon}  ${product.quantity} x ${product.name}`;
+      ctx.fillText(truncateToWidth(ctx, label, nameMaxWidth), cardX + paddingX, y);
+
+      if (product.price > 0) {
+        ctx.font = "700 15px Outfit, sans-serif";
+        ctx.textAlign = "right";
+        ctx.fillText(formatCurrency(product.price * product.quantity), cardX + cardW - paddingX, y);
+        ctx.textAlign = "left";
+      }
+
+      if (index < items.length - 1) {
+        ctx.strokeStyle = borderColor;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(cardX + paddingX, y + 13);
+        ctx.lineTo(cardX + cardW - paddingX, y + 13);
+        ctx.stroke();
+      }
+
+      y += rowHeight;
+    });
+
+    y += sectionGap;
+  }
+
+  drawSection("Pendientes", pending);
+  drawSection("Comprados", purchased);
+
+  ctx.strokeStyle = borderColor;
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(cardX + paddingX, y);
+  ctx.lineTo(cardX + cardW - paddingX, y);
+  ctx.stroke();
+  y += 30;
+
+  ctx.font = "700 15px Outfit, sans-serif";
+  ctx.fillStyle = textColor;
+  ctx.fillText("Falta comprar", cardX + paddingX, y);
+  ctx.textAlign = "right";
+  ctx.fillStyle = primaryDark;
+  ctx.fillText(formatCurrency(totalPending), cardX + cardW - paddingX, y);
+  ctx.textAlign = "left";
+  y += 26;
+
+  ctx.font = "500 13px Inter, sans-serif";
+  ctx.fillStyle = mutedColor;
+  ctx.fillText(`Ya compraste ${formatCurrency(totalPurchased)}`, cardX + paddingX, y);
+
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      if (!blob) {
+        reject(new Error("No se pudo generar la imagen."));
+        return;
+      }
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `lista-de-compras-${new Date().toISOString().slice(0, 10)}.png`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      resolve();
+    }, "image/png");
+  });
+}
+
+async function extractTextFromImage(file, onProgress) {
+  const worker = await window.Tesseract.createWorker("spa", 1, {
+    logger: (info) => {
+      if (onProgress && info.status === "recognizing text") {
+        onProgress(Math.round(info.progress * 100));
+      }
+    },
+  });
+  try {
+    const { data } = await worker.recognize(file);
+    return data.text;
+  } finally {
+    await worker.terminate();
+  }
+}
+
 function editProduct(id, changes) {
   const product = findProduct(id);
   if (!product) return;
@@ -1395,6 +1596,48 @@ inputImportPdf.addEventListener("change", async () => {
     pdfStatus.textContent = "No se pudo leer el PDF. Probá con otro archivo.";
   }
   inputImportPdf.value = "";
+});
+
+btnExportImage.addEventListener("click", async () => {
+  if (!products.length) {
+    imageStatus.textContent = "Todavía no tenés productos para exportar.";
+    return;
+  }
+  imageStatus.textContent = "Generando imagen...";
+  try {
+    await exportListAsImage();
+    imageStatus.textContent = "Imagen descargada.";
+  } catch (error) {
+    console.error("No se pudo generar la imagen.", error);
+    imageStatus.textContent = "No se pudo generar la imagen. Intentá de nuevo.";
+  }
+});
+
+inputImportImage.addEventListener("change", async () => {
+  const file = inputImportImage.files[0];
+  if (!file) return;
+
+  imageStatus.textContent = "Cargando el lector de texto...";
+  try {
+    await ensureTesseractLoaded();
+    imageStatus.textContent = "Leyendo la foto... 0%";
+    const text = await extractTextFromImage(file, (percent) => {
+      imageStatus.textContent = `Leyendo la foto... ${percent}%`;
+    });
+    const { added, skipped } = addProductsFromText(text);
+    if (added === 0 && skipped === 0) {
+      imageStatus.textContent = "No se reconoció ningún producto en la foto. Probá con una foto más clara.";
+    } else {
+      let message = `Se agregaron ${added} producto${added === 1 ? "" : "s"} desde la foto.`;
+      if (skipped > 0) message += ` (${skipped} ya estaban en tu lista.)`;
+      message += " Revisá la lista: el reconocimiento de texto puede equivocarse.";
+      imageStatus.textContent = message;
+    }
+  } catch (error) {
+    console.error("No se pudo leer la imagen.", error);
+    imageStatus.textContent = "No se pudo leer la foto. Probá con otra imagen.";
+  }
+  inputImportImage.value = "";
 });
 
 inputBgColor.addEventListener("input", () => {

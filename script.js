@@ -1767,6 +1767,17 @@ inputBgColor.addEventListener("input", () => {
   } catch (error) {
     console.error("No se pudo guardar el color de fondo.", error);
   }
+
+  // Una imagen de fondo es opaca y tapa el color por completo, así que un
+  // color elegido a mano no se vería con la imagen puesta: la sacamos.
+  if (getSavedBgImageChoice() !== "none") {
+    try {
+      localStorage.setItem(BG_IMAGE_CHOICE_KEY, "none");
+    } catch (error) {
+      console.error("No se pudo guardar la preferencia de imagen de fondo.", error);
+    }
+    applyBackgroundImage();
+  }
 });
 
 btnResetBg.addEventListener("click", () => {

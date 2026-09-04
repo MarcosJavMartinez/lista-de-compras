@@ -5,14 +5,14 @@
    ========================================================================== */
 
 // Datos de identidad de marca, centralizados para no repetir strings sueltos.
-// donationUrl/websiteUrl quedan vacíos hasta que Neko Tools tenga esos
-// enlaces: mientras tanto los botones/links correspondientes se deshabilitan
-// solos en vez de apuntar a una URL inventada.
+// websiteUrl queda vacío hasta que Neko Tools tenga página propia: mientras
+// tanto el link correspondiente se deshabilita solo en vez de apuntar a una
+// URL inventada.
 const BRAND = {
   companyName: "Neko Tools",
   appName: "Neko Lista",
   tagline: "Tu lista. Tu presupuesto. Sin complicaciones.",
-  donationUrl: "",
+  donationUrl: "https://ko-fi.com/nekotools",
   websiteUrl: "",
 };
 

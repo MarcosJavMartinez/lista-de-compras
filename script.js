@@ -45,42 +45,36 @@ const currencyFormatter = new Intl.NumberFormat("es-AR", {
 const COLOR_PALETTES = [
   {
     id: "verde",
-    label: "Verde",
     swatch: "#2f9e44",
     light: { primary: "#2f9e44", primaryDark: "#1f7a34", primarySoft: "#e8f4ea" },
     dark: { primary: "#52c374", primaryDark: "#3a9c58", primarySoft: "#1e2b20" },
   },
   {
     id: "oceano",
-    label: "Océano",
     swatch: "#1c7ed6",
     light: { primary: "#1c7ed6", primaryDark: "#145a9e", primarySoft: "#e3f1fc" },
     dark: { primary: "#4dabf7", primaryDark: "#2f8fd6", primarySoft: "#132534" },
   },
   {
     id: "atardecer",
-    label: "Atardecer",
     swatch: "#e8590c",
     light: { primary: "#e8590c", primaryDark: "#b7440a", primarySoft: "#fdebe0" },
     dark: { primary: "#ff922b", primaryDark: "#e8720f", primarySoft: "#3a2415" },
   },
   {
     id: "uva",
-    label: "Uva",
     swatch: "#7048c2",
     light: { primary: "#7048c2", primaryDark: "#56349c", primarySoft: "#f0e9fb" },
     dark: { primary: "#a389f0", primaryDark: "#8264d6", primarySoft: "#251c3a" },
   },
   {
     id: "frambuesa",
-    label: "Frambuesa",
     swatch: "#e64980",
     light: { primary: "#e64980", primaryDark: "#b93867", primarySoft: "#fde3ee" },
     dark: { primary: "#f783ac", primaryDark: "#e0628e", primarySoft: "#3a1f28" },
   },
   {
     id: "grafito",
-    label: "Grafito",
     swatch: "#495057",
     light: { primary: "#495057", primaryDark: "#343a40", primarySoft: "#eef0f1" },
     dark: { primary: "#adb5bd", primaryDark: "#868e96", primarySoft: "#22262a" },
@@ -310,6 +304,10 @@ let manualIcon = null;
    ========================================================================== */
 
 const btnThemeToggle = document.getElementById("btn-theme-toggle");
+const btnLangToggle = document.getElementById("btn-lang-toggle");
+const langBackdrop = document.getElementById("lang-backdrop");
+const btnLangClose = document.getElementById("btn-lang-close");
+const langOptionsEl = document.getElementById("lang-options");
 const btnSettingsToggle = document.getElementById("btn-settings-toggle");
 const settingsBackdrop = document.getElementById("settings-backdrop");
 const btnSettingsClose = document.getElementById("btn-settings-close");
@@ -410,7 +408,7 @@ function updateThemeToggleButton() {
   btnThemeToggle.innerHTML = effective === "dark" ? SVG_ICON_SUN : SVG_ICON_MOON;
   btnThemeToggle.setAttribute(
     "aria-label",
-    effective === "dark" ? "Cambiar a modo día" : "Cambiar a modo noche"
+    effective === "dark" ? t("theme_to_day_aria") : t("theme_to_night_aria")
   );
 
   const explicit = document.documentElement.getAttribute("data-theme") || "auto";
@@ -551,8 +549,9 @@ function renderPaletteRow() {
     btn.type = "button";
     btn.className = "palette-swatch";
     btn.style.background = palette.swatch;
-    btn.title = palette.label;
-    btn.setAttribute("aria-label", `Plantilla de color ${palette.label}`);
+    const paletteName = t(`palette_${palette.id}`);
+    btn.title = paletteName;
+    btn.setAttribute("aria-label", t("palette_swatch_aria", { name: paletteName }));
     btn.classList.toggle("active", palette.id === activeId);
     btn.addEventListener("click", () => {
       try {
@@ -572,8 +571,8 @@ function renderPaletteRow() {
   const customBtn = document.createElement("button");
   customBtn.type = "button";
   customBtn.className = "palette-swatch palette-swatch-custom";
-  customBtn.title = "Elegir tu color";
-  customBtn.setAttribute("aria-label", "Elegir tu propio color");
+  customBtn.title = t("palette_custom_title");
+  customBtn.setAttribute("aria-label", t("palette_custom_aria"));
   customBtn.classList.toggle("active", activeId === "custom");
 
   const customInput = document.createElement("input");
@@ -623,8 +622,7 @@ function updateBgImageButtons(choice) {
   bgImageOptionButtons.forEach((btn) => {
     btn.classList.toggle("active", btn.dataset.bgChoice === choice);
   });
-  bgImageStatusEl.textContent =
-    choice === "custom" ? "Estás usando una imagen propia como fondo." : "";
+  bgImageStatusEl.textContent = choice === "custom" ? t("bg_image_custom_status") : "";
 }
 
 function applyBackgroundImage() {
@@ -957,7 +955,7 @@ function exportListAsPdf() {
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10);
   doc.setTextColor(120);
-  doc.text(`Generado el ${new Date().toLocaleDateString("es-AR")}`, marginX, y);
+  doc.text(t("doc_generated_on", { date: new Date().toLocaleDateString("es-AR") }), marginX, y);
   y += 28;
   doc.setTextColor(20);
 
@@ -983,8 +981,8 @@ function exportListAsPdf() {
 
   const pending = products.filter((product) => !product.purchased);
   const purchased = products.filter((product) => product.purchased);
-  renderSection("Pendientes", pending);
-  renderSection("Comprados", purchased);
+  renderSection(t("doc_pending"), pending);
+  renderSection(t("doc_purchased"), purchased);
 
   ensureSpace(60);
   doc.setDrawColor(200);
@@ -994,9 +992,9 @@ function exportListAsPdf() {
   doc.setFontSize(12);
   const totalPending = pending.reduce((sum, product) => sum + product.price * product.quantity, 0);
   const totalPurchased = purchased.reduce((sum, product) => sum + product.price * product.quantity, 0);
-  doc.text(`Falta comprar: ${formatCurrency(totalPending)}`, marginX, y);
+  doc.text(`${t("doc_falta_comprar")}: ${formatCurrency(totalPending)}`, marginX, y);
   y += 18;
-  doc.text(`Ya compraste: ${formatCurrency(totalPurchased)}`, marginX, y);
+  doc.text(`${t("doc_ya_compraste")}: ${formatCurrency(totalPurchased)}`, marginX, y);
 
   doc.save(`lista-de-compras-${new Date().toISOString().slice(0, 10)}.pdf`);
 }
@@ -1004,15 +1002,25 @@ function exportListAsPdf() {
 // Líneas que no son productos: el título, la fecha y los subtotales que
 // pone nuestro propio exportador. Se filtran antes de parsear, para que
 // re-importar un PDF exportado desde acá no cree productos falsos.
-const PDF_BOILERPLATE_PATTERNS = [
-  /^neko lista$/i,
-  /^mi lista de compras$/i,
-  /^generado el /i,
-  /^pendientes$/i,
-  /^comprados$/i,
-  /^falta comprar\b/i,
-  /^ya compraste\b/i,
-];
+// Las líneas de relleno (título, fecha, subtotales) se generan en el idioma
+// activo al exportar, pero el PDF se puede reimportar después con otro
+// idioma activo: se arman patrones para las 6 traducciones, no solo la
+// actual, para que ninguna cuele como producto falso.
+function buildPdfBoilerplatePatterns() {
+  const patterns = [/^neko lista$/i, /^mi lista de compras$/i, /^generado el /i, /^generated on /i];
+  const keys = ["doc_pending", "doc_purchased", "doc_falta_comprar", "doc_ya_compraste"];
+  Object.keys(TRANSLATIONS).forEach((lang) => {
+    keys.forEach((key) => {
+      const value = TRANSLATIONS[lang][key];
+      if (!value) return;
+      const escaped = value.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      patterns.push(new RegExp(`^${escaped}\\b`, "i"));
+    });
+  });
+  return patterns;
+}
+
+const PDF_BOILERPLATE_PATTERNS = buildPdfBoilerplatePatterns();
 
 function stripPdfBoilerplate(text) {
   return text
@@ -1174,8 +1182,8 @@ async function exportListAsImage() {
     y += sectionGap;
   }
 
-  drawSection("Pendientes", pending);
-  drawSection("Comprados", purchased);
+  drawSection(t("doc_pending"), pending);
+  drawSection(t("doc_purchased"), purchased);
 
   ctx.strokeStyle = borderColor;
   ctx.lineWidth = 1;
@@ -1187,7 +1195,7 @@ async function exportListAsImage() {
 
   ctx.font = "700 15px Outfit, sans-serif";
   ctx.fillStyle = textColor;
-  ctx.fillText("Falta comprar", cardX + paddingX, y);
+  ctx.fillText(t("doc_falta_comprar"), cardX + paddingX, y);
   ctx.textAlign = "right";
   ctx.fillStyle = primaryDark;
   ctx.fillText(formatCurrency(totalPending), cardX + cardW - paddingX, y);
@@ -1196,7 +1204,7 @@ async function exportListAsImage() {
 
   ctx.font = "500 13px Inter, sans-serif";
   ctx.fillStyle = mutedColor;
-  ctx.fillText(`Ya compraste ${formatCurrency(totalPurchased)}`, cardX + paddingX, y);
+  ctx.fillText(t("summary_spent", { amount: formatCurrency(totalPurchased) }), cardX + paddingX, y);
 
   return new Promise((resolve, reject) => {
     canvas.toBlob((blob) => {
@@ -1380,7 +1388,7 @@ function renderSummary() {
   summaryPurchasedEl.textContent = purchased;
   summaryCountEl.textContent = count;
   summaryTotalEl.textContent = newTotalText;
-  summarySpentEl.textContent = `Ya compraste ${formatCurrency(purchasedTotal)}`;
+  summarySpentEl.textContent = t("summary_spent", { amount: formatCurrency(purchasedTotal) });
 }
 
 function createProductElement(product) {
@@ -1453,7 +1461,7 @@ function createProductElement(product) {
   });
 
   li.querySelector(".btn-delete").addEventListener("click", () => {
-    if (confirm(`¿Eliminar "${product.name}" de la lista?`)) {
+    if (confirm(t("confirm_delete_product", { name: product.name }))) {
       deleteProduct(product.id);
     }
   });
@@ -1500,13 +1508,13 @@ function renderProducts() {
   purchasedGroupEl.hidden = purchasedItems.length === 0;
 
   purchasedTitleEl.hidden = purchasedItems.length === 0;
-  purchasedTitleEl.textContent = `Comprados (${purchasedItems.length})`;
+  purchasedTitleEl.textContent = t("purchased_title", { count: purchasedItems.length });
 
   const visibleCount = pendingItems.length + purchasedItems.length;
   emptyMessageEl.hidden = visibleCount > 0;
   emptyMessageEl.textContent = hasActiveExtraFilters()
-    ? "No se encontraron productos con esos filtros."
-    : "No hay productos para mostrar.";
+    ? t("empty_no_filtered")
+    : t("empty_no_products");
 
   btnToggleFilters.classList.toggle(
     "active",
@@ -1598,6 +1606,62 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && !settingsBackdrop.hidden) closeSettings();
 });
 
+function renderLangOptions() {
+  langOptionsEl.innerHTML = "";
+  LANGUAGES.forEach((lang) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "lang-option";
+    btn.classList.toggle("active", lang.code === currentLang);
+    btn.innerHTML = `<span class="lang-option-flag">${lang.flag}</span><span>${lang.nativeName}</span>`;
+    btn.addEventListener("click", () => {
+      setLang(lang.code);
+      closeLangModal();
+    });
+    langOptionsEl.appendChild(btn);
+  });
+}
+
+function openLangModal() {
+  renderLangOptions();
+  langBackdrop.hidden = false;
+  btnLangToggle.setAttribute("aria-expanded", "true");
+}
+
+function closeLangModal() {
+  langBackdrop.hidden = true;
+  btnLangToggle.setAttribute("aria-expanded", "false");
+}
+
+btnLangToggle.addEventListener("click", () => {
+  if (langBackdrop.hidden) {
+    openLangModal();
+  } else {
+    closeLangModal();
+  }
+});
+
+btnLangClose.addEventListener("click", closeLangModal);
+
+langBackdrop.addEventListener("click", (event) => {
+  if (event.target === langBackdrop) closeLangModal();
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !langBackdrop.hidden) closeLangModal();
+});
+
+// Se llama cada vez que cambia el idioma: vuelve a pintar todo lo que
+// depende del idioma pero no es texto estático (aria-labels dinámicos,
+// paleta, resumen, botón de ordenar, etc.).
+function onLanguageChanged() {
+  updateThemeToggleButton();
+  renderPaletteRow();
+  updateBgImageButtons(getSavedBgImageChoice());
+  updateSortPriceButton();
+  renderProducts();
+}
+
 function openSupportModal() {
   supportBackdrop.hidden = false;
 }
@@ -1626,7 +1690,7 @@ if (BRAND.donationUrl) {
   });
 } else {
   btnDonate.disabled = true;
-  donateStatus.textContent = "Todavía no está disponible, ¡pronto!";
+  donateStatus.textContent = t("donate_not_available");
 }
 
 // Igual que arriba: "Más herramientas" se activa solo cuando haya
@@ -1659,8 +1723,8 @@ function openInstallModal() {
   const ua = navigator.userAgent || "";
   const isIOS = /iphone|ipad|ipod/i.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
   installInstructionsEl.textContent = isIOS
-    ? 'Tocá el botón Compartir (el cuadrado con la flecha hacia arriba) en la barra de Safari y elegí "Agregar a inicio".'
-    : 'Abrí el menú (⋮) de tu navegador y elegí "Instalar app" o "Agregar a pantalla de inicio".';
+    ? t("install_instructions_ios")
+    : t("install_instructions_other");
   installBackdrop.hidden = false;
 }
 
@@ -1753,18 +1817,18 @@ inputImportData.addEventListener("change", () => {
     try {
       parsed = JSON.parse(reader.result);
     } catch (error) {
-      alert("El archivo no es un JSON válido.");
+      alert(t("alert_invalid_json"));
       inputImportData.value = "";
       return;
     }
 
     if (!Array.isArray(parsed) || !parsed.every((item) => typeof item.name === "string")) {
-      alert("El archivo no tiene el formato de una lista de compras.");
+      alert(t("alert_invalid_format"));
       inputImportData.value = "";
       return;
     }
 
-    if (confirm(`¿Reemplazar tu lista actual por la del archivo (${parsed.length} productos)?`)) {
+    if (confirm(t("confirm_replace_list", { count: parsed.length }))) {
       products = parsed;
       saveToLocalStorage();
       mergeNewCatalogProducts();
@@ -1780,32 +1844,32 @@ btnCopyListText.addEventListener("click", async () => {
   pasteListTextarea.value = text;
 
   if (!text) {
-    pasteListStatus.textContent = "Todavía no tenés productos para copiar.";
+    pasteListStatus.textContent = t("status_no_products_copy");
     return;
   }
 
   try {
     await navigator.clipboard.writeText(text);
-    pasteListStatus.textContent = "Lista copiada al portapapeles.";
+    pasteListStatus.textContent = t("status_copied");
   } catch (error) {
-    pasteListStatus.textContent = "Lista lista abajo: seleccioná el texto y copiala manualmente.";
+    pasteListStatus.textContent = t("status_copy_manual");
   }
 });
 
 btnCreateFromText.addEventListener("click", () => {
   const text = pasteListTextarea.value;
   if (!text.trim()) {
-    pasteListStatus.textContent = "Pegá o escribí al menos un producto primero.";
+    pasteListStatus.textContent = t("status_paste_empty");
     return;
   }
 
   const { added, skipped } = addProductsFromText(text);
   if (added === 0 && skipped === 0) {
-    pasteListStatus.textContent = "No se reconoció ningún producto en el texto.";
+    pasteListStatus.textContent = t("status_no_products_recognized_text");
   } else {
-    let message = `Se agregaron ${added} producto${added === 1 ? "" : "s"}.`;
+    let message = t("status_products_added", { count: added });
     if (skipped > 0) {
-      message += ` (${skipped} ya estaban en tu lista y se omitieron.)`;
+      message += ` (${t("status_already_in_list", { count: skipped })})`;
     }
     pasteListStatus.textContent = message;
   }
@@ -1813,17 +1877,17 @@ btnCreateFromText.addEventListener("click", () => {
 
 btnExportPdf.addEventListener("click", async () => {
   if (!products.length) {
-    pdfStatus.textContent = "Todavía no tenés productos para exportar.";
+    pdfStatus.textContent = t("status_no_products_export");
     return;
   }
-  pdfStatus.textContent = "Generando PDF...";
+  pdfStatus.textContent = t("status_generating_pdf");
   try {
     await ensureJsPdfLoaded();
     exportListAsPdf();
-    pdfStatus.textContent = "PDF descargado.";
+    pdfStatus.textContent = t("status_pdf_downloaded");
   } catch (error) {
     console.error("No se pudo generar el PDF.", error);
-    pdfStatus.textContent = "No se pudo generar el PDF. Revisá tu conexión e intentá de nuevo.";
+    pdfStatus.textContent = t("status_pdf_error");
   }
 });
 
@@ -1831,38 +1895,38 @@ inputImportPdf.addEventListener("change", async () => {
   const file = inputImportPdf.files[0];
   if (!file) return;
 
-  pdfStatus.textContent = "Leyendo el PDF...";
+  pdfStatus.textContent = t("status_reading_pdf");
   try {
     await ensurePdfJsLoaded();
     const arrayBuffer = await file.arrayBuffer();
     const text = await extractTextFromPdf(arrayBuffer);
     const { added, skipped } = addProductsFromText(stripPdfBoilerplate(text));
     if (added === 0 && skipped === 0) {
-      pdfStatus.textContent = "No se reconoció ningún producto en el PDF.";
+      pdfStatus.textContent = t("status_no_products_recognized_pdf");
     } else {
-      let message = `Se agregaron ${added} producto${added === 1 ? "" : "s"} desde el PDF.`;
-      if (skipped > 0) message += ` (${skipped} ya estaban en tu lista.)`;
+      let message = t("status_products_added", { count: added });
+      if (skipped > 0) message += ` (${t("status_already_in_list", { count: skipped })})`;
       pdfStatus.textContent = message;
     }
   } catch (error) {
     console.error("No se pudo leer el PDF.", error);
-    pdfStatus.textContent = "No se pudo leer el PDF. Probá con otro archivo.";
+    pdfStatus.textContent = t("status_pdf_read_error");
   }
   inputImportPdf.value = "";
 });
 
 btnExportImage.addEventListener("click", async () => {
   if (!products.length) {
-    imageStatus.textContent = "Todavía no tenés productos para exportar.";
+    imageStatus.textContent = t("status_no_products_export");
     return;
   }
-  imageStatus.textContent = "Generando imagen...";
+  imageStatus.textContent = t("status_generating_image");
   try {
     await exportListAsImage();
-    imageStatus.textContent = "Imagen descargada.";
+    imageStatus.textContent = t("status_image_downloaded");
   } catch (error) {
     console.error("No se pudo generar la imagen.", error);
-    imageStatus.textContent = "No se pudo generar la imagen. Intentá de nuevo.";
+    imageStatus.textContent = t("status_image_error");
   }
 });
 
@@ -1870,25 +1934,25 @@ inputImportImage.addEventListener("change", async () => {
   const file = inputImportImage.files[0];
   if (!file) return;
 
-  imageStatus.textContent = "Cargando el lector de texto...";
+  imageStatus.textContent = t("status_loading_ocr");
   try {
     await ensureTesseractLoaded();
-    imageStatus.textContent = "Leyendo la foto... 0%";
+    imageStatus.textContent = t("status_reading_photo", { percent: 0 });
     const text = await extractTextFromImage(file, (percent) => {
-      imageStatus.textContent = `Leyendo la foto... ${percent}%`;
+      imageStatus.textContent = t("status_reading_photo", { percent });
     });
     const { added, skipped } = addProductsFromText(text);
     if (added === 0 && skipped === 0) {
-      imageStatus.textContent = "No se reconoció ningún producto en la foto. Probá con una foto más clara.";
+      imageStatus.textContent = t("status_no_products_recognized_photo");
     } else {
-      let message = `Se agregaron ${added} producto${added === 1 ? "" : "s"} desde la foto.`;
-      if (skipped > 0) message += ` (${skipped} ya estaban en tu lista.)`;
-      message += " Revisá la lista: el reconocimiento de texto puede equivocarse.";
+      let message = t("status_products_added", { count: added });
+      if (skipped > 0) message += ` (${t("status_already_in_list", { count: skipped })})`;
+      message += t("status_review_ocr_results");
       imageStatus.textContent = message;
     }
   } catch (error) {
     console.error("No se pudo leer la imagen.", error);
-    imageStatus.textContent = "No se pudo leer la foto. Probá con otra imagen.";
+    imageStatus.textContent = t("status_photo_read_error");
   }
   inputImportImage.value = "";
 });
@@ -1941,7 +2005,7 @@ inputBgImage.addEventListener("change", () => {
   if (!file) return;
 
   if (!file.type.startsWith("image/")) {
-    alert("Elegí un archivo de imagen.");
+    alert(t("alert_choose_image"));
     inputBgImage.value = "";
     return;
   }
@@ -1968,7 +2032,7 @@ inputBgImage.addEventListener("change", () => {
         localStorage.setItem(BG_IMAGE_CHOICE_KEY, "custom");
       } catch (error) {
         console.error("No se pudo guardar la imagen de fondo.", error);
-        alert("La imagen es muy pesada para guardarla. Probá con una más chica.");
+        alert(t("alert_image_too_heavy"));
         inputBgImage.value = "";
         return;
       }
@@ -1976,7 +2040,7 @@ inputBgImage.addEventListener("change", () => {
       inputBgImage.value = "";
     };
     img.onerror = () => {
-      alert("No se pudo cargar la imagen.");
+      alert(t("alert_image_load_error"));
       inputBgImage.value = "";
     };
     img.src = reader.result;
@@ -2004,11 +2068,11 @@ function updateSortPriceButton() {
   btnSortPrice.dataset.sort = sortPriceOrder || "none";
   btnSortPrice.classList.toggle("active", Boolean(sortPriceOrder));
   if (sortPriceOrder === "desc") {
-    btnSortPrice.textContent = "Precio: mayor a menor ↓";
+    btnSortPrice.textContent = t("sort_price_desc");
   } else if (sortPriceOrder === "asc") {
-    btnSortPrice.textContent = "Precio: menor a mayor ↑";
+    btnSortPrice.textContent = t("sort_price_asc");
   } else {
-    btnSortPrice.textContent = "Ordenar por precio";
+    btnSortPrice.textContent = t("sort_by_price");
   }
 }
 
@@ -2031,10 +2095,10 @@ btnClearFilters.addEventListener("click", () => {
 btnClearPurchased.addEventListener("click", () => {
   const { purchased } = calculateTotals();
   if (purchased === 0) {
-    alert("No hay productos comprados para eliminar.");
+    alert(t("alert_no_purchased"));
     return;
   }
-  if (confirm("¿Eliminar todos los productos marcados como comprados?")) {
+  if (confirm(t("confirm_clear_purchased"))) {
     clearPurchased();
   }
 });
@@ -2045,7 +2109,7 @@ btnUncheckAll.addEventListener("click", () => {
 
 btnClearAll.addEventListener("click", () => {
   if (products.length === 0) return;
-  if (confirm("¿Vaciar toda la lista de compras? Esta acción no se puede deshacer.")) {
+  if (confirm(t("confirm_clear_all"))) {
     clearAllProducts();
   }
 });
@@ -2061,6 +2125,7 @@ btnToggleMoreOptions.addEventListener("click", () => {
    ========================================================================== */
 
 function init() {
+  applyStaticTranslations();
   updateThemeToggleButton();
   refreshBgColorInput();
   renderPaletteRow();

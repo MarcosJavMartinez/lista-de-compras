@@ -25,6 +25,7 @@
   href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Nunito:wght@400;700;800&display=swap"
 />
 <link rel="stylesheet" href="styles.css" />
+<script src="i18n.js"></script>
 <script>
   (function () {
     try {
@@ -93,17 +94,18 @@
       </div>
     </div>
     <div class="header-actions">
-      <button type="button" id="btn-install-app" class="header-icon-btn" aria-label="Instalar app" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></button>
-      <button type="button" id="btn-theme-toggle" class="header-icon-btn" aria-label="Cambiar a modo noche"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button>
-      <button type="button" id="btn-settings-toggle" class="header-icon-btn" aria-label="Configuración" aria-expanded="false" aria-controls="settings-panel"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
+      <button type="button" id="btn-install-app" class="header-icon-btn" data-i18n-aria-label="install_app_aria" aria-label="Install app" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></button>
+      <button type="button" id="btn-lang-toggle" class="header-icon-btn" data-i18n-aria-label="lang_picker_aria" aria-label="Language" aria-expanded="false" aria-controls="lang-panel"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></button>
+      <button type="button" id="btn-theme-toggle" class="header-icon-btn" data-i18n-aria-label="theme_to_night_aria" aria-label="Switch to dark mode"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button>
+      <button type="button" id="btn-settings-toggle" class="header-icon-btn" data-i18n-aria-label="settings_aria" aria-label="Settings" aria-expanded="false" aria-controls="settings-panel"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
     </div>
   </div>
 
   <div class="header-toolbar">
     <div class="search-row">
-      <input type="search" id="search-input" placeholder="🔍 Buscar producto..." aria-label="Buscar producto" />
+      <input type="search" id="search-input" data-i18n-placeholder="search_placeholder" placeholder="🔍 Search product..." data-i18n-aria-label="search_aria" aria-label="Search product" />
       <button type="button" id="btn-toggle-filters" class="filter-toggle-btn" aria-expanded="false" aria-controls="filters-panel">
-        Filtros
+        <span data-i18n="filters_btn">Filters</span>
       </button>
     </div>
   </div>
@@ -113,51 +115,51 @@
 
   <div id="filters-panel" class="card filters-panel" hidden>
     <div class="filters-panel-row">
-      <select id="filter-category" aria-label="Filtrar por categoría">
-        <option value="">Todas las categorías</option>
-        <option value="Verdulería">🥬 Verdulería</option>
-        <option value="Carnicería">🥩 Carnicería</option>
-        <option value="Panadería">🍞 Panadería</option>
-        <option value="Almacén">🛒 Almacén</option>
-        <option value="Limpieza">🧴 Limpieza</option>
-        <option value="Farmacia y Perfumería">💊 Farmacia y Perfumería</option>
-        <option value="Otros">📦 Otros</option>
+      <select id="filter-category" data-i18n-aria-label="filter_category_aria" aria-label="Filter by category">
+        <option value="" data-i18n="category_all">All categories</option>
+        <option value="Verdulería" data-i18n="category_verduleria">🥬 Produce</option>
+        <option value="Carnicería" data-i18n="category_carniceria">🥩 Butcher</option>
+        <option value="Panadería" data-i18n="category_panaderia">🍞 Bakery</option>
+        <option value="Almacén" data-i18n="category_almacen">🛒 Grocery</option>
+        <option value="Limpieza" data-i18n="category_limpieza">🧴 Cleaning</option>
+        <option value="Farmacia y Perfumería" data-i18n="category_farmacia">💊 Pharmacy & Personal Care</option>
+        <option value="Otros" data-i18n="category_otros">📦 Other</option>
       </select>
     </div>
     <div class="filters-panel-row">
       <label class="filter-priority-toggle">
         <input type="checkbox" id="filter-priority" />
-        <span>⭐ Solo prioritarios</span>
+        <span data-i18n="priority_only">⭐ Priority only</span>
       </label>
     </div>
     <div class="filters-panel-row">
-      <button type="button" id="btn-sort-price" class="sort-price-btn" data-sort="none">
-        Ordenar por precio
+      <button type="button" id="btn-sort-price" class="sort-price-btn" data-sort="none" data-i18n="sort_by_price">
+        Sort by price
       </button>
     </div>
-    <button type="button" id="btn-clear-filters" class="btn btn-secondary btn-small">Limpiar filtros</button>
+    <button type="button" id="btn-clear-filters" class="btn btn-secondary btn-small" data-i18n="clear_filters">Clear filters</button>
   </div>
 
   <!-- Lista de productos -->
   <section class="card list-card">
     <div class="add-item-card">
-      <button type="button" id="btn-show-add-form" class="btn btn-primary btn-block">
-        + Agregar producto
+      <button type="button" id="btn-show-add-form" class="btn btn-primary btn-block" data-i18n="add_product_btn">
+        + Add product
       </button>
 
       <form id="add-form" class="product-edit" hidden autocomplete="off">
         <div class="form-row-name">
-          <button type="button" id="input-icon-preview" class="input-icon-preview" aria-label="Elegir ícono del producto" aria-expanded="false">🛒</button>
-          <input type="text" id="input-name" placeholder="Nombre del producto" required />
+          <button type="button" id="input-icon-preview" class="input-icon-preview" data-i18n-aria-label="icon_picker_aria" aria-label="Choose product icon" aria-expanded="false">🛒</button>
+          <input type="text" id="input-name" data-i18n-placeholder="name_placeholder" placeholder="Product name" required />
         </div>
         <div id="add-icon-picker-slot" class="icon-picker-slot"></div>
         <div class="form-row-split">
-          <input type="number" id="input-quantity" placeholder="Cantidad" min="1" step="1" value="1" required />
-          <input type="number" id="input-price" placeholder="Precio unitario" min="0" step="0.01" />
+          <input type="number" id="input-quantity" data-i18n-placeholder="quantity_placeholder" placeholder="Quantity" min="1" step="1" value="1" required />
+          <input type="number" id="input-price" data-i18n-placeholder="price_placeholder" placeholder="Unit price" min="0" step="0.01" />
         </div>
         <div class="edit-buttons">
-          <button type="submit" class="btn btn-primary btn-small">Agregar</button>
-          <button type="button" id="btn-cancel-add" class="btn btn-secondary btn-small">Cancelar</button>
+          <button type="submit" class="btn btn-primary btn-small" data-i18n="add_btn">Add</button>
+          <button type="button" id="btn-cancel-add" class="btn btn-secondary btn-small" data-i18n="cancel_btn">Cancel</button>
         </div>
       </form>
     </div>
@@ -169,35 +171,35 @@
       <h2 id="purchased-title" class="list-group-title" hidden></h2>
       <ul id="purchased-list" class="product-list"></ul>
     </div>
-    <p id="empty-message" class="empty-message" hidden>No hay productos para mostrar.</p>
+    <p id="empty-message" class="empty-message" hidden data-i18n="empty_no_products">No products to show.</p>
   </section>
 
   <!-- Acciones generales -->
   <section class="actions">
-    <button id="btn-uncheck-all" class="btn btn-info">Desmarcar todos</button>
+    <button id="btn-uncheck-all" class="btn btn-info" data-i18n="uncheck_all">Uncheck all</button>
   </section>
 
   <!-- Acciones destructivas, escondidas a propósito -->
   <section class="more-options">
     <button type="button" id="btn-toggle-more-options" class="more-options-toggle" aria-expanded="false" aria-controls="more-options-panel">
-      Más opciones ▾
+      <span data-i18n="more_options">More options ▾</span>
     </button>
     <div id="more-options-panel" class="more-options-panel" hidden>
       <div class="support-row">
-        <button type="button" id="btn-support-project" class="btn btn-secondary btn-block">❤️ Apoyar el proyecto</button>
+        <button type="button" id="btn-support-project" class="btn btn-secondary btn-block" data-i18n="support_project">❤️ Support the project</button>
       </div>
 
-      <p class="more-options-warning">⚠️ Estas dos acciones son permanentes: no hay forma de deshacerlas ni de recuperar lo borrado.</p>
+      <p class="more-options-warning" data-i18n="danger_warning">⚠️ These two actions are permanent: there's no way to undo them or recover what's deleted.</p>
 
       <div class="danger-actions-row">
         <div class="danger-action">
-          <button id="btn-clear-purchased" class="btn btn-warning">Eliminar comprados</button>
-          <p class="danger-action-desc">Borra para siempre los productos marcados como comprados. Si lo que querés es reutilizarlos la próxima vez que los necesites, usá "Desmarcar todos" en vez de esto.</p>
+          <button id="btn-clear-purchased" class="btn btn-warning" data-i18n="clear_purchased_btn">Delete purchased</button>
+          <p class="danger-action-desc" data-i18n="clear_purchased_desc">Permanently deletes the products marked as purchased. If you want to reuse them next time, use "Uncheck all" instead.</p>
         </div>
 
         <div class="danger-action">
-          <button id="btn-clear-all" class="btn btn-danger">Vaciar lista</button>
-          <p class="danger-action-desc">Borra absolutamente todos los productos de tu lista (pendientes y comprados). Vas a tener que volver a cargarlos a mano, uno por uno.</p>
+          <button id="btn-clear-all" class="btn btn-danger" data-i18n="clear_all_btn">Clear list</button>
+          <p class="danger-action-desc" data-i18n="clear_all_desc">Deletes absolutely every product in your list (pending and purchased). You'll have to add them back by hand, one by one.</p>
         </div>
       </div>
     </div>
@@ -206,27 +208,38 @@
 </main>
 
 <footer class="app-footer">
-  <p class="app-footer-line">Hecho con ❤️ por Neko Tools</p>
+  <p class="app-footer-line" data-i18n="footer_made_with">Made with ❤️ by Neko Tools</p>
   <p class="app-footer-links">
-    <button type="button" id="btn-footer-support" class="app-footer-link">Apoyar el proyecto</button>
+    <button type="button" id="btn-footer-support" class="app-footer-link" data-i18n="footer_support">Support the project</button>
     <span aria-hidden="true">·</span>
-    <span id="footer-more-tools" class="app-footer-link app-footer-link-disabled">Más herramientas</span>
+    <span id="footer-more-tools" class="app-footer-link app-footer-link-disabled" data-i18n="footer_more_tools">More tools</span>
   </p>
 </footer>
+
+<!-- Elegir idioma -->
+<div id="lang-backdrop" class="modal-backdrop" hidden>
+  <section id="lang-panel" class="card settings-panel" role="dialog" aria-modal="true" aria-labelledby="lang-title-text">
+    <div class="settings-header">
+      <h2 id="lang-title-text" class="settings-title" data-i18n="lang_modal_title">Choose language</h2>
+      <button type="button" id="btn-lang-close" class="settings-close-btn" data-i18n-aria-label="close_aria" aria-label="Close">✕</button>
+    </div>
+    <div id="lang-options" class="lang-options"></div>
+  </section>
+</div>
 
 <!-- Apoyar el proyecto: mismo patrón de modal que Configuración -->
 <div id="support-backdrop" class="modal-backdrop" hidden>
   <section id="support-panel" class="card settings-panel" role="dialog" aria-modal="true" aria-labelledby="support-title-text">
     <div class="settings-header">
-      <h2 id="support-title-text" class="settings-title">☕ ¿Te sirve Neko Lista?</h2>
-      <button type="button" id="btn-support-close" class="settings-close-btn" aria-label="Cerrar">✕</button>
+      <h2 id="support-title-text" class="settings-title" data-i18n="support_title">☕ Finding Neko Lista useful?</h2>
+      <button type="button" id="btn-support-close" class="settings-close-btn" data-i18n-aria-label="close_aria" aria-label="Close">✕</button>
     </div>
-    <p class="settings-desc">
-      Neko Lista es gratuita y no tiene publicidad. Si querés ayudarme a mantenerla online y seguir creando herramientas gratuitas, podés apoyar el proyecto.
+    <p class="settings-desc" data-i18n="support_desc">
+      Neko Lista is free and has no ads. If you'd like to help me keep it online and keep building free tools, you can support the project.
     </p>
-    <button type="button" id="btn-donate" class="btn btn-primary btn-block">☕ Invitarme un café</button>
+    <button type="button" id="btn-donate" class="btn btn-primary btn-block" data-i18n="donate_btn">☕ Buy me a coffee</button>
     <p id="donate-status" class="settings-desc"></p>
-    <p class="settings-desc" style="text-align: center;">¡Gracias por usar Neko Lista! ❤️</p>
+    <p class="settings-desc" style="text-align: center;" data-i18n="donate_thanks">Thanks for using Neko Lista! ❤️</p>
   </section>
 </div>
 
@@ -234,8 +247,8 @@
 <div id="install-backdrop" class="modal-backdrop" hidden>
   <section id="install-panel" class="card settings-panel" role="dialog" aria-modal="true" aria-labelledby="install-title-text">
     <div class="settings-header">
-      <h2 id="install-title-text" class="settings-title">📲 Instalar Neko Lista</h2>
-      <button type="button" id="btn-install-close" class="settings-close-btn" aria-label="Cerrar">✕</button>
+      <h2 id="install-title-text" class="settings-title" data-i18n="install_title">📲 Install Neko Lista</h2>
+      <button type="button" id="btn-install-close" class="settings-close-btn" data-i18n-aria-label="close_aria" aria-label="Close">✕</button>
     </div>
     <p id="install-instructions" class="settings-desc"></p>
   </section>
@@ -245,40 +258,40 @@
 <div id="settings-backdrop" class="modal-backdrop" hidden>
   <section id="settings-panel" class="card settings-panel" role="dialog" aria-modal="true" aria-labelledby="settings-title-text">
     <div class="settings-header">
-      <h2 id="settings-title-text" class="settings-title">Configuración</h2>
-      <button type="button" id="btn-settings-close" class="settings-close-btn" aria-label="Cerrar configuración">✕</button>
+      <h2 id="settings-title-text" class="settings-title" data-i18n="settings_title">Settings</h2>
+      <button type="button" id="btn-settings-close" class="settings-close-btn" data-i18n-aria-label="close_settings_aria" aria-label="Close settings">✕</button>
     </div>
 
     <div class="settings-row">
-      <span class="settings-label">Tema</span>
-      <div class="theme-segmented" role="group" aria-label="Elegir tema">
-        <button type="button" class="theme-option" data-theme-choice="auto">Auto</button>
-        <button type="button" class="theme-option" data-theme-choice="light"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><line x1="12" y1="2" x2="12" y2="4"></line><line x1="12" y1="20" x2="12" y2="22"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="2" y1="12" x2="4" y2="12"></line><line x1="20" y1="12" x2="22" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg> Día</button>
-        <button type="button" class="theme-option" data-theme-choice="dark"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg> Noche</button>
+      <span class="settings-label" data-i18n="theme_label">Theme</span>
+      <div class="theme-segmented" role="group" data-i18n-aria-label="theme_aria" aria-label="Choose theme">
+        <button type="button" class="theme-option" data-theme-choice="auto"><span data-i18n="theme_auto">Auto</span></button>
+        <button type="button" class="theme-option" data-theme-choice="light"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><line x1="12" y1="2" x2="12" y2="4"></line><line x1="12" y1="20" x2="12" y2="22"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="2" y1="12" x2="4" y2="12"></line><line x1="20" y1="12" x2="22" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg> <span data-i18n="theme_day">Day</span></button>
+        <button type="button" class="theme-option" data-theme-choice="dark"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg> <span data-i18n="theme_night">Night</span></button>
       </div>
     </div>
 
     <div class="settings-row">
-      <span class="settings-label">Plantilla de color</span>
+      <span class="settings-label" data-i18n="palette_label">Color theme</span>
       <div id="palette-row" class="palette-row"></div>
     </div>
 
     <div class="settings-row">
-      <span class="settings-label">Color de fondo</span>
-      <p class="settings-desc">Elegir un color acá saca la imagen de fondo (si había una puesta), porque si no la tapa por completo.</p>
+      <span class="settings-label" data-i18n="bg_color_label">Background color</span>
+      <p class="settings-desc" data-i18n="bg_color_desc">Picking a color here removes the background image (if one was set), since otherwise it would completely cover it.</p>
       <div class="settings-bg-row">
-        <input type="color" id="input-bg-color" aria-label="Elegir color de fondo" />
-        <button type="button" id="btn-reset-bg" class="btn btn-secondary btn-small">Restablecer</button>
+        <input type="color" id="input-bg-color" data-i18n-aria-label="bg_color_aria" aria-label="Choose background color" />
+        <button type="button" id="btn-reset-bg" class="btn btn-secondary btn-small" data-i18n="reset_btn">Reset</button>
       </div>
     </div>
 
     <div class="settings-row">
-      <span class="settings-label">Imagen de fondo</span>
-      <div class="bg-image-options" role="group" aria-label="Elegir imagen de fondo">
-        <button type="button" class="bg-image-option" data-bg-choice="pattern">🍎 Patrón</button>
-        <button type="button" class="bg-image-option" data-bg-choice="none">🚫 Sin imagen</button>
+      <span class="settings-label" data-i18n="bg_image_label">Background image</span>
+      <div class="bg-image-options" role="group" data-i18n-aria-label="bg_image_aria" aria-label="Choose background image">
+        <button type="button" class="bg-image-option" data-bg-choice="pattern" data-i18n="bg_pattern">🍎 Pattern</button>
+        <button type="button" class="bg-image-option" data-bg-choice="none" data-i18n="bg_none">🚫 No image</button>
         <label class="bg-image-option bg-image-upload-label">
-          🖼️ Subir imagen
+          <span data-i18n="bg_upload">🖼️ Upload image</span>
           <input type="file" id="input-bg-image" accept="image/*" hidden />
         </label>
       </div>
@@ -286,30 +299,30 @@
     </div>
 
     <div class="settings-row">
-      <span class="settings-label">Importar y exportar</span>
-      <div class="io-tabs" role="tablist" aria-label="Elegir formato">
-        <button type="button" class="io-tab" data-io-tab="texto">Texto</button>
-        <button type="button" class="io-tab" data-io-tab="pdf">PDF</button>
-        <button type="button" class="io-tab" data-io-tab="imagen">Imágenes</button>
-        <button type="button" class="io-tab" data-io-tab="tecnico">Técnico</button>
+      <span class="settings-label" data-i18n="io_label">Import & export</span>
+      <div class="io-tabs" role="tablist" data-i18n-aria-label="io_group_aria" aria-label="Choose format">
+        <button type="button" class="io-tab" data-io-tab="texto" data-i18n="io_texto">Text</button>
+        <button type="button" class="io-tab" data-io-tab="pdf" data-i18n="io_pdf">PDF</button>
+        <button type="button" class="io-tab" data-io-tab="imagen" data-i18n="io_imagenes">Images</button>
+        <button type="button" class="io-tab" data-io-tab="tecnico" data-i18n="io_tecnico">Technical</button>
       </div>
 
       <div class="io-panel" data-io-panel="texto" hidden>
-        <p class="settings-desc">Pegá una lista escrita en el celu o la compu, una línea por producto (podés poner cantidad y precio), y se crean solos. También podés copiar tu lista actual como texto.</p>
-        <textarea id="paste-list-textarea" class="paste-list-textarea" rows="5" placeholder="Ej:&#10;2 Manzanas&#10;Pan - $1200&#10;Leche x3"></textarea>
+        <p class="settings-desc" data-i18n="text_desc">Paste a list written on your phone or computer, one product per line (you can include quantity and price), and they'll be created automatically. You can also copy your current list as text.</p>
+        <textarea id="paste-list-textarea" class="paste-list-textarea" rows="5" data-i18n-placeholder="text_placeholder" placeholder="E.g.:&#10;2 Apples&#10;Bread - $1200&#10;Milk x3"></textarea>
         <div class="settings-backup-actions">
-          <button type="button" id="btn-copy-list-text" class="btn btn-secondary btn-small">📋 Copiar mi lista</button>
-          <button type="button" id="btn-create-from-text" class="btn btn-primary btn-small">➕ Crear productos</button>
+          <button type="button" id="btn-copy-list-text" class="btn btn-secondary btn-small" data-i18n="copy_list_btn">📋 Copy my list</button>
+          <button type="button" id="btn-create-from-text" class="btn btn-primary btn-small" data-i18n="create_products_btn">➕ Create products</button>
         </div>
         <p id="paste-list-status" class="settings-desc"></p>
       </div>
 
       <div class="io-panel" data-io-panel="pdf" hidden>
-        <p class="settings-desc">Descargá tu lista como PDF prolijo para imprimir o compartir, o importá productos leyendo el texto de un PDF existente.</p>
+        <p class="settings-desc" data-i18n="pdf_desc">Download your list as a clean PDF to print or share, or import products by reading the text of an existing PDF.</p>
         <div class="settings-backup-actions">
-          <button type="button" id="btn-export-pdf" class="btn btn-secondary btn-small">⬇️ Exportar a PDF</button>
+          <button type="button" id="btn-export-pdf" class="btn btn-secondary btn-small" data-i18n="export_pdf_btn">⬇️ Export to PDF</button>
           <label class="btn btn-secondary btn-small settings-import-label">
-            ⬆️ Importar desde PDF
+            <span data-i18n="import_pdf_btn">⬆️ Import from PDF</span>
             <input type="file" id="input-import-pdf" accept="application/pdf" hidden />
           </label>
         </div>
@@ -317,11 +330,11 @@
       </div>
 
       <div class="io-panel" data-io-panel="imagen" hidden>
-        <p class="settings-desc">Exportá tu lista como una imagen prolija para compartir por WhatsApp, o sacale una foto a una lista escrita a mano o un ticket y la app intenta leer los productos (puede tardar un poco y no siempre acierta del todo).</p>
+        <p class="settings-desc" data-i18n="image_desc">Export your list as a clean image to share on WhatsApp, or take a photo of a handwritten list or receipt and the app will try to read the products (it may take a moment and isn't always perfectly accurate).</p>
         <div class="settings-backup-actions">
-          <button type="button" id="btn-export-image" class="btn btn-secondary btn-small">⬇️ Exportar como imagen</button>
+          <button type="button" id="btn-export-image" class="btn btn-secondary btn-small" data-i18n="export_image_btn">⬇️ Export as image</button>
           <label class="btn btn-secondary btn-small settings-import-label">
-            📷 Leer desde una foto
+            <span data-i18n="read_photo_btn">📷 Read from a photo</span>
             <input type="file" id="input-import-image" accept="image/*" hidden />
           </label>
         </div>
@@ -329,11 +342,11 @@
       </div>
 
       <div class="io-panel" data-io-panel="tecnico" hidden>
-        <p class="settings-desc">Copia de seguridad completa y exacta de tu lista, en un formato técnico (JSON) pensado para vos, no para compartir. A diferencia de las otras opciones, importar acá reemplaza toda tu lista actual.</p>
+        <p class="settings-desc" data-i18n="tecnico_desc">A complete, exact backup of your list, in a technical format (JSON) meant for you, not for sharing. Unlike the other options, importing here replaces your entire current list.</p>
         <div class="settings-backup-actions">
-          <button type="button" id="btn-export-data" class="btn btn-secondary btn-small">⬇️ Exportar lista</button>
+          <button type="button" id="btn-export-data" class="btn btn-secondary btn-small" data-i18n="export_data_btn">⬇️ Export list</button>
           <label class="btn btn-secondary btn-small settings-import-label">
-            ⬆️ Importar lista
+            <span data-i18n="import_data_btn">⬆️ Import list</span>
             <input type="file" id="input-import-data" accept="application/json" hidden />
           </label>
         </div>
@@ -361,37 +374,37 @@
 
     <form class="product-edit" hidden>
       <div class="form-row-name">
-        <button type="button" class="edit-icon-preview input-icon-preview" aria-label="Elegir ícono del producto" aria-expanded="false">🛒</button>
+        <button type="button" class="edit-icon-preview input-icon-preview" data-i18n-aria-label="icon_picker_aria" aria-label="Choose product icon" aria-expanded="false">🛒</button>
         <input type="text" class="edit-name" required />
       </div>
       <div class="edit-icon-picker-slot icon-picker-slot"></div>
       <div class="form-row-split">
         <div class="qty-control">
-          <button type="button" class="qty-btn edit-qty-minus" aria-label="Restar cantidad">−</button>
+          <button type="button" class="qty-btn edit-qty-minus" data-i18n-aria-label="qty_minus_aria" aria-label="Decrease quantity">−</button>
           <input type="number" class="edit-quantity" min="1" step="1" required />
-          <button type="button" class="qty-btn edit-qty-plus" aria-label="Sumar cantidad">+</button>
+          <button type="button" class="qty-btn edit-qty-plus" data-i18n-aria-label="qty_plus_aria" aria-label="Increase quantity">+</button>
         </div>
-        <input type="number" class="edit-price" min="0" step="0.01" placeholder="Precio unitario" />
+        <input type="number" class="edit-price" min="0" step="0.01" data-i18n-placeholder="price_placeholder" placeholder="Unit price" />
       </div>
       <div class="form-row-split">
         <select class="edit-category">
-          <option value="Verdulería">🥬 Verdulería</option>
-          <option value="Carnicería">🥩 Carnicería</option>
-          <option value="Panadería">🍞 Panadería</option>
-          <option value="Almacén">🛒 Almacén</option>
-          <option value="Limpieza">🧴 Limpieza</option>
-          <option value="Farmacia y Perfumería">💊 Farmacia y Perfumería</option>
-          <option value="Otros">📦 Otros</option>
+          <option value="Verdulería" data-i18n="category_verduleria">🥬 Produce</option>
+          <option value="Carnicería" data-i18n="category_carniceria">🥩 Butcher</option>
+          <option value="Panadería" data-i18n="category_panaderia">🍞 Bakery</option>
+          <option value="Almacén" data-i18n="category_almacen">🛒 Grocery</option>
+          <option value="Limpieza" data-i18n="category_limpieza">🧴 Cleaning</option>
+          <option value="Farmacia y Perfumería" data-i18n="category_farmacia">💊 Pharmacy & Personal Care</option>
+          <option value="Otros" data-i18n="category_otros">📦 Other</option>
         </select>
         <label class="edit-priority-label">
           <input type="checkbox" class="edit-priority" />
-          <span>⭐ Prioritario</span>
+          <span data-i18n="priority_label">⭐ Priority</span>
         </label>
       </div>
       <div class="edit-buttons">
-        <button type="submit" class="btn btn-primary btn-small">Guardar</button>
-        <button type="button" class="btn btn-danger btn-small btn-delete">Eliminar</button>
-        <button type="button" class="btn btn-secondary btn-small btn-cancel-edit">Cancelar</button>
+        <button type="submit" class="btn btn-primary btn-small" data-i18n="save_btn">Save</button>
+        <button type="button" class="btn btn-danger btn-small btn-delete" data-i18n="delete_btn">Delete</button>
+        <button type="button" class="btn btn-secondary btn-small btn-cancel-edit" data-i18n="cancel_btn">Cancel</button>
       </div>
     </form>
   </li>
@@ -401,16 +414,16 @@
 <div class="bottom-summary-bar">
   <div class="header-summary">
     <div class="summary-inline">
-      <span class="summary-inline-item"><strong id="summary-pending">0</strong> pendientes</span>
+      <span class="summary-inline-item"><strong id="summary-pending">0</strong> <span data-i18n="summary_pendientes">pending</span></span>
       <span class="summary-divider" aria-hidden="true"></span>
-      <span class="summary-inline-item"><strong id="summary-purchased">0</strong> comprados</span>
+      <span class="summary-inline-item"><strong id="summary-purchased">0</strong> <span data-i18n="summary_comprados">purchased</span></span>
       <span class="summary-divider" aria-hidden="true"></span>
-      <span class="summary-inline-item"><strong id="summary-count">0</strong> total</span>
+      <span class="summary-inline-item"><strong id="summary-count">0</strong> <span data-i18n="summary_total">total</span></span>
     </div>
     <div class="summary-total">
       <div class="summary-total-text">
-        <span class="summary-total-label">Falta comprar</span>
-        <p class="summary-spent" id="summary-spent">Ya compraste $0,00</p>
+        <span class="summary-total-label" data-i18n="doc_falta_comprar">Still to buy</span>
+        <p class="summary-spent" id="summary-spent">You've bought $0,00</p>
       </div>
       <span class="summary-total-value" id="summary-total">$0,00</span>
     </div>

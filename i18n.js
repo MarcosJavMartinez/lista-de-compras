@@ -22,7 +22,7 @@ const TRANSLATIONS = {
     theme_to_day_aria: "Cambiar a modo día",
     settings_aria: "Configuración",
     lang_picker_aria: "Idioma",
-    search_placeholder: "🔍 Buscar producto...",
+    search_placeholder: "Buscar producto...",
     search_aria: "Buscar producto",
     filters_btn: "Filtros",
 
@@ -183,7 +183,7 @@ const TRANSLATIONS = {
     theme_to_day_aria: "Switch to light mode",
     settings_aria: "Settings",
     lang_picker_aria: "Language",
-    search_placeholder: "🔍 Search product...",
+    search_placeholder: "Search product...",
     search_aria: "Search product",
     filters_btn: "Filters",
 
@@ -344,7 +344,7 @@ const TRANSLATIONS = {
     theme_to_day_aria: "Mudar para modo claro",
     settings_aria: "Configurações",
     lang_picker_aria: "Idioma",
-    search_placeholder: "🔍 Buscar produto...",
+    search_placeholder: "Buscar produto...",
     search_aria: "Buscar produto",
     filters_btn: "Filtros",
 
@@ -505,7 +505,7 @@ const TRANSLATIONS = {
     theme_to_day_aria: "Aydınlık moda geç",
     settings_aria: "Ayarlar",
     lang_picker_aria: "Dil",
-    search_placeholder: "🔍 Ürün ara...",
+    search_placeholder: "Ürün ara...",
     search_aria: "Ürün ara",
     filters_btn: "Filtreler",
 
@@ -666,7 +666,7 @@ const TRANSLATIONS = {
     theme_to_day_aria: "Переключить в светлый режим",
     settings_aria: "Настройки",
     lang_picker_aria: "Язык",
-    search_placeholder: "🔍 Поиск товара...",
+    search_placeholder: "Поиск товара...",
     search_aria: "Поиск товара",
     filters_btn: "Фильтры",
 
@@ -827,7 +827,7 @@ const TRANSLATIONS = {
     theme_to_day_aria: "ライトモードに切り替え",
     settings_aria: "設定",
     lang_picker_aria: "言語",
-    search_placeholder: "🔍 商品を検索...",
+    search_placeholder: "商品を検索...",
     search_aria: "商品を検索",
     filters_btn: "フィルター",
 

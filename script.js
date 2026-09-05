@@ -630,7 +630,9 @@ function applyBackgroundImage() {
 
   if (choice === "none") {
     document.body.style.backgroundImage = "none";
+    document.body.classList.remove("bg-pattern-mode");
   } else if (choice === "custom") {
+    document.body.classList.remove("bg-pattern-mode");
     let customImage = null;
     try {
       customImage = localStorage.getItem(BG_IMAGE_CUSTOM_KEY);
@@ -655,6 +657,7 @@ function applyBackgroundImage() {
     document.body.style.backgroundRepeat = "repeat";
     document.body.style.backgroundAttachment = "fixed";
     document.body.style.backgroundPosition = "center";
+    document.body.classList.add("bg-pattern-mode");
   }
 
   updateBgImageButtons(choice);

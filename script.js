@@ -2136,6 +2136,21 @@ bgImageOptionButtons.forEach((btn) => {
     } catch (error) {
       console.error("No se pudo guardar la preferencia de imagen de fondo.", error);
     }
+
+    // Simétrico a lo de arriba: un color de fondo guardado se mezcla con el
+    // patrón (blend-mode) y puede terminar "tapándolo" según el color, así
+    // que al elegir una imagen sacamos el color para que se vea como se
+    // espera, sin restos de una elección anterior.
+    if (choice !== "none") {
+      try {
+        localStorage.removeItem(BG_COLOR_KEY);
+      } catch (error) {
+        console.error("No se pudo restablecer el color de fondo.", error);
+      }
+      applyBgColor(null);
+      refreshBgColorInput();
+    }
+
     applyBackgroundImage();
   });
 });
@@ -2170,12 +2185,15 @@ inputBgImage.addEventListener("change", () => {
       try {
         localStorage.setItem(BG_IMAGE_CUSTOM_KEY, dataUrl);
         localStorage.setItem(BG_IMAGE_CHOICE_KEY, "custom");
+        localStorage.removeItem(BG_COLOR_KEY);
       } catch (error) {
         console.error("No se pudo guardar la imagen de fondo.", error);
         alert(t("alert_image_too_heavy"));
         inputBgImage.value = "";
         return;
       }
+      applyBgColor(null);
+      refreshBgColorInput();
       applyBackgroundImage();
       inputBgImage.value = "";
     };

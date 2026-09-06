@@ -1912,6 +1912,17 @@ if ("serviceWorker" in navigator) {
       console.error("No se pudo registrar el service worker.", error);
     });
   });
+
+  // Cuando se publica una versión nueva, el navegador instala el service
+  // worker actualizado en segundo plano; en cuanto toma el control (esto
+  // dispara "controllerchange"), recargamos una sola vez para mostrarla,
+  // en vez de dejar a quien esté usando la app pegado en la versión vieja.
+  let reloadedForNewVersion = false;
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (reloadedForNewVersion) return;
+    reloadedForNewVersion = true;
+    window.location.reload();
+  });
 }
 
 ioTabButtons.forEach((tab) => {

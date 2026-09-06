@@ -1,9 +1,10 @@
-const CACHE_NAME = "neko-lista-v1";
+const CACHE_NAME = "neko-lista-v2";
 const APP_SHELL = [
   "./",
   "index.html",
   "styles.css",
   "script.js",
+  "i18n.js",
   "manifest.json",
   "img/logo-header.png",
   "img/favicon-32.png",
@@ -29,23 +30,21 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
-// Cache-first con actualización en segundo plano: sirve rápido y anda
-// offline, pero cada visita refresca el cache para la próxima vez.
+// Red primero, cache como respaldo solo si no hay conexión: así cada visita
+// con internet trae la versión publicada más reciente sin que haga falta
+// borrar cache a mano, y offline sigue andando con lo último que se guardó.
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
 
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      const networkFetch = fetch(event.request)
-        .then((response) => {
-          if (response && response.status === 200 && response.type === "basic") {
-            const clone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
-          }
-          return response;
-        })
-        .catch(() => cached);
-      return cached || networkFetch;
-    })
+    fetch(event.request)
+      .then((response) => {
+        if (response && response.status === 200 && response.type === "basic") {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+        }
+        return response;
+      })
+      .catch(() => caches.match(event.request))
   );
 });

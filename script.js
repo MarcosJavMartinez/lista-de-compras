@@ -478,7 +478,8 @@ const btnCancelAdd = document.getElementById("btn-cancel-add");
 
 const searchInput = document.getElementById("search-input");
 const btnToggleFilters = document.getElementById("btn-toggle-filters");
-const filtersPanel = document.getElementById("filters-panel");
+const filtersBackdrop = document.getElementById("filters-backdrop");
+const btnFiltersClose = document.getElementById("btn-filters-close");
 const filterCategorySelect = document.getElementById("filter-category");
 const filterPriorityCheckbox = document.getElementById("filter-priority");
 const btnSortPrice = document.getElementById("btn-sort-price");
@@ -2239,10 +2240,29 @@ inputBgImage.addEventListener("change", () => {
   reader.readAsDataURL(file);
 });
 
+function openFiltersModal() {
+  filtersBackdrop.hidden = false;
+  btnToggleFilters.setAttribute("aria-expanded", "true");
+}
+
+function closeFiltersModal() {
+  filtersBackdrop.hidden = true;
+  btnToggleFilters.setAttribute("aria-expanded", "false");
+}
+
 btnToggleFilters.addEventListener("click", () => {
-  const isOpen = !filtersPanel.hidden;
-  filtersPanel.hidden = isOpen;
-  btnToggleFilters.setAttribute("aria-expanded", String(!isOpen));
+  if (filtersBackdrop.hidden) openFiltersModal();
+  else closeFiltersModal();
+});
+
+btnFiltersClose.addEventListener("click", closeFiltersModal);
+
+filtersBackdrop.addEventListener("click", (event) => {
+  if (event.target === filtersBackdrop) closeFiltersModal();
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !filtersBackdrop.hidden) closeFiltersModal();
 });
 
 filterCategorySelect.addEventListener("change", () => {

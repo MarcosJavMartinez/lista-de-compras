@@ -117,33 +117,6 @@
 
 <main class="container">
 
-  <div id="filters-panel" class="card filters-panel" hidden>
-    <div class="filters-panel-row">
-      <select id="filter-category" data-i18n-aria-label="filter_category_aria" aria-label="Filter by category">
-        <option value="" data-i18n="category_all">All categories</option>
-        <option value="Verdulería" data-i18n="category_verduleria">🥬 Produce</option>
-        <option value="Carnicería" data-i18n="category_carniceria">🥩 Butcher</option>
-        <option value="Panadería" data-i18n="category_panaderia">🍞 Bakery</option>
-        <option value="Almacén" data-i18n="category_almacen">🛒 Grocery</option>
-        <option value="Limpieza" data-i18n="category_limpieza">🧴 Cleaning</option>
-        <option value="Farmacia y Perfumería" data-i18n="category_farmacia">💊 Pharmacy & Personal Care</option>
-        <option value="Otros" data-i18n="category_otros">📦 Other</option>
-      </select>
-    </div>
-    <div class="filters-panel-row">
-      <label class="filter-priority-toggle">
-        <input type="checkbox" id="filter-priority" />
-        <span data-i18n="priority_only">⭐ Priority only</span>
-      </label>
-    </div>
-    <div class="filters-panel-row">
-      <button type="button" id="btn-sort-price" class="sort-price-btn" data-sort="none" data-i18n="sort_by_price">
-        Sort by price
-      </button>
-    </div>
-    <button type="button" id="btn-clear-filters" class="btn btn-secondary btn-small" data-i18n="clear_filters">Clear filters</button>
-  </div>
-
   <!-- Lista de productos -->
   <section class="card list-card">
     <div class="add-item-card">
@@ -219,6 +192,41 @@
     <span id="footer-more-tools" class="app-footer-link app-footer-link-disabled" data-i18n="footer_more_tools">More tools</span>
   </p>
 </footer>
+
+<!-- Filtros: mismo patrón de modal que Configuración, así queda siempre a
+     mano sin importar cuánto hayas scrolleado la lista -->
+<div id="filters-backdrop" class="modal-backdrop" hidden>
+  <section id="filters-panel" class="card settings-panel" role="dialog" aria-modal="true" aria-labelledby="filters-title-text">
+    <div class="settings-header">
+      <h2 id="filters-title-text" class="settings-title" data-i18n="filters_modal_title">Filter &amp; sort</h2>
+      <button type="button" id="btn-filters-close" class="settings-close-btn" data-i18n-aria-label="close_aria" aria-label="Close">✕</button>
+    </div>
+    <div class="filters-panel-row">
+      <select id="filter-category" data-i18n-aria-label="filter_category_aria" aria-label="Filter by category">
+        <option value="" data-i18n="category_all">All categories</option>
+        <option value="Verdulería" data-i18n="category_verduleria">🥬 Produce</option>
+        <option value="Carnicería" data-i18n="category_carniceria">🥩 Butcher</option>
+        <option value="Panadería" data-i18n="category_panaderia">🍞 Bakery</option>
+        <option value="Almacén" data-i18n="category_almacen">🛒 Grocery</option>
+        <option value="Limpieza" data-i18n="category_limpieza">🧴 Cleaning</option>
+        <option value="Farmacia y Perfumería" data-i18n="category_farmacia">💊 Pharmacy & Personal Care</option>
+        <option value="Otros" data-i18n="category_otros">📦 Other</option>
+      </select>
+    </div>
+    <div class="filters-panel-row">
+      <label class="filter-priority-toggle">
+        <input type="checkbox" id="filter-priority" />
+        <span data-i18n="priority_only">⭐ Priority only</span>
+      </label>
+    </div>
+    <div class="filters-panel-row">
+      <button type="button" id="btn-sort-price" class="sort-price-btn" data-sort="none" data-i18n="sort_by_price">
+        Sort by price
+      </button>
+    </div>
+    <button type="button" id="btn-clear-filters" class="btn btn-secondary btn-small" data-i18n="clear_filters">Clear filters</button>
+  </section>
+</div>
 
 <!-- Elegir idioma -->
 <div id="lang-backdrop" class="modal-backdrop" hidden>

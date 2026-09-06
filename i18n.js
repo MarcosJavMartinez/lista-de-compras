@@ -25,6 +25,7 @@ const TRANSLATIONS = {
     search_placeholder: "Buscar producto...",
     search_aria: "Buscar producto",
     filters_btn: "Filtros",
+    filters_modal_title: "Filtrar y ordenar",
 
     filter_category_aria: "Filtrar por categoría",
     category_all: "Todas las categorías",
@@ -187,6 +188,7 @@ const TRANSLATIONS = {
     search_placeholder: "Search product...",
     search_aria: "Search product",
     filters_btn: "Filters",
+    filters_modal_title: "Filter & sort",
 
     filter_category_aria: "Filter by category",
     category_all: "All categories",
@@ -349,6 +351,7 @@ const TRANSLATIONS = {
     search_placeholder: "Buscar produto...",
     search_aria: "Buscar produto",
     filters_btn: "Filtros",
+    filters_modal_title: "Filtrar e ordenar",
 
     filter_category_aria: "Filtrar por categoria",
     category_all: "Todas as categorias",
@@ -511,6 +514,7 @@ const TRANSLATIONS = {
     search_placeholder: "Ürün ara...",
     search_aria: "Ürün ara",
     filters_btn: "Filtreler",
+    filters_modal_title: "Filtrele ve sırala",
 
     filter_category_aria: "Kategoriye göre filtrele",
     category_all: "Tüm kategoriler",
@@ -673,6 +677,7 @@ const TRANSLATIONS = {
     search_placeholder: "Поиск товара...",
     search_aria: "Поиск товара",
     filters_btn: "Фильтры",
+    filters_modal_title: "Фильтр и сортировка",
 
     filter_category_aria: "Фильтр по категории",
     category_all: "Все категории",
@@ -835,6 +840,7 @@ const TRANSLATIONS = {
     search_placeholder: "商品を検索...",
     search_aria: "商品を検索",
     filters_btn: "フィルター",
+    filters_modal_title: "絞り込み・並べ替え",
 
     filter_category_aria: "カテゴリーで絞り込む",
     category_all: "すべてのカテゴリー",

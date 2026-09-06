@@ -1157,17 +1157,6 @@ a:focus-visible {
   color: var(--color-primary-dark);
 }
 
-.filters-panel[hidden] {
-  display: none;
-}
-
-.filters-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  animation: fade-slide-in 180ms ease;
-}
-
 .filters-panel-row select,
 .filters-panel-row input[type="number"] {
   margin-bottom: 0;

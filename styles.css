@@ -702,6 +702,13 @@ h1, h2,
   transform: scale(0.93);
 }
 
+.input-icon-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
 .icon-picker {
   display: flex;
   flex-wrap: wrap;
@@ -740,6 +747,18 @@ h1, h2,
 
 .icon-option:active {
   transform: scale(0.88);
+}
+
+.icon-option-upload {
+  border: 1.5px dashed var(--color-border);
+  background: transparent;
+  color: var(--color-text-muted);
+}
+
+.icon-option-upload:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: var(--color-primary-soft);
 }
 
 .form-row-name input[type="text"] {
@@ -1302,6 +1321,14 @@ a:focus-visible {
   flex-shrink: 0;
   font-size: 1.5rem;
   line-height: 1;
+  display: inline-flex;
+}
+
+.product-icon img {
+  width: 26px;
+  height: 26px;
+  object-fit: cover;
+  border-radius: 7px;
 }
 
 .product-qty-display {

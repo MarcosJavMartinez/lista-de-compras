@@ -43,6 +43,7 @@ const TRANSLATIONS = {
 
     add_product_btn: "+ Agregar producto",
     icon_picker_aria: "Elegir ícono del producto",
+    icon_upload_aria: "Subir una foto como ícono",
     name_placeholder: "Nombre del producto",
     quantity_placeholder: "Cantidad",
     price_placeholder: "Precio unitario",
@@ -204,6 +205,7 @@ const TRANSLATIONS = {
 
     add_product_btn: "+ Add product",
     icon_picker_aria: "Choose product icon",
+    icon_upload_aria: "Upload a photo as icon",
     name_placeholder: "Product name",
     quantity_placeholder: "Quantity",
     price_placeholder: "Unit price",
@@ -365,6 +367,7 @@ const TRANSLATIONS = {
 
     add_product_btn: "+ Adicionar produto",
     icon_picker_aria: "Escolher ícone do produto",
+    icon_upload_aria: "Enviar uma foto como ícone",
     name_placeholder: "Nome do produto",
     quantity_placeholder: "Quantidade",
     price_placeholder: "Preço unitário",
@@ -526,6 +529,7 @@ const TRANSLATIONS = {
 
     add_product_btn: "+ Ürün ekle",
     icon_picker_aria: "Ürün simgesini seç",
+    icon_upload_aria: "Simge olarak fotoğraf yükle",
     name_placeholder: "Ürün adı",
     quantity_placeholder: "Miktar",
     price_placeholder: "Birim fiyat",
@@ -687,6 +691,7 @@ const TRANSLATIONS = {
 
     add_product_btn: "+ Добавить товар",
     icon_picker_aria: "Выбрать значок товара",
+    icon_upload_aria: "Загрузить фото как значок",
     name_placeholder: "Название товара",
     quantity_placeholder: "Количество",
     price_placeholder: "Цена за единицу",
@@ -848,6 +853,7 @@ const TRANSLATIONS = {
 
     add_product_btn: "＋ 商品を追加",
     icon_picker_aria: "商品アイコンを選ぶ",
+    icon_upload_aria: "写真をアイコンとしてアップロード",
     name_placeholder: "商品名",
     quantity_placeholder: "数量",
     price_placeholder: "単価",

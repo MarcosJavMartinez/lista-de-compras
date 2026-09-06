@@ -184,9 +184,68 @@ const PRODUCT_RULES = [
   { keywords: ["salchicha"], icon: "🌭", category: "Carnicería" },
   { keywords: ["cinta adhesiva"], icon: "🧷", category: "Otros" },
   { keywords: ["boxer", "bóxer"], icon: "👖", category: "Otros" },
+  { keywords: ["pepino"], icon: "🥒", category: "Verdulería" },
+  { keywords: ["maiz", "maíz", "choclo"], icon: "🌽", category: "Verdulería" },
+  { keywords: ["hongos", "champiñones", "champinones"], icon: "🍄", category: "Verdulería" },
+  { keywords: ["berenjena"], icon: "🍆", category: "Verdulería" },
+  { keywords: ["mango"], icon: "🥭", category: "Verdulería" },
+  { keywords: ["ananá", "anana", "piña", "pina"], icon: "🍍", category: "Verdulería" },
+  { keywords: ["uva"], icon: "🍇", category: "Verdulería" },
+  { keywords: ["durazno"], icon: "🍑", category: "Verdulería" },
+  { keywords: ["cereza"], icon: "🍒", category: "Verdulería" },
+  { keywords: ["frutilla"], icon: "🍓", category: "Verdulería" },
+  { keywords: ["kiwi"], icon: "🥝", category: "Verdulería" },
+  { keywords: ["pera"], icon: "🍐", category: "Verdulería" },
+  { keywords: ["melon"], icon: "🍈", category: "Verdulería" },
+  { keywords: ["sandia", "sandía"], icon: "🍉", category: "Verdulería" },
+  { keywords: ["medialuna", "factura"], icon: "🥐", category: "Panadería" },
+  { keywords: ["baguette", "flauta"], icon: "🥖", category: "Panadería" },
+  { keywords: ["torta"], icon: "🍰", category: "Panadería" },
+  { keywords: ["magdalena", "cupcake"], icon: "🧁", category: "Panadería" },
+  { keywords: ["donut", "dona"], icon: "🍩", category: "Panadería" },
+  { keywords: ["tostada", "grisin", "grisín"], icon: "🫓", category: "Panadería" },
+  { keywords: ["bagel"], icon: "🥯", category: "Panadería" },
+  { keywords: ["panceta", "bacon"], icon: "🥓", category: "Carnicería" },
+  { keywords: ["hamburguesa"], icon: "🍔", category: "Carnicería" },
+  { keywords: ["camaron", "camarón", "langostino"], icon: "🍤", category: "Carnicería" },
+  { keywords: ["huevo frito"], icon: "🍳", category: "Almacén" },
+  { keywords: ["pochoclo", "pop corn", "palomitas"], icon: "🍿", category: "Almacén" },
+  { keywords: ["helado"], icon: "🍨", category: "Almacén" },
+  { keywords: ["flan"], icon: "🍮", category: "Almacén" },
+  { keywords: ["caramelo", "golosina"], icon: "🍬", category: "Almacén" },
+  { keywords: ["mani", "maní"], icon: "🥜", category: "Almacén" },
+  { keywords: ["porotos", "lentejas", "garbanzos"], icon: "🫘", category: "Almacén" },
+  { keywords: ["ensalada"], icon: "🥗", category: "Almacén" },
+  { keywords: ["jugo en caja", "jugo"], icon: "🧃", category: "Almacén" },
+  { keywords: ["mamadera"], icon: "🍼", category: "Otros" },
+  { keywords: ["pilas", "baterias", "baterías"], icon: "🔋", category: "Otros" },
+  { keywords: ["foco", "lamparita", "lampara led", "lámpara led"], icon: "💡", category: "Otros" },
+  { keywords: ["velas"], icon: "🕯️", category: "Otros" },
+  { keywords: ["hilo y aguja", "hilo de coser"], icon: "🧵", category: "Otros" },
+  { keywords: ["medias"], icon: "🧦", category: "Otros" },
+  { keywords: ["gorra"], icon: "🧢", category: "Otros" },
+  { keywords: ["regalo"], icon: "🎁", category: "Otros" },
+  { keywords: ["destornillador", "herramienta"], icon: "🔧", category: "Otros" },
+  { keywords: ["curitas", "curita", "banditas"], icon: "🩹", category: "Farmacia y Perfumería" },
+  { keywords: ["alcohol en gel", "alcohol gel"], icon: "🧴", category: "Farmacia y Perfumería" },
+  { keywords: ["comida para perro", "alimento balanceado", "balanceado perro"], icon: "🐕", category: "Otros" },
+  { keywords: ["arena para gato", "alimento para gato", "balanceado gato"], icon: "🐈", category: "Otros" },
 ];
 
-const ALL_ICONS = Array.from(new Set([DEFAULT_ICON, ...PRODUCT_RULES.map((rule) => rule.icon)]));
+// Íconos adicionales para el selector que no tienen (todavía) una regla de
+// auto-detección propia, pero conviene tener a mano para elegir a mano.
+const EXTRA_ICON_OPTIONS = [
+  "🍆", "🥒", "🌽", "🍄", "🥭", "🍍", "🍇", "🍑", "🍒", "🍓", "🥝", "🍐", "🍈", "🍉",
+  "🥞", "🥐", "🥖", "🧇", "🥯", "🍰", "🧁", "🍩", "🥧", "🫓",
+  "🍔", "🌮", "🌯", "🍕", "🥓", "🍖", "🦴", "🍤", "🦐", "🦀", "🦑", "🍳",
+  "🍱", "🥫", "🍿", "🍮", "🍭", "🍬", "🍨", "🍦", "🧊", "🥜", "🌰", "🫘", "🥗", "🍹", "🧃", "🍼",
+  "🔋", "💡", "🕯️", "🧵", "🧶", "🪡", "🧦", "👕", "🧢", "🎁", "🔧", "🔨", "🪛", "🧰",
+  "🐾", "🐕", "🐈", "🌡️", "🩹",
+];
+
+const ALL_ICONS = Array.from(
+  new Set([DEFAULT_ICON, ...PRODUCT_RULES.map((rule) => rule.icon), ...EXTRA_ICON_OPTIONS])
+);
 
 const DIACRITICS_REGEX = new RegExp("[̀-ͯ]", "g");
 
@@ -209,6 +268,55 @@ function getProductIcon(name) {
 function getProductCategory(name) {
   const rule = matchProductRule(name);
   return rule ? rule.category : DEFAULT_CATEGORY;
+}
+
+// Un ícono de producto es o bien un emoji (string corto) o una imagen que
+// subió el usuario, guardada como data URL. Esto decide cuál es cuál.
+function isImageIcon(icon) {
+  return typeof icon === "string" && icon.startsWith("data:image/");
+}
+
+// Pinta un ícono (emoji o imagen) dentro de `el`, sea el ícono de una fila
+// de producto o el botón de vista previa del selector.
+function renderIconInto(el, icon) {
+  if (isImageIcon(icon)) {
+    let img = el.querySelector("img");
+    if (!img) {
+      el.textContent = "";
+      img = document.createElement("img");
+      img.alt = "";
+      el.appendChild(img);
+    }
+    img.src = icon;
+  } else {
+    el.textContent = icon;
+  }
+}
+
+// Reescala y recorta a cuadrado una imagen elegida por el usuario para
+// usarla como ícono de producto, devolviendo un data URL liviano.
+function fileToIconDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(reader.error);
+    reader.onload = () => {
+      const img = new Image();
+      img.onerror = reject;
+      img.onload = () => {
+        const size = 96;
+        const side = Math.min(img.width, img.height);
+        const sx = (img.width - side) / 2;
+        const sy = (img.height - side) / 2;
+        const canvas = document.createElement("canvas");
+        canvas.width = size;
+        canvas.height = size;
+        canvas.getContext("2d").drawImage(img, sx, sy, side, side, 0, 0, size, size);
+        resolve(canvas.toDataURL("image/jpeg", 0.85));
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
 }
 
 const DEFAULT_PRODUCTS = [
@@ -677,17 +785,45 @@ function toggleIconPicker(triggerBtn, slotEl, onSelect) {
   const picker = document.createElement("div");
   picker.className = "icon-picker";
 
+  const commitIcon = (icon) => {
+    onSelect(icon);
+    picker.remove();
+    triggerBtn.setAttribute("aria-expanded", "false");
+  };
+
+  const uploadInput = document.createElement("input");
+  uploadInput.type = "file";
+  uploadInput.accept = "image/*";
+  uploadInput.hidden = true;
+  uploadInput.addEventListener("change", () => {
+    const file = uploadInput.files[0];
+    if (!file || !file.type.startsWith("image/")) return;
+    fileToIconDataUrl(file)
+      .then((dataUrl) => commitIcon(dataUrl))
+      .catch((error) => {
+        console.error("No se pudo procesar la imagen elegida como ícono.", error);
+        alert(t("alert_image_load_error"));
+      });
+  });
+
+  const uploadBtn = document.createElement("button");
+  uploadBtn.type = "button";
+  uploadBtn.className = "icon-option icon-option-upload";
+  uploadBtn.setAttribute("aria-label", t("icon_upload_aria"));
+  uploadBtn.title = t("icon_upload_aria");
+  uploadBtn.innerHTML =
+    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16l4.586-4.586a2 2 0 0 1 2.828 0L16 16"></path><path d="M14 14l1.586-1.586a2 2 0 0 1 2.828 0L21 15"></path><rect x="3" y="4" width="18" height="16" rx="2"></rect><circle cx="8" cy="9" r="1.5"></circle></svg>';
+  uploadBtn.addEventListener("click", () => uploadInput.click());
+  picker.appendChild(uploadBtn);
+  picker.appendChild(uploadInput);
+
   ALL_ICONS.forEach((icon) => {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "icon-option";
     btn.textContent = icon;
     btn.setAttribute("aria-label", `Usar ícono ${icon}`);
-    btn.addEventListener("click", () => {
-      onSelect(icon);
-      picker.remove();
-      triggerBtn.setAttribute("aria-expanded", "false");
-    });
+    btn.addEventListener("click", () => commitIcon(icon));
     picker.appendChild(btn);
   });
 
@@ -1159,7 +1295,8 @@ async function exportListAsImage() {
     items.forEach((product, index) => {
       ctx.fillStyle = textColor;
       ctx.font = "600 15px Inter, sans-serif";
-      const icon = product.icon || getProductIcon(product.name);
+      const productIcon = product.icon || getProductIcon(product.name);
+      const icon = isImageIcon(productIcon) ? DEFAULT_ICON : productIcon;
       const label = `${icon}  ${product.quantity} x ${product.name}`;
       ctx.fillText(truncateToWidth(ctx, label, nameMaxWidth), cardX + paddingX, y);
 
@@ -1404,7 +1541,7 @@ function createProductElement(product) {
   const checkbox = li.querySelector(".chk-purchased");
   checkbox.checked = product.purchased;
 
-  li.querySelector(".product-icon").textContent = product.icon || getProductIcon(product.name);
+  renderIconInto(li.querySelector(".product-icon"), product.icon || getProductIcon(product.name));
   li.querySelector(".product-qty-display").textContent = product.quantity;
   li.querySelector(".priority-badge").textContent = product.priority ? "⭐" : "";
   li.querySelector(".product-name").textContent = product.name;
@@ -1422,12 +1559,12 @@ function createProductElement(product) {
   const editIconPreview = li.querySelector(".edit-icon-preview");
   const editIconPickerSlot = li.querySelector(".edit-icon-picker-slot");
   let editIcon = product.icon || getProductIcon(product.name);
-  editIconPreview.textContent = editIcon;
+  renderIconInto(editIconPreview, editIcon);
 
   editIconPreview.addEventListener("click", () => {
     toggleIconPicker(editIconPreview, editIconPickerSlot, (icon) => {
       editIcon = icon;
-      editIconPreview.textContent = icon;
+      renderIconInto(editIconPreview, icon);
     });
   });
 
@@ -1448,7 +1585,7 @@ function createProductElement(product) {
     view.hidden = true;
     editForm.hidden = false;
     editIcon = product.icon || getProductIcon(product.name);
-    editIconPreview.textContent = editIcon;
+    renderIconInto(editIconPreview, editIcon);
     li.querySelector(".edit-name").focus();
   };
 
@@ -1568,7 +1705,7 @@ inputName.addEventListener("input", () => {
 inputIconPreview.addEventListener("click", () => {
   toggleIconPicker(inputIconPreview, addIconPickerSlot, (icon) => {
     manualIcon = icon;
-    inputIconPreview.textContent = icon;
+    renderIconInto(inputIconPreview, icon);
   });
 });
 

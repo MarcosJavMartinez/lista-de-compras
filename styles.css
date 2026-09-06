@@ -90,6 +90,7 @@
 }
 
 body {
+  isolation: isolate;
   margin: 0;
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   background-color: var(--color-page-bg);
@@ -98,11 +99,22 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* El patrón de fondo por defecto se atenúa mezclándolo con el color de
-   página; los fondos personalizados que suba el usuario se muestran tal
-   cual, sin blend-mode. */
-body.bg-pattern-mode {
-  background-blend-mode: soft-light;
+/* El patrón de fondo por defecto se pinta en una capa aparte, detrás del
+   contenido, con opacidad reducida (en vez de background-blend-mode: en
+   modo claro esa mezcla terminaba lavando el patrón casi por completo).
+   Los fondos personalizados que suba el usuario se muestran tal cual, en
+   el background del body directamente, sin pasar por acá. */
+body.bg-pattern-mode::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--pattern-url);
+  background-size: 560px 560px;
+  background-repeat: repeat;
+  background-position: center;
+  opacity: 0.6;
+  pointer-events: none;
 }
 
 h1, h2,

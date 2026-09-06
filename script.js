@@ -760,11 +760,8 @@ function applyBackgroundImage() {
 
   if (choice === "pattern") {
     const pattern = getEffectiveTheme() === "dark" ? FOOD_PATTERN_DARK : FOOD_PATTERN_LIGHT;
-    document.body.style.backgroundImage = `url("${pattern}")`;
-    document.body.style.backgroundSize = "560px 560px";
-    document.body.style.backgroundRepeat = "repeat";
-    document.body.style.backgroundAttachment = "fixed";
-    document.body.style.backgroundPosition = "center";
+    document.body.style.backgroundImage = "none";
+    document.documentElement.style.setProperty("--pattern-url", `url("${pattern}")`);
     document.body.classList.add("bg-pattern-mode");
   }
 

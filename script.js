@@ -319,81 +319,96 @@ function fileToIconDataUrl(file) {
   });
 }
 
-const DEFAULT_PRODUCTS = [
-  { name: "Maple de huevos", quantity: 1, price: 6500 },
-  { name: "Máquina de afeitar Gillette x3", quantity: 1, price: 5895 },
-  { name: "Jabón Dove", quantity: 1, price: 2350 },
-  { name: "Aceite Cañuelas 900 ml", quantity: 1, price: 4115 },
-  { name: "Leche Tregar 1 L", quantity: 1, price: 2150 },
-  { name: "Café La Virginia 100 g", quantity: 1, price: 3500 },
-  { name: "Azúcar 1 kg", quantity: 1, price: 2200 },
-  { name: "Manteca 200 g", quantity: 1, price: 3484.15 },
-  { name: "Caldo de verduras x12", quantity: 1, price: 1879 },
-  { name: "Rollos de cocina x3", quantity: 1, price: 2343.2 },
-  { name: "Papel higiénico x4", quantity: 1, price: 3231.2 },
-  { name: "Pasta dental Colgate", quantity: 1, price: 3900 },
-  { name: "Pan lactal Bimbo integral", quantity: 1, price: 4293 },
-  { name: "Puré de tomate", quantity: 1, price: 1110 },
-  { name: "Atún", quantity: 2, price: 1750 },
-  { name: "Lavandina", quantity: 1, price: 1850 },
-  { name: "1 kg de cebolla", quantity: 1, price: 2000 },
-  { name: "2 cabezas de ajo", quantity: 1, price: 900 },
-  { name: "1 morrón", quantity: 1, price: 1200 },
-  { name: "Ají molido", quantity: 1, price: 2200 },
-  { name: "Pinolux", quantity: 1, price: 2800 },
-  { name: "Queso para untar", quantity: 1, price: 3200 },
-  { name: "Crema para alergia", quantity: 1, price: 4500 },
-  { name: "Arroz", quantity: 1, price: 4580 },
-  { name: "Fideos x3", quantity: 1, price: 3600 },
-  { name: "Puré instantáneo", quantity: 1, price: 2800 },
-  { name: "Mister Músculo baño", quantity: 1, price: 4200 },
-  { name: "Mister Músculo cocina", quantity: 1, price: 4200 },
-  { name: "Té de hierbas digestivas", quantity: 1, price: 2600 },
-  { name: "Pan sin TACC", quantity: 1, price: 6500 },
-  { name: "Bolsón de verduras", quantity: 1, price: 8000 },
-  { name: "Jabón para ropa", quantity: 1, price: 1800 },
-  { name: "Mayo de ajo", quantity: 1, price: 2400 },
-  { name: "Queso untable Roquefort", quantity: 1, price: 4800 },
-  { name: "Bicarbonato", quantity: 1, price: 1500 },
-  { name: "Vinagre de alcohol", quantity: 1, price: 1400 },
-  { name: "Cabezal de mopa", quantity: 1, price: 5500 },
-  { name: "Preservativos", quantity: 1, price: 4200 },
-  { name: "Miel sólida", quantity: 1, price: 3800 },
-  { name: "Cinta adhesiva papel/clásica", quantity: 1, price: 2100 },
-  { name: "Bóxer", quantity: 1, price: 6500 },
-  { name: "Salchichas", quantity: 1, price: 2900 },
-  { name: "Mayoliva", quantity: 1, price: 2600 },
-  { name: "Aceite de oliva", quantity: 1, price: 7500 },
-  { name: "Jengibre", quantity: 1, price: 1800 },
-  { name: "Talco", quantity: 1, price: 2400 },
-  { name: "Detergente", quantity: 1, price: 3000 },
-  { name: "Trapo de piso", quantity: 1, price: 2200 },
-  { name: "Pañuelos descartables", quantity: 1, price: 2100 },
-  { name: "Sal fina", quantity: 1, price: 1200 },
-  { name: "Birulana", quantity: 1, price: 1900 },
-  { name: "Capuchino", quantity: 1, price: 3500 },
-  { name: "Blen original", quantity: 1, price: 4500 },
-  { name: "Vitamina C", quantity: 3, price: 2800 },
-  { name: "Escarbadientes", quantity: 1, price: 900 },
-  { name: "Crema de afeitar", quantity: 1, price: 3600 },
-  { name: "Esponja", quantity: 1, price: 1300 },
-  { name: "Desodorante spray", quantity: 1, price: 4200 },
-  { name: "Ala para lavar ropa", quantity: 1, price: 5200 },
-  { name: "Miel líquida", quantity: 1, price: 3600 },
-  { name: "Cepillo para zapatos", quantity: 1, price: 2800 },
-  { name: "Enjuague dental", quantity: 1, price: 4200 },
-  { name: "Hilo dental", quantity: 1, price: 2300 },
-  { name: "Limón", quantity: 1, price: 1800 },
-  { name: "Té de manzanilla", quantity: 1, price: 2400 },
-  { name: "Plumero", quantity: 1, price: 3800 },
-  { name: "Perfume para ropa", quantity: 1, price: 5500 },
-].map((item) => ({
+// Catálogo de ejemplo que se usa para sembrar la lista de alguien que
+// recién entra. `key` es un identificador estable e interno (nunca se
+// traduce ni se muestra) que se usa para saber "¿esto ya lo tiene?" en
+// mergeNewCatalogProducts, independiente del nombre visible (que si se
+// traduce o el usuario lo renombra). `name` es el canónico en español,
+// usado también para matchear la categoría en PRODUCT_RULES; `names` trae
+// la versión mostrada en cada idioma.
+const DEFAULT_PRODUCTS_RAW = [
+  { key: "eggs_carton", name: "Maple de huevos", quantity: 1, price: 6500, names: { en: "Carton of eggs", pt: "Cartela de ovos", tr: "Yumurta kolisi", ru: "Лоток яиц", ja: "卵パック" } },
+  { key: "razor_gillette", name: "Máquina de afeitar Gillette x3", quantity: 1, price: 5895, names: { en: "Gillette razor x3", pt: "Aparelho de barbear Gillette x3", tr: "Gillette tıraş bıçağı x3", ru: "Бритвенный станок Gillette x3", ja: "ジレット カミソリ x3" } },
+  { key: "soap_dove", name: "Jabón Dove", quantity: 1, price: 2350, names: { en: "Dove soap", pt: "Sabonete Dove", tr: "Dove sabun", ru: "Мыло Dove", ja: "ダヴ石鹸" } },
+  { key: "oil_canuelas", name: "Aceite Cañuelas 900 ml", quantity: 1, price: 4115, names: { en: "Cañuelas oil 900 ml", pt: "Óleo Cañuelas 900 ml", tr: "Cañuelas yağı 900 ml", ru: "Масло Cañuelas 900 мл", ja: "カニュエラス油 900ml" } },
+  { key: "milk_tregar", name: "Leche Tregar 1 L", quantity: 1, price: 2150, names: { en: "Tregar milk 1 L", pt: "Leite Tregar 1 L", tr: "Tregar süt 1 L", ru: "Молоко Tregar 1 л", ja: "トレガル牛乳 1L" } },
+  { key: "coffee_la_virginia", name: "Café La Virginia 100 g", quantity: 1, price: 3500, names: { en: "La Virginia coffee 100 g", pt: "Café La Virginia 100 g", tr: "La Virginia kahve 100 g", ru: "Кофе La Virginia 100 г", ja: "ラ・ビルヒニア コーヒー 100g" } },
+  { key: "sugar", name: "Azúcar 1 kg", quantity: 1, price: 2200, names: { en: "Sugar 1 kg", pt: "Açúcar 1 kg", tr: "Şeker 1 kg", ru: "Сахар 1 кг", ja: "砂糖 1kg" } },
+  { key: "butter", name: "Manteca 200 g", quantity: 1, price: 3484.15, names: { en: "Butter 200 g", pt: "Manteiga 200 g", tr: "Tereyağı 200 g", ru: "Сливочное масло 200 г", ja: "バター 200g" } },
+  { key: "veggie_stock", name: "Caldo de verduras x12", quantity: 1, price: 1879, names: { en: "Vegetable stock cubes x12", pt: "Caldo de legumes x12", tr: "Sebze suyu tableti x12", ru: "Овощной бульон x12", ja: "野菜だしキューブ x12" } },
+  { key: "paper_towel", name: "Rollos de cocina x3", quantity: 1, price: 2343.2, names: { en: "Paper towel rolls x3", pt: "Rolos de papel toalha x3", tr: "Kağıt havlu x3", ru: "Бумажные полотенца x3", ja: "キッチンペーパー x3" } },
+  { key: "toilet_paper", name: "Papel higiénico x4", quantity: 1, price: 3231.2, names: { en: "Toilet paper x4", pt: "Papel higiênico x4", tr: "Tuvalet kağıdı x4", ru: "Туалетная бумага x4", ja: "トイレットペーパー x4" } },
+  { key: "toothpaste_colgate", name: "Pasta dental Colgate", quantity: 1, price: 3900, names: { en: "Colgate toothpaste", pt: "Creme dental Colgate", tr: "Colgate diş macunu", ru: "Зубная паста Colgate", ja: "コルゲート 歯磨き粉" } },
+  { key: "bread_bimbo", name: "Pan lactal Bimbo integral", quantity: 1, price: 4293, names: { en: "Bimbo whole wheat sandwich bread", pt: "Pão de forma integral Bimbo", tr: "Bimbo tam buğday tost ekmeği", ru: "Хлеб цельнозерновой Bimbo", ja: "ビンボー 全粒粉食パン" } },
+  { key: "tomato_puree", name: "Puré de tomate", quantity: 1, price: 1110, names: { en: "Tomato purée", pt: "Molho de tomate", tr: "Domates püresi", ru: "Томатное пюре", ja: "トマトピューレ" } },
+  { key: "tuna", name: "Atún", quantity: 2, price: 1750, names: { en: "Tuna", pt: "Atum", tr: "Ton balığı", ru: "Тунец", ja: "ツナ缶" } },
+  { key: "bleach", name: "Lavandina", quantity: 1, price: 1850, names: { en: "Bleach", pt: "Água sanitária", tr: "Çamaşır suyu", ru: "Отбеливатель", ja: "漂白剤" } },
+  { key: "onion_1kg", name: "1 kg de cebolla", quantity: 1, price: 2000, names: { en: "1 kg of onions", pt: "1 kg de cebola", tr: "1 kg soğan", ru: "1 кг лука", ja: "玉ねぎ 1kg" } },
+  { key: "garlic_2heads", name: "2 cabezas de ajo", quantity: 1, price: 900, names: { en: "2 heads of garlic", pt: "2 cabeças de alho", tr: "2 baş sarımsak", ru: "2 головки чеснока", ja: "にんにく 2玉" } },
+  { key: "bell_pepper", name: "1 morrón", quantity: 1, price: 1200, names: { en: "1 bell pepper", pt: "1 pimentão", tr: "1 dolmalık biber", ru: "1 болгарский перец", ja: "ピーマン 1個" } },
+  { key: "chili_ground", name: "Ají molido", quantity: 1, price: 2200, names: { en: "Ground chili pepper", pt: "Pimenta em pó", tr: "Toz biber", ru: "Молотый перец чили", ja: "唐辛子パウダー" } },
+  { key: "pinolux", name: "Pinolux", quantity: 1, price: 2800, names: { en: "Pinolux cleaner", pt: "Pinolux (limpador)", tr: "Pinolux temizleyici", ru: "Чистящее средство Pinolux", ja: "ピノルックス 洗剤" } },
+  { key: "cream_cheese", name: "Queso para untar", quantity: 1, price: 3200, names: { en: "Cream cheese", pt: "Queijo cremoso", tr: "Kremalı peynir", ru: "Плавленый сыр", ja: "クリームチーズ" } },
+  { key: "allergy_cream", name: "Crema para alergia", quantity: 1, price: 4500, names: { en: "Allergy cream", pt: "Creme para alergia", tr: "Alerji kremi", ru: "Крем от аллергии", ja: "アレルギー用クリーム" } },
+  { key: "rice", name: "Arroz", quantity: 1, price: 4580, names: { en: "Rice", pt: "Arroz", tr: "Pirinç", ru: "Рис", ja: "米" } },
+  { key: "pasta_x3", name: "Fideos x3", quantity: 1, price: 3600, names: { en: "Pasta x3", pt: "Macarrão x3", tr: "Makarna x3", ru: "Макароны x3", ja: "パスタ x3" } },
+  { key: "instant_mashed_potato", name: "Puré instantáneo", quantity: 1, price: 2800, names: { en: "Instant mashed potatoes", pt: "Purê instantâneo", tr: "Hazır patates püresi", ru: "Картофельное пюре быстрого приготовления", ja: "インスタントマッシュポテト" } },
+  { key: "mister_musculo_bath", name: "Mister Músculo baño", quantity: 1, price: 4200, names: { en: "Mister Músculo bathroom cleaner", pt: "Mister Músculo banheiro", tr: "Mister Músculo banyo temizleyici", ru: "Mister Músculo для ванной", ja: "ミスタームスクロ 浴室用" } },
+  { key: "mister_musculo_kitchen", name: "Mister Músculo cocina", quantity: 1, price: 4200, names: { en: "Mister Músculo kitchen cleaner", pt: "Mister Músculo cozinha", tr: "Mister Músculo mutfak temizleyici", ru: "Mister Músculo для кухни", ja: "ミスタームスクロ キッチン用" } },
+  { key: "digestive_tea", name: "Té de hierbas digestivas", quantity: 1, price: 2600, names: { en: "Digestive herbal tea", pt: "Chá de ervas digestivas", tr: "Sindirim bitki çayı", ru: "Травяной чай для пищеварения", ja: "消化ハーブティー" } },
+  { key: "gluten_free_bread", name: "Pan sin TACC", quantity: 1, price: 6500, names: { en: "Gluten-free bread", pt: "Pão sem glúten", tr: "Glutensiz ekmek", ru: "Хлеб без глютена", ja: "グルテンフリーパン" } },
+  { key: "veggie_bag", name: "Bolsón de verduras", quantity: 1, price: 8000, names: { en: "Bag of mixed vegetables", pt: "Saco de verduras", tr: "Sebze paketi", ru: "Пакет овощей", ja: "野菜セット" } },
+  { key: "laundry_soap", name: "Jabón para ropa", quantity: 1, price: 1800, names: { en: "Laundry soap", pt: "Sabão em pedra", tr: "Çamaşır sabunu", ru: "Хозяйственное мыло", ja: "洗濯石鹸" } },
+  { key: "garlic_mayo", name: "Mayo de ajo", quantity: 1, price: 2400, names: { en: "Garlic mayonnaise", pt: "Maionese de alho", tr: "Sarımsaklı mayonez", ru: "Чесночный майонез", ja: "ガーリックマヨネーズ" } },
+  { key: "roquefort_spread", name: "Queso untable Roquefort", quantity: 1, price: 4800, names: { en: "Roquefort spreadable cheese", pt: "Queijo cremoso Roquefort", tr: "Roquefort sürülebilir peynir", ru: "Сыр Рокфор для намазывания", ja: "ロックフォール クリームチーズ" } },
+  { key: "baking_soda", name: "Bicarbonato", quantity: 1, price: 1500, names: { en: "Baking soda", pt: "Bicarbonato de sódio", tr: "Karbonat", ru: "Пищевая сода", ja: "重曹" } },
+  { key: "white_vinegar", name: "Vinagre de alcohol", quantity: 1, price: 1400, names: { en: "White vinegar", pt: "Vinagre de álcool", tr: "Alkol sirkesi", ru: "Уксус спиртовой", ja: "穀物酢" } },
+  { key: "mop_head", name: "Cabezal de mopa", quantity: 1, price: 5500, names: { en: "Mop head refill", pt: "Refil de esfregão", tr: "Paspas başlığı", ru: "Насадка для швабры", ja: "モップヘッド" } },
+  { key: "condoms", name: "Preservativos", quantity: 1, price: 4200, names: { en: "Condoms", pt: "Preservativos", tr: "Prezervatif", ru: "Презервативы", ja: "コンドーム" } },
+  { key: "honey_solid", name: "Miel sólida", quantity: 1, price: 3800, names: { en: "Creamed honey", pt: "Mel cremoso", tr: "Katı bal", ru: "Кремовый мёд", ja: "クリーム状はちみつ" } },
+  { key: "tape_adhesive", name: "Cinta adhesiva papel/clásica", quantity: 1, price: 2100, names: { en: "Adhesive tape (paper/classic)", pt: "Fita adesiva (papel/comum)", tr: "Yapışkan bant (kağıt/klasik)", ru: "Клейкая лента (бумажная/обычная)", ja: "粘着テープ（紙/普通）" } },
+  { key: "boxers", name: "Bóxer", quantity: 1, price: 6500, names: { en: "Boxer shorts", pt: "Cueca boxer", tr: "Boxer", ru: "Боксеры", ja: "ボクサーパンツ" } },
+  { key: "sausages", name: "Salchichas", quantity: 1, price: 2900, names: { en: "Sausages", pt: "Salsichas", tr: "Sosis", ru: "Сосиски", ja: "ソーセージ" } },
+  { key: "mayoliva", name: "Mayoliva", quantity: 1, price: 2600, names: { en: "Mayoliva (olive mayo)", pt: "Mayoliva (maionese de oliva)", tr: "Mayoliva (zeytinyağlı mayonez)", ru: "Mayoliva (майонез с оливковым маслом)", ja: "マヨリバ（オリーブマヨネーズ）" } },
+  { key: "olive_oil", name: "Aceite de oliva", quantity: 1, price: 7500, names: { en: "Olive oil", pt: "Azeite de oliva", tr: "Zeytinyağı", ru: "Оливковое масло", ja: "オリーブオイル" } },
+  { key: "ginger", name: "Jengibre", quantity: 1, price: 1800, names: { en: "Ginger", pt: "Gengibre", tr: "Zencefil", ru: "Имбирь", ja: "生姜" } },
+  { key: "talc", name: "Talco", quantity: 1, price: 2400, names: { en: "Talcum powder", pt: "Talco", tr: "Talk pudrası", ru: "Тальк", ja: "ベビーパウダー" } },
+  { key: "dish_soap", name: "Detergente", quantity: 1, price: 3000, names: { en: "Dish soap", pt: "Detergente", tr: "Bulaşık deterjanı", ru: "Средство для мытья посуды", ja: "食器用洗剤" } },
+  { key: "floor_cloth", name: "Trapo de piso", quantity: 1, price: 2200, names: { en: "Floor cloth", pt: "Pano de chão", tr: "Yer bezi", ru: "Тряпка для пола", ja: "床拭き雑巾" } },
+  { key: "disposable_tissues", name: "Pañuelos descartables", quantity: 1, price: 2100, names: { en: "Disposable tissues", pt: "Lenços de papel", tr: "Kağıt mendil", ru: "Одноразовые салфетки", ja: "ティッシュ" } },
+  { key: "fine_salt", name: "Sal fina", quantity: 1, price: 1200, names: { en: "Fine salt", pt: "Sal fino", tr: "İnce tuz", ru: "Мелкая соль", ja: "精製塩" } },
+  { key: "scouring_pad", name: "Birulana", quantity: 1, price: 1900, names: { en: "Scouring pad", pt: "Esponja de aço", tr: "Bulaşık teli", ru: "Металлическая мочалка", ja: "スチールたわし" } },
+  { key: "cappuccino", name: "Capuchino", quantity: 1, price: 3500, names: { en: "Cappuccino mix", pt: "Cappuccino", tr: "Kapuçino", ru: "Капучино", ja: "カプチーノ" } },
+  { key: "blen_original", name: "Blen original", quantity: 1, price: 4500, names: { en: "Blen original bleach", pt: "Blen original", tr: "Blen original", ru: "Blen original (отбеливатель)", ja: "ブレン オリジナル" } },
+  { key: "vitamin_c", name: "Vitamina C", quantity: 3, price: 2800, names: { en: "Vitamin C", pt: "Vitamina C", tr: "C Vitamini", ru: "Витамин C", ja: "ビタミンC" } },
+  { key: "toothpicks", name: "Escarbadientes", quantity: 1, price: 900, names: { en: "Toothpicks", pt: "Palitos de dente", tr: "Kürdan", ru: "Зубочистки", ja: "つまようじ" } },
+  { key: "shaving_cream", name: "Crema de afeitar", quantity: 1, price: 3600, names: { en: "Shaving cream", pt: "Creme de barbear", tr: "Tıraş kremi", ru: "Крем для бритья", ja: "シェービングクリーム" } },
+  { key: "sponge", name: "Esponja", quantity: 1, price: 1300, names: { en: "Sponge", pt: "Esponja", tr: "Sünger", ru: "Губка", ja: "スポンジ" } },
+  { key: "deodorant_spray", name: "Desodorante spray", quantity: 1, price: 4200, names: { en: "Spray deodorant", pt: "Desodorante spray", tr: "Sprey deodorant", ru: "Дезодорант-спрей", ja: "スプレー式デオドラント" } },
+  { key: "ala_detergent", name: "Ala para lavar ropa", quantity: 1, price: 5200, names: { en: "Ala laundry detergent", pt: "Sabão em pó Ala", tr: "Ala çamaşır deterjanı", ru: "Стиральный порошок Ala", ja: "アラ 洗濯洗剤" } },
+  { key: "honey_liquid", name: "Miel líquida", quantity: 1, price: 3600, names: { en: "Liquid honey", pt: "Mel líquido", tr: "Sıvı bal", ru: "Жидкий мёд", ja: "液体はちみつ" } },
+  { key: "shoe_brush", name: "Cepillo para zapatos", quantity: 1, price: 2800, names: { en: "Shoe brush", pt: "Escova de sapato", tr: "Ayakkabı fırçası", ru: "Щётка для обуви", ja: "靴ブラシ" } },
+  { key: "mouthwash", name: "Enjuague dental", quantity: 1, price: 4200, names: { en: "Mouthwash", pt: "Enxaguante bucal", tr: "Ağız gargarası", ru: "Ополаскиватель для рта", ja: "マウスウォッシュ" } },
+  { key: "dental_floss", name: "Hilo dental", quantity: 1, price: 2300, names: { en: "Dental floss", pt: "Fio dental", tr: "Diş ipi", ru: "Зубная нить", ja: "デンタルフロス" } },
+  { key: "lemon", name: "Limón", quantity: 1, price: 1800, names: { en: "Lemon", pt: "Limão", tr: "Limon", ru: "Лимон", ja: "レモン" } },
+  { key: "chamomile_tea", name: "Té de manzanilla", quantity: 1, price: 2400, names: { en: "Chamomile tea", pt: "Chá de camomila", tr: "Papatya çayı", ru: "Ромашковый чай", ja: "カモミールティー" } },
+  { key: "feather_duster", name: "Plumero", quantity: 1, price: 3800, names: { en: "Feather duster", pt: "Espanador", tr: "Toz alma fırçası", ru: "Метёлка для пыли", ja: "はたき" } },
+  { key: "fabric_perfume", name: "Perfume para ropa", quantity: 1, price: 5500, names: { en: "Fabric perfume", pt: "Perfume para roupas", tr: "Çamaşır parfümü", ru: "Парфюм для белья", ja: "衣類用香水" } },
+];
+
+function getDefaultProductDisplayName(item) {
+  return (item.names && item.names[currentLang]) || item.name;
+}
+
+const DEFAULT_PRODUCTS = DEFAULT_PRODUCTS_RAW.map((item) => ({
   id: generateId(),
-  name: item.name,
+  key: item.key,
+  name: getDefaultProductDisplayName(item),
   quantity: item.quantity,
   price: item.price,
   purchased: false,
   category: getProductCategory(item.name),
+  icon: getProductIcon(item.name),
   priority: false,
 }));
 
@@ -855,14 +870,24 @@ function mergeNewCatalogProducts() {
   const storedVersion = Number(localStorage.getItem(CATALOG_VERSION_KEY)) || 0;
   if (storedVersion >= CATALOG_VERSION) return;
 
-  const defaultsByName = new Map(
-    DEFAULT_PRODUCTS.map((item) => [normalizeText(item.name), item])
+  // Dos formas de reconocer "esto ya lo tengo": por `key` (productos
+  // sembrados después de este cambio, en cualquier idioma) o, para
+  // compatibilidad con listas guardadas de antes, por el nombre canónico
+  // en español (esas no tienen `key`).
+  const defaultsByKey = new Map(DEFAULT_PRODUCTS.map((item) => [item.key, item]));
+  const canonicalNameByKey = new Map(DEFAULT_PRODUCTS_RAW.map((item) => [item.key, normalizeText(item.name)]));
+  const defaultsByCanonicalName = new Map(
+    DEFAULT_PRODUCTS_RAW.map((item) => [normalizeText(item.name), defaultsByKey.get(item.key)])
   );
 
+  const existingKeys = new Set(products.map((p) => p.key).filter(Boolean));
   const existingNames = new Set(products.map((p) => normalizeText(p.name)));
-  const newProducts = DEFAULT_PRODUCTS.filter(
-    (item) => !existingNames.has(normalizeText(item.name))
-  );
+
+  const newProducts = DEFAULT_PRODUCTS.filter((item) => {
+    if (existingKeys.has(item.key)) return false;
+    if (existingNames.has(canonicalNameByKey.get(item.key))) return false;
+    return true;
+  });
 
   let changed = false;
 
@@ -873,7 +898,7 @@ function mergeNewCatalogProducts() {
 
   products.forEach((product) => {
     if (product.price > 0) return;
-    const match = defaultsByName.get(normalizeText(product.name));
+    const match = (product.key && defaultsByKey.get(product.key)) || defaultsByCanonicalName.get(normalizeText(product.name));
     if (match && match.price > 0) {
       product.price = match.price;
       changed = true;

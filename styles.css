@@ -118,7 +118,6 @@ body.bg-pattern-mode::before {
 }
 
 h1, h2,
-.summary-value,
 .summary-total-value,
 .product-total,
 .btn,
@@ -128,7 +127,6 @@ h1, h2,
   font-family: "Outfit", "Inter", sans-serif;
 }
 
-.summary-value,
 .summary-total-value,
 .product-total,
 .product-qty-display,
@@ -322,9 +320,6 @@ h1, h2,
   overflow-y: auto;
   margin: 0;
   animation: pop-in 200ms ease;
-}
-
-.settings-panel {
   max-width: 480px;
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   box-shadow: var(--shadow-lg);
@@ -751,10 +746,6 @@ h1, h2,
 
 .icon-option:hover {
   background: var(--color-primary-soft);
-}
-
-.icon-option.selected {
-  background: var(--color-primary);
 }
 
 .icon-option:active {
@@ -1249,10 +1240,6 @@ a:focus-visible {
   }
 }
 
-.product-item {
-  animation: product-enter 200ms ease;
-}
-
 .empty-message {
   text-align: center;
   color: var(--color-text-muted);
@@ -1261,6 +1248,7 @@ a:focus-visible {
 }
 
 .product-item {
+  animation: product-enter 200ms ease;
   border-radius: var(--radius-sm);
   padding: 13px 6px;
   background: transparent;
@@ -1613,10 +1601,6 @@ a:focus-visible {
 
   .danger-action {
     flex: 1;
-  }
-
-  .summary-value {
-    font-size: 1.5rem;
   }
 
   .product-item,

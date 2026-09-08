@@ -835,7 +835,7 @@ function toggleIconPicker(triggerBtn, slotEl, onSelect) {
     btn.type = "button";
     btn.className = "icon-option";
     btn.textContent = icon;
-    btn.setAttribute("aria-label", `Usar ícono ${icon}`);
+    btn.setAttribute("aria-label", t("icon_option_aria", { icon }));
     btn.addEventListener("click", () => commitIcon(icon));
     picker.appendChild(btn);
   });
@@ -1130,13 +1130,16 @@ function exportListAsPdf() {
     y += 18;
     doc.setFont("helvetica", "normal");
     doc.setFontSize(11);
+    const nameMaxWidth = rightEdge - marginX - 100;
+    const lineHeight = 16;
     items.forEach((product) => {
-      ensureSpace(18);
-      doc.text(`${product.quantity} x ${product.name}`, marginX, y, { maxWidth: rightEdge - marginX - 100 });
+      const lines = doc.splitTextToSize(`${product.quantity} x ${product.name}`, nameMaxWidth);
+      ensureSpace(lineHeight * lines.length);
+      lines.forEach((line, i) => doc.text(line, marginX, y + i * lineHeight));
       if (product.price > 0) {
         doc.text(formatCurrency(product.price * product.quantity), rightEdge, y, { align: "right" });
       }
-      y += 16;
+      y += lineHeight * lines.length;
     });
     y += 10;
   }

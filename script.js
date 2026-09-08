@@ -2370,3 +2370,22 @@ function init() {
 }
 
 init();
+hideSplash();
+
+function hideSplash() {
+  const splash = document.getElementById("app-splash");
+  if (!splash) return;
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const minVisible = reduceMotion ? 0 : 650;
+  setTimeout(() => {
+    splash.classList.add("is-hidden");
+    splash.addEventListener(
+      "transitionend",
+      () => {
+        splash.hidden = true;
+      },
+      { once: true }
+    );
+    if (reduceMotion) splash.hidden = true;
+  }, minVisible);
+}

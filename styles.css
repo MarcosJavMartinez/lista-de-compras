@@ -1717,3 +1717,76 @@ a:focus-visible {
   cursor: default;
   text-decoration: none;
 }
+
+/* Splash de inicio */
+#app-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: var(--color-bg);
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+#app-splash.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.app-splash-icon {
+  width: 112px;
+  height: 112px;
+  border-radius: 28px;
+  box-shadow: var(--shadow-lg);
+  animation: app-splash-pop 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+
+.app-splash-name {
+  margin: 0;
+  font-family: "Nunito", "Inter", sans-serif;
+  font-weight: 800;
+  font-size: 2rem;
+  letter-spacing: -0.01em;
+}
+
+.app-splash-neko {
+  color: var(--color-primary);
+}
+
+.app-splash-lista {
+  color: var(--color-text);
+}
+
+.app-splash-by {
+  margin: 0;
+  font-family: "Nunito", "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.02em;
+}
+
+@keyframes app-splash-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #app-splash {
+    transition: none;
+  }
+  .app-splash-icon {
+    animation: none;
+  }
+}

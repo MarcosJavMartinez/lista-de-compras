@@ -1105,7 +1105,7 @@ a:focus-visible {
     linear-gradient(45deg, var(--color-page-bg) 50%, transparent 50%),
     linear-gradient(-45deg, var(--color-page-bg) 50%, transparent 50%);
   background-position: left bottom, 16px bottom;
-  background-size: 32px 16px;
+  background-size: 16px 16px;
   background-repeat: repeat-x;
 }
 

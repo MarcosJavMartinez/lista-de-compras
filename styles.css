@@ -1776,6 +1776,12 @@ a:focus-visible {
   color: var(--color-text);
 }
 
+.app-splash-by {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
 @keyframes app-splash-pop {
   from {
     opacity: 0;

@@ -1730,7 +1730,7 @@ a:focus-visible {
   gap: 14px;
   background: var(--color-bg);
   opacity: 1;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.8s ease;
 }
 
 #app-splash.is-hidden {

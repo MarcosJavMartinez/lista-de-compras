@@ -2376,7 +2376,7 @@ function hideSplash() {
   const splash = document.getElementById("app-splash");
   if (!splash) return;
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const minVisible = reduceMotion ? 0 : 650;
+  const minVisible = reduceMotion ? 0 : 2200;
   setTimeout(() => {
     splash.classList.add("is-hidden");
     splash.addEventListener(

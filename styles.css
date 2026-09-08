@@ -324,7 +324,7 @@ h1, h2,
   animation: pop-in 200ms ease;
 }
 
-#settings-panel {
+.settings-panel {
   max-width: 480px;
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   box-shadow: var(--shadow-lg);
@@ -336,7 +336,7 @@ h1, h2,
     padding: 20px;
   }
 
-  #settings-panel {
+  .settings-panel {
     border-radius: var(--radius-lg);
   }
 }

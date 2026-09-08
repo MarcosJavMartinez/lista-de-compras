@@ -1086,9 +1086,27 @@ a:focus-visible {
 
 /* Lista de productos */
 .list-card {
+  position: relative;
   padding: 14px;
+  padding-bottom: 24px;
   border: none;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   box-shadow: var(--shadow-medium);
+}
+
+.list-card::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 10px;
+  background-image:
+    linear-gradient(45deg, var(--color-page-bg) 50%, transparent 50%),
+    linear-gradient(-45deg, var(--color-page-bg) 50%, transparent 50%);
+  background-position: left bottom, 10px bottom;
+  background-size: 20px 10px;
+  background-repeat: repeat-x;
 }
 
 .search-row {
@@ -1352,13 +1370,29 @@ a:focus-visible {
   line-height: 1;
 }
 
-.product-name {
+.product-line {
   flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.product-name {
+  flex: 0 1 auto;
   min-width: 0;
   margin: 0;
   font-size: 1rem;
   font-weight: 600;
   word-break: break-word;
+}
+
+.product-leader {
+  flex: 1;
+  align-self: flex-end;
+  min-width: 0;
+  margin-bottom: 6px;
+  border-bottom: 2px dotted var(--color-border);
 }
 
 .product-item.purchased .product-name {

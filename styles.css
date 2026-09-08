@@ -1088,7 +1088,7 @@ a:focus-visible {
 .list-card {
   position: relative;
   padding: 14px;
-  padding-bottom: 24px;
+  padding-bottom: 32px;
   border: none;
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   box-shadow: var(--shadow-medium);
@@ -1100,12 +1100,12 @@ a:focus-visible {
   left: 0;
   right: 0;
   bottom: 0;
-  height: 10px;
+  height: 16px;
   background-image:
     linear-gradient(45deg, var(--color-page-bg) 50%, transparent 50%),
     linear-gradient(-45deg, var(--color-page-bg) 50%, transparent 50%);
-  background-position: left bottom, 10px bottom;
-  background-size: 20px 10px;
+  background-position: left bottom, 16px bottom;
+  background-size: 32px 16px;
   background-repeat: repeat-x;
 }
 

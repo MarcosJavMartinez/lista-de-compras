@@ -1933,6 +1933,14 @@ document.addEventListener("keydown", (event) => {
 updateInstallButtonVisibility();
 
 if ("serviceWorker" in navigator) {
+  // Si ya había un controller al cargar, cualquier "controllerchange"
+  // posterior es una actualización real reemplazando esa versión vieja.
+  // Si NO había controller (primera visita, todavía sin service worker),
+  // el controllerchange que sigue es solo la instalación inicial tomando
+  // control por primera vez, no una actualización: recargar ahí cortaría
+  // el splash de bienvenida a la mitad sin ningún motivo real.
+  const hadControllerOnLoad = Boolean(navigator.serviceWorker.controller);
+
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("sw.js").catch((error) => {
       console.error("No se pudo registrar el service worker.", error);
@@ -1945,6 +1953,7 @@ if ("serviceWorker" in navigator) {
   // en vez de dejar a quien esté usando la app pegado en la versión vieja.
   let reloadedForNewVersion = false;
   navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (!hadControllerOnLoad) return;
     if (reloadedForNewVersion) return;
     reloadedForNewVersion = true;
     window.location.reload();

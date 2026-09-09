@@ -1764,6 +1764,7 @@ a:focus-visible {
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--color-text-muted);
+  margin-inline: 0.2em;
 }
 
 @keyframes app-splash-pop {

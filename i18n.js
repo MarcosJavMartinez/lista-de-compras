@@ -902,7 +902,7 @@ const TRANSLATIONS = {
     footer_made_with: "Neko Tools が ❤️ を込めて制作",
     footer_support: "プロジェクトを支援する",
     footer_more_tools: "その他のツール",
-    splash_by: "by",
+    splash_by: "より",
 
     support_title: "☕ Neko Listaは役に立っていますか？",
     close_aria: "閉じる",
@@ -1066,4 +1066,24 @@ function applyStaticTranslations() {
   document.querySelectorAll("[data-i18n-title]").forEach((el) => {
     el.title = t(el.dataset.i18nTitle);
   });
+
+  updateSplashByOrder();
+}
+
+// En turco y japonés, la palabra equivalente a "by" es una posposición: va
+// después del nombre ("Neko Tools tarafından" / "Neko Tools より"), no antes
+// como en español/inglés/portugués/ruso. El resto de idiomas la deja al
+// principio, como está escrita en el HTML.
+const SPLASH_BY_AFTER_NAME = ["tr", "ja"];
+
+function updateSplashByOrder() {
+  const nameEl = document.querySelector(".app-splash-slide-brand .app-splash-name");
+  const byEl = nameEl && nameEl.querySelector(".app-splash-by");
+  if (!nameEl || !byEl) return;
+
+  if (SPLASH_BY_AFTER_NAME.includes(currentLang)) {
+    nameEl.appendChild(byEl);
+  } else if (nameEl.firstElementChild !== byEl) {
+    nameEl.insertBefore(byEl, nameEl.firstChild);
+  }
 }

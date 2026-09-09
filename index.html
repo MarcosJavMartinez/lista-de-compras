@@ -94,6 +94,15 @@
     <p class="app-splash-name"><span class="app-splash-by" data-i18n="splash_by">by</span> <span class="app-splash-neko">Neko</span> <span class="app-splash-lista">Tools</span></p>
   </div>
 </div>
+<script>
+  // Red de seguridad independiente de script.js: si algo ahí explota antes
+  // de llegar a hideSplash(), esto evita que el splash quede tapando la
+  // app para siempre. No hace nada si hideSplash() ya lo escondió antes.
+  setTimeout(function () {
+    var splash = document.getElementById("app-splash");
+    if (splash && !splash.hidden) splash.hidden = true;
+  }, 6000);
+</script>
 
 <header class="app-header">
   <div class="app-header-top">

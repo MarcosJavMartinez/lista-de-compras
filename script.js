@@ -2387,12 +2387,25 @@ hideSplash();
 function hideSplash() {
   const splash = document.getElementById("app-splash");
   if (!splash) return;
+
+  // Mientras el splash tapa la pantalla, el resto de la app (header, main,
+  // footer, la barra de resumen) sigue siendo enfocable por teclado aunque
+  // esté visualmente oculto detrás: sin esto, tabular durante el splash
+  // podía llevar el foco a un botón invisible. `inert` lo saca del todo
+  // (foco y lectores de pantalla) hasta que el splash termina.
+  const restOfApp = Array.from(document.body.children).filter(
+    (el) => el !== splash && el.tagName !== "SCRIPT" && el.tagName !== "TEMPLATE"
+  );
+  restOfApp.forEach((el) => (el.inert = true));
+  const releaseInert = () => restOfApp.forEach((el) => (el.inert = false));
+
   const appSlide = splash.querySelector(".app-splash-slide-app");
   const brandSlide = splash.querySelector(".app-splash-slide-brand");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   if (reduceMotion) {
     splash.hidden = true;
+    releaseInert();
     return;
   }
 
@@ -2406,8 +2419,10 @@ function hideSplash() {
     splash.classList.add("is-hidden");
     splash.addEventListener(
       "transitionend",
-      () => {
+      (event) => {
+        if (event.target !== splash) return;
         splash.hidden = true;
+        releaseInert();
       },
       { once: true }
     );

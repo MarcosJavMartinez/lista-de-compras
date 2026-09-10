@@ -1714,6 +1714,13 @@ a:focus-visible {
   transition: opacity 0.8s ease;
 }
 
+/* Con prefers-reduced-motion, hideSplash() pone hidden=true directo en vez
+   de animar: sin esta regla, `#app-splash { display: grid }` de arriba
+   gana igual y el splash se queda tapando la app para siempre. */
+#app-splash[hidden] {
+  display: none;
+}
+
 #app-splash.is-hidden {
   opacity: 0;
   pointer-events: none;
